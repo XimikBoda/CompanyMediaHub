@@ -13,6 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static VideoSharingSystem.Form1;
 
 namespace VideoSharingSystem
 {
@@ -25,8 +26,8 @@ namespace VideoSharingSystem
 			_mainForm = mainForm;
 			InitializeComponent();
 
-			string[] myFruit = { "Apples", "Oranges", "Tomato" };
-			checkedListBox1.Items.AddRange(myFruit);
+			foreach (var item in _mainForm.tags.tags)
+				checkedListBox1.Items.Add(item);
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -60,8 +61,15 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = _mainForm.bearer_token;
 
+				List<int> tags = new List<int>();
 
-				var videoInfo= new { name = textBox1.Text, description = richTextBox1.Text, idCompany = 1 };
+				foreach (object itemChecked in checkedListBox1.CheckedItems)
+				{
+					Tag tag = (Tag)itemChecked;
+					tags.Add(tag.id);
+				}
+
+				var videoInfo= new { name = textBox1.Text, description = richTextBox1.Text, idCompany = 1, tags = tags };
 				string json = JsonSerializer.Serialize(videoInfo);
 				string url = $"http://25.18.114.207:8080/video/upload";
 

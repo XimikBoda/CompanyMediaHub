@@ -46,7 +46,7 @@ namespace VideoSharingSystem
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(282, 52);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Система обміну відео";
+			this.label1.Text = "Company Media Hub";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// textBox1

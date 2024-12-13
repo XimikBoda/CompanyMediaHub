@@ -7,8 +7,10 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,11 +18,25 @@ namespace VideoSharingSystem
 {
 	public partial class Form1 : Form
 	{
+		public class Tag
+		{
+			public int id { get; set; }
+			public string name { get; set; }
+
+			public override string ToString() => name;
+		}
+		public class Tags
+		{
+			public List<Tag> tags { get; set; }
+		}
+
 		public int myUserId = 1;
 		public bool isAdmin = false;
 
 		public AuthenticationHeaderValue bearer_token;
 		public string url_host;
+
+		public Tags tags;
 
 		public Form1(string token, string url_host)
 		{
@@ -44,8 +60,40 @@ namespace VideoSharingSystem
 			InitializeComponent();
 			InitProfileViewer(myUserId);
 			InitHistory();
+			GetTags();
 
 			InitVideoPlayer(20);
+		}
+
+		private void GetTags()
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string loginUrl = $"{url_host}/video/tags";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						tags = JsonSerializer.Deserialize<Tags>(responseBody);
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 
 
