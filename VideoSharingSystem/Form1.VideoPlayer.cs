@@ -11,16 +11,35 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net.Http;
 using System.Text.Json;
 using AxWMPLib;
+using System.Security.Policy;
+using System.Net;
 
 namespace VideoSharingSystem
 {
-
-	public class link
-	{
-		public string temporary_link { get; set; }
-	}
 	partial class Form1
 	{
+		public class VideoInfoGet
+		{
+			public string name { get; set; }
+			public string description { get; set; }
+			public string temporary_link { get; set; }
+			public List<Tag> tags { get; set; }
+		}
+
+		public class CommentInfo
+		{
+			public int id { get; set; }
+			public int user_id { get; set; }
+			public string text { get; set; }
+			public string user_login { get; set; }
+		}
+
+		public class CommentsInfo
+		{
+			public List<CommentInfo> list { get; set; }
+		}
+
+
 		public int currentVideoId = -1;
 		int currentVideoUserId = -1;
 		int myRateId = 0;
@@ -28,19 +47,23 @@ namespace VideoSharingSystem
 		int rand_number = 0;
 
 		List<CommentElement> commentElements;
+		List<TagElement> tagElements = new List<TagElement>();
 
 		public void InitVideoPlayer(int id)
 		{
-			axWindowsMediaPlayer1.URL = "";
-			splitContainer1.Enabled = true;
+			if (currentVideoId == id)
+			{
+				tabControl1.SelectedIndex = 1;
+				return;
+			}
+
+			currentVideoId = id;
 
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
-
-
+				
 				string loginUrl = $"{url_host}/video/get/{id}";
-
 
 				try
 				{
@@ -50,22 +73,22 @@ namespace VideoSharingSystem
 					{
 						string responseBody = response.Content.ReadAsStringAsync().Result;
 
-						var linkResult = JsonSerializer.Deserialize<link>(responseBody);
+						var linkResult = JsonSerializer.Deserialize<VideoInfoGet>(responseBody);
 
 						axWindowsMediaPlayer1.URL = linkResult.temporary_link;
+						label1.Text = linkResult.name.Trim();
+						richTextBox1.Text = linkResult.description.Trim();
 
-						//if (loginResult != null || loginResult.message == "success")
-						//{
-						//	Visible = false;
-						//	var mainFrorm = new Form1(loginResult.token);
-						//	mainFrorm.ShowDialog();
-						//	mainFrorm.Dispose();
-						//	Visible = true;
-						//}
-						//else
-						//{
-						//	MessageBox.Show("Невірний логін або пароль: " + loginResult.message);
-						//}
+						{
+							foreach (var el in tagElements)
+								el.Deatach();
+							tagElements.Clear();
+
+							foreach (var item in linkResult.tags)
+								tagElements.Add(new TagElement(flowLayoutPanel7, this, item.name));
+						}
+
+						splitContainer1.Enabled = true;
 
 					}
 					else
@@ -79,17 +102,8 @@ namespace VideoSharingSystem
 					MessageBox.Show(ex.Message);
 				}
 			}
-			//if (currentVideoId == id)
-			//{
-			//	tabControl1.SelectedIndex = 1;
-			//	return;
-			//}
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand("SELECT IdVideo, NameV, DescriptionV, VideoData, NameUser, Surname, V.IdUser " +
-			//		"FROM Videos V JOIN Users U ON V.IdUser = U.IdUser WHERE IdVideo = @IdVideo ", connection);
-			//	command.Parameters.AddWithValue("@IdVideo", id);
-			//	command.Parameters.AddWithValue("@IdUser", myUserId);
+			
+			LoadsComments();
 
 			//	try
 			//	{
@@ -133,7 +147,7 @@ namespace VideoSharingSystem
 			//				command.ExecuteNonQuery();
 			//			}
 			//		}
-			//		LoadsComments();
+			//		
 			//		LoadsRatingAndVievers();
 
 			//		tabControl1.SelectedIndex = 1;
@@ -146,20 +160,81 @@ namespace VideoSharingSystem
 			//}
 		}
 
+		private void button3_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+			saveFileDialog.Filter = "Video file (*.mp4, *.avi)|*.mp4;*.avi|All files (*.*)|*.*";
+			saveFileDialog.FilterIndex = 0;
+			saveFileDialog.RestoreDirectory = true;
+			saveFileDialog.FileName = label1.Text + ".mp4";
+
+			if (saveFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				using (var client = new WebClient())
+				{
+					client.DownloadFileCompleted += (sender, e) =>
+					{
+						if (e.Error != null)
+							MessageBox.Show($"Файл {Path.GetFileName(saveFileDialog.FileName)} не вдалося завантажити");
+						else
+							MessageBox.Show($"Файл {Path.GetFileName(saveFileDialog.FileName)} завантажено");
+					};
+					client.DownloadFileAsync(new System.Uri(axWindowsMediaPlayer1.URL), saveFileDialog.FileName);
+				}
+			}
+		}
+
 		public void DeInitVideoPlayer()
 		{
 			label1.Text = "Спочатку оберіть відео в одній з інших вкладок";
 			splitContainer1.Enabled = false;
 			axWindowsMediaPlayer1.URL = "";
-			if (currentVideoId != -1)
-				File.Delete(getTempFilePlaceById(currentVideoId));
 			currentVideoId = -1;
 		}
 
-		string getTempFilePlaceById(int id) => Path.GetTempPath() + "VideoSharingSystem_cache_" +
-			rand_number.ToString() + "_" + id.ToString() + ".mp4";
 		public void LoadsComments()
 		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string loginUrl = $"{url_host}/video/comments/{currentVideoId}";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var commentsResult = JsonSerializer.Deserialize<List<CommentInfo>>(responseBody);
+
+						{
+							foreach (var el in commentElements)
+								el.Deatach();
+							commentElements.Clear();
+
+							foreach (var item in commentsResult)
+								commentElements.Add(new CommentElement(flowLayoutPanel3, this, item.id, item.user_id, item.user_login, item.text));
+						}
+
+						splitContainer1.Enabled = true;
+
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+
 			//using (SqlConnection connection = new SqlConnection(connectionString))
 			//{
 			//	SqlCommand command = new SqlCommand(
@@ -218,8 +293,49 @@ namespace VideoSharingSystem
 		}
 		public void AddComment(string comment)
 		{
-			if (currentUserId == -1 || currentVideoId == -1)
+			if (currentVideoId == -1)
 				return;
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string loginUrl = $"{url_host}/video/comments/{currentVideoId}";
+				var loginData = new { message = comment };
+				string json = JsonSerializer.Serialize(loginData);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(loginUrl, content).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
+
+						if (loginResult != null || loginResult.message == "success")
+						{
+							LoadsComments();
+						}
+						else
+						{
+							MessageBox.Show("Невірний логін або пароль: " + loginResult.message);
+						}
+
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 			//using (SqlConnection connection = new SqlConnection(connectionString))
 			//{
 			//	SqlCommand command = new SqlCommand("INSERT INTO Comments (IdUser, IdVideo, TextComment, Date) VALUES(@IdUser, @IdVideo, @TextComment, GETDATE())", connection);

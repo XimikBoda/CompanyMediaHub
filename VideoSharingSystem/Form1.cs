@@ -62,7 +62,7 @@ namespace VideoSharingSystem
 			InitHistory();
 			GetTags();
 
-			InitVideoPlayer(20);
+			InitVideoPlayer(41);
 		}
 
 		private void GetTags()
@@ -180,20 +180,7 @@ namespace VideoSharingSystem
 			InitProfileViewer(myUserId);
 		}
 
-		private void button3_Click(object sender, EventArgs e)
-		{
-			SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-			saveFileDialog.Filter = "Video file (*.mp4, *.avi)|*.mp4;*.avi|All files (*.*)|*.*";
-			saveFileDialog.FilterIndex = 0;
-			saveFileDialog.RestoreDirectory = true;
-			saveFileDialog.FileName = label1.Text + ".mp4";
-
-			if (saveFileDialog.ShowDialog() == DialogResult.OK)
-			{
-				//File.Copy(getTempFilePlaceById(currentVideoId), saveFileDialog.FileName);
-			}
-		}
+		
 
 		private void label12_Click(object sender, EventArgs e)
 		{
