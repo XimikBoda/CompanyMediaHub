@@ -52,6 +52,7 @@ namespace VideoSharingSystem
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button10 = new System.Windows.Forms.Button();
 			this.label14 = new System.Windows.Forms.Label();
 			this.label13 = new System.Windows.Forms.Label();
@@ -76,7 +77,6 @@ namespace VideoSharingSystem
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button5 = new System.Windows.Forms.Button();
-			this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
 			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
@@ -123,7 +123,7 @@ namespace VideoSharingSystem
 			tabPage1.Location = new System.Drawing.Point(4, 22);
 			tabPage1.Name = "tabPage1";
 			tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			tabPage1.Size = new System.Drawing.Size(792, 497);
+			tabPage1.Size = new System.Drawing.Size(792, 506);
 			tabPage1.TabIndex = 0;
 			tabPage1.Text = "Перегляд профілю";
 			tabPage1.UseVisualStyleBackColor = true;
@@ -150,8 +150,8 @@ namespace VideoSharingSystem
 			// splitContainer5.Panel2
 			// 
 			this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-			this.splitContainer5.Size = new System.Drawing.Size(786, 491);
-			this.splitContainer5.SplitterDistance = 134;
+			this.splitContainer5.Size = new System.Drawing.Size(786, 500);
+			this.splitContainer5.SplitterDistance = 136;
 			this.splitContainer5.TabIndex = 0;
 			// 
 			// button9
@@ -172,7 +172,7 @@ namespace VideoSharingSystem
 			this.button8.Name = "button8";
 			this.button8.Size = new System.Drawing.Size(146, 24);
 			this.button8.TabIndex = 2;
-			this.button8.Text = "Завантажити відеозапис";
+			this.button8.Text = "Завантажити медіафайл";
 			this.button8.UseVisualStyleBackColor = true;
 			this.button8.Click += new System.EventHandler(this.button8_Click);
 			// 
@@ -191,9 +191,9 @@ namespace VideoSharingSystem
 			this.label9.AutoSize = true;
 			this.label9.Location = new System.Drawing.Point(16, 113);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(145, 13);
+			this.label9.Size = new System.Drawing.Size(111, 13);
 			this.label9.TabIndex = 4;
-			this.label9.Text = "Завантаженні відеозаписи:";
+			this.label9.Text = "Завантаженні медія:";
 			this.label9.Click += new System.EventHandler(this.label9_Click);
 			// 
 			// button6
@@ -230,9 +230,10 @@ namespace VideoSharingSystem
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label2.Location = new System.Drawing.Point(15, 10);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(76, 25);
+			this.label2.Size = new System.Drawing.Size(135, 25);
 			this.label2.TabIndex = 0;
-			this.label2.Text = "label2";
+			this.label2.Text = "Компанія А";
+			this.label2.Click += new System.EventHandler(this.label2_Click);
 			// 
 			// splitContainer6
 			// 
@@ -247,7 +248,7 @@ namespace VideoSharingSystem
 			// splitContainer6.Panel2
 			// 
 			this.splitContainer6.Panel2.Controls.Add(this.flowLayoutPanel2);
-			this.splitContainer6.Size = new System.Drawing.Size(786, 353);
+			this.splitContainer6.Size = new System.Drawing.Size(786, 360);
 			this.splitContainer6.SplitterDistance = 527;
 			this.splitContainer6.TabIndex = 0;
 			this.splitContainer6.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer6_SplitterMoved);
@@ -260,7 +261,7 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(527, 353);
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(527, 360);
 			this.flowLayoutPanel1.TabIndex = 0;
 			this.flowLayoutPanel1.WrapContents = false;
 			// 
@@ -311,7 +312,7 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-			this.flowLayoutPanel2.Size = new System.Drawing.Size(255, 353);
+			this.flowLayoutPanel2.Size = new System.Drawing.Size(255, 360);
 			this.flowLayoutPanel2.TabIndex = 0;
 			// 
 			// panel2
@@ -343,7 +344,7 @@ namespace VideoSharingSystem
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(800, 523);
+			this.tabControl1.Size = new System.Drawing.Size(800, 532);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage3
@@ -351,7 +352,7 @@ namespace VideoSharingSystem
 			this.tabPage3.Controls.Add(this.splitContainer1);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(792, 497);
+			this.tabPage3.Size = new System.Drawing.Size(792, 506);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Перегляд відео";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -379,14 +380,23 @@ namespace VideoSharingSystem
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-			this.splitContainer1.Size = new System.Drawing.Size(792, 497);
+			this.splitContainer1.Size = new System.Drawing.Size(792, 506);
 			this.splitContainer1.SplitterDistance = 528;
 			this.splitContainer1.TabIndex = 0;
+			// 
+			// flowLayoutPanel7
+			// 
+			this.flowLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.flowLayoutPanel7.AutoScroll = true;
+			this.flowLayoutPanel7.Location = new System.Drawing.Point(11, 427);
+			this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+			this.flowLayoutPanel7.Size = new System.Drawing.Size(420, 37);
+			this.flowLayoutPanel7.TabIndex = 9;
 			// 
 			// button10
 			// 
 			this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button10.Location = new System.Drawing.Point(437, 437);
+			this.button10.Location = new System.Drawing.Point(437, 446);
 			this.button10.Name = "button10";
 			this.button10.Size = new System.Drawing.Size(88, 23);
 			this.button10.TabIndex = 8;
@@ -401,7 +411,7 @@ namespace VideoSharingSystem
 			this.label14.AutoSize = true;
 			this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label14.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.label14.Location = new System.Drawing.Point(8, 476);
+			this.label14.Location = new System.Drawing.Point(8, 485);
 			this.label14.Name = "label14";
 			this.label14.Size = new System.Drawing.Size(104, 13);
 			this.label14.TabIndex = 7;
@@ -414,7 +424,7 @@ namespace VideoSharingSystem
 			this.label13.AutoSize = true;
 			this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label13.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.label13.Location = new System.Drawing.Point(8, 458);
+			this.label13.Location = new System.Drawing.Point(8, 467);
 			this.label13.Name = "label13";
 			this.label13.Size = new System.Drawing.Size(117, 13);
 			this.label13.TabIndex = 6;
@@ -427,7 +437,7 @@ namespace VideoSharingSystem
 			this.label12.AutoSize = true;
 			this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label12.ForeColor = System.Drawing.SystemColors.HotTrack;
-			this.label12.Location = new System.Drawing.Point(8, 408);
+			this.label12.Location = new System.Drawing.Point(8, 411);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(48, 13);
 			this.label12.TabIndex = 5;
@@ -449,7 +459,7 @@ namespace VideoSharingSystem
 			// button3
 			// 
 			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button3.Location = new System.Drawing.Point(437, 466);
+			this.button3.Location = new System.Drawing.Point(437, 475);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(88, 23);
 			this.button3.TabIndex = 2;
@@ -460,7 +470,7 @@ namespace VideoSharingSystem
 			// button2
 			// 
 			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button2.Location = new System.Drawing.Point(330, 466);
+			this.button2.Location = new System.Drawing.Point(330, 475);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(101, 23);
 			this.button2.TabIndex = 1;
@@ -471,7 +481,7 @@ namespace VideoSharingSystem
 			// button1
 			// 
 			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button1.Location = new System.Drawing.Point(223, 466);
+			this.button1.Location = new System.Drawing.Point(223, 475);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(101, 23);
 			this.button1.TabIndex = 0;
@@ -493,8 +503,8 @@ namespace VideoSharingSystem
 			// splitContainer3.Panel2
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.splitContainer2);
-			this.splitContainer3.Size = new System.Drawing.Size(260, 497);
-			this.splitContainer3.SplitterDistance = 99;
+			this.splitContainer3.Size = new System.Drawing.Size(260, 506);
+			this.splitContainer3.SplitterDistance = 100;
 			this.splitContainer3.TabIndex = 0;
 			// 
 			// richTextBox1
@@ -503,7 +513,7 @@ namespace VideoSharingSystem
 			this.richTextBox1.Location = new System.Drawing.Point(0, 0);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
-			this.richTextBox1.Size = new System.Drawing.Size(260, 99);
+			this.richTextBox1.Size = new System.Drawing.Size(260, 100);
 			this.richTextBox1.TabIndex = 0;
 			this.richTextBox1.Text = "";
 			// 
@@ -521,8 +531,8 @@ namespace VideoSharingSystem
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-			this.splitContainer2.Size = new System.Drawing.Size(260, 394);
-			this.splitContainer2.SplitterDistance = 355;
+			this.splitContainer2.Size = new System.Drawing.Size(260, 402);
+			this.splitContainer2.SplitterDistance = 362;
 			this.splitContainer2.TabIndex = 0;
 			// 
 			// flowLayoutPanel3
@@ -533,7 +543,7 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 0);
 			this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-			this.flowLayoutPanel3.Size = new System.Drawing.Size(260, 355);
+			this.flowLayoutPanel3.Size = new System.Drawing.Size(260, 362);
 			this.flowLayoutPanel3.TabIndex = 0;
 			this.flowLayoutPanel3.WrapContents = false;
 			// 
@@ -581,7 +591,7 @@ namespace VideoSharingSystem
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.button4);
-			this.splitContainer4.Size = new System.Drawing.Size(260, 35);
+			this.splitContainer4.Size = new System.Drawing.Size(260, 36);
 			this.splitContainer4.SplitterDistance = 177;
 			this.splitContainer4.TabIndex = 0;
 			// 
@@ -591,7 +601,7 @@ namespace VideoSharingSystem
 			this.richTextBox2.Location = new System.Drawing.Point(0, 0);
 			this.richTextBox2.MaxLength = 500;
 			this.richTextBox2.Name = "richTextBox2";
-			this.richTextBox2.Size = new System.Drawing.Size(177, 35);
+			this.richTextBox2.Size = new System.Drawing.Size(177, 36);
 			this.richTextBox2.TabIndex = 0;
 			this.richTextBox2.Text = "";
 			this.richTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button4_Enter);
@@ -602,7 +612,7 @@ namespace VideoSharingSystem
 			this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.button4.Location = new System.Drawing.Point(0, 0);
 			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(79, 35);
+			this.button4.Size = new System.Drawing.Size(79, 36);
 			this.button4.TabIndex = 0;
 			this.button4.Text = "Відправити";
 			this.button4.UseVisualStyleBackColor = true;
@@ -614,7 +624,7 @@ namespace VideoSharingSystem
 			this.tabPage4.Controls.Add(this.flowLayoutPanel5);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(792, 497);
+			this.tabPage4.Size = new System.Drawing.Size(792, 506);
 			this.tabPage4.TabIndex = 3;
 			this.tabPage4.Text = "Пошук";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -679,16 +689,6 @@ namespace VideoSharingSystem
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
-			// flowLayoutPanel7
-			// 
-			this.flowLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.flowLayoutPanel7.Location = new System.Drawing.Point(11, 425);
-			this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-			this.flowLayoutPanel7.Size = new System.Drawing.Size(420, 30);
-			this.flowLayoutPanel7.TabIndex = 9;
-			// 
 			// axWindowsMediaPlayer1
 			// 
 			this.axWindowsMediaPlayer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -698,7 +698,7 @@ namespace VideoSharingSystem
 			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
 			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
 			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(526, 389);
+			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(526, 388);
 			this.axWindowsMediaPlayer1.TabIndex = 3;
 			this.axWindowsMediaPlayer1.Enter += new System.EventHandler(this.axWindowsMediaPlayer1_Enter);
 			// 
@@ -706,7 +706,7 @@ namespace VideoSharingSystem
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 523);
+			this.ClientSize = new System.Drawing.Size(800, 532);
 			this.Controls.Add(this.button5);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "Form1";

@@ -8,10 +8,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static VideoSharingSystem.Form1;
 
@@ -52,37 +55,58 @@ namespace VideoSharingSystem
 			}
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+
+		private async void button3_Click(object sender, EventArgs e)
 		{
 			if (_mainForm.currentUserId == -1)
 				return;
 
-			using (HttpClient client = new HttpClient())
+
+			using (var filestream = File.OpenRead(_selectedFileName))
 			{
-				client.DefaultRequestHeaders.Authorization = _mainForm.bearer_token;
+				var progress = new System.Net.Http.Handlers.ProgressMessageHandler();
 
-				List<int> tags = new List<int>();
-
-				foreach (object itemChecked in checkedListBox1.CheckedItems)
+				progress.HttpSendProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
 				{
-					Tag tag = (Tag)itemChecked;
-					tags.Add(tag.id);
-				}
+					int progressPercentage = (int)(e.BytesTransferred * 100 / filestream.Length);
+					this.Invoke(new MethodInvoker(delegate ()
+					{
+						progressBar1.Value = progressPercentage;
+					}));
+				};
 
-				var videoInfo= new { name = textBox1.Text, description = richTextBox1.Text, idCompany = 1, tags = tags };
-				string json = JsonSerializer.Serialize(videoInfo);
-				string url = $"http://25.18.114.207:8080/video/upload";
 
-				using (var filestream = File.OpenRead(_selectedFileName))
+				using (HttpClient client = HttpClientFactory.Create(progress))
 				{
+					client.DefaultRequestHeaders.Authorization = _mainForm.bearer_token;
+
+
+					List<int> tags = new List<int>();
+					foreach (object itemChecked in checkedListBox1.CheckedItems)
+					{
+						Tag tag = (Tag)itemChecked;
+						tags.Add(tag.id);
+					}
+
+					var videoInfo = new { name = textBox1.Text, description = richTextBox1.Text, idCompany = 1, tags = tags };
+					string json = JsonSerializer.Serialize(videoInfo);
+					string url = $"http://25.18.114.207:8080/video/upload";
 
 					HttpContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 					HttpContent fileStreamContent = new StreamContent(filestream);
 					using (var formData = new MultipartFormDataContent())
 					{
+
 						formData.Add(stringContent);
 						formData.Add(fileStreamContent, "file", Path.GetFileName(_selectedFileName));
-						var response = client.PostAsync(url, formData).Result;
+
+						textBox1.Enabled = false;
+						button1.Enabled = false;
+						button3.Enabled = false;
+						richTextBox1.Enabled = false;
+						checkedListBox1.Enabled = false;
+						var response = await client.PostAsync(url, formData);
+
 						if (response.IsSuccessStatusCode)
 						{
 							string responseBody = response.Content.ReadAsStringAsync().Result;
@@ -91,16 +115,21 @@ namespace VideoSharingSystem
 
 							MessageBox.Show(loginResult.message);
 
+							Close();
 						}
 						else
 						{
-							MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+							MessageBox.Show("Помилка при виконанні запита: " + response.StatusCode);
 						}
+						textBox1.Enabled = true;
+						button1.Enabled = true;
+						button3.Enabled = true;
+						richTextBox1.Enabled = true;
+						checkedListBox1.Enabled = true;
 					}
 				}
-				Close();
 
-				
+
 			}
 		}
 

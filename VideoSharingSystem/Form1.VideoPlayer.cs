@@ -13,6 +13,7 @@ using System.Text.Json;
 using AxWMPLib;
 using System.Security.Policy;
 using System.Net;
+using System.Xml.Linq;
 
 namespace VideoSharingSystem
 {
@@ -24,6 +25,11 @@ namespace VideoSharingSystem
 			public string description { get; set; }
 			public string temporary_link { get; set; }
 			public List<Tag> tags { get; set; }
+
+
+			public int likes { get; set; }
+			public int dislikes { get; set; }
+			public int user_rating { get; set; }
 		}
 
 		public class CommentInfo
@@ -32,6 +38,21 @@ namespace VideoSharingSystem
 			public int user_id { get; set; }
 			public string text { get; set; }
 			public string user_login { get; set; }
+		}
+		public class NewCommentnfo
+		{
+			public CommentInfo comment { get; set; }
+			public string message { get; set; }
+
+		}
+
+		public class RaringInfo
+		{
+			public int likes { get; set; }
+			public int dislikes { get; set; }
+			public int user_rating { get; set; }
+			public string message { get; set; }
+
 		}
 
 		public class CommentsInfo
@@ -43,8 +64,6 @@ namespace VideoSharingSystem
 		public int currentVideoId = -1;
 		int currentVideoUserId = -1;
 		int myRateId = 0;
-
-		int rand_number = 0;
 
 		List<CommentElement> commentElements;
 		List<TagElement> tagElements = new List<TagElement>();
@@ -89,6 +108,14 @@ namespace VideoSharingSystem
 						}
 
 						splitContainer1.Enabled = true;
+
+						myRateId = linkResult.user_rating;
+						//label13.Text = $"Кількість переглядів: {views} ({uniqueviews} унікальних)";
+						label14.Text = $"Рейтинг:  {linkResult.likes - linkResult.dislikes} (+{linkResult.likes}/-{linkResult.dislikes})";
+						//label13.Visible = true;
+						label14.Visible = true;
+
+						UpdateLikeButtons();
 
 					}
 					else
@@ -270,26 +297,46 @@ namespace VideoSharingSystem
 
 		public void DeleteComment(int id)
 		{
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand("Delete FROM Comments WHERE IdComment = @IdComment", connection);
-			//	command.Parameters.Add("@IdComment", SqlDbType.Int);
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-			//	command.Parameters["@IdComment"].Value = id;
+				string loginUrl = $"{url_host}/comments/{id}";
+				//var loginData = new { message = comment };
+				//string json = JsonSerializer.Serialize(loginData);
+				//var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-			//	try
-			//	{
-			//		connection.Open();
-			//		command.ExecuteNonQuery();
-			//		LoadsComments();
-			//		MessageBox.Show("Коментар видаленно");
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show("Коментар не вдалося видалити" + ex.Message);
-			//	}
-			//}
+				try
+				{
+					HttpResponseMessage response = client.DeleteAsync(loginUrl).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var loginResult = JsonSerializer.Deserialize<GeneralResult>(responseBody);
+
+						if (loginResult != null)
+						{
+							LoadsComments();
+						}
+						else
+						{
+							MessageBox.Show(loginResult.message);
+						}
+
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 		public void AddComment(string comment)
 		{
@@ -313,15 +360,17 @@ namespace VideoSharingSystem
 					{
 						string responseBody = response.Content.ReadAsStringAsync().Result;
 
-						var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
+						var commentResult = JsonSerializer.Deserialize<NewCommentnfo>(responseBody);
 
-						if (loginResult != null || loginResult.message == "success")
+						if (commentResult != null)
 						{
+							var ncomment = commentResult.comment;
+							commentElements.Add(new CommentElement(flowLayoutPanel3, this, ncomment.id, ncomment.user_id, ncomment.user_login, ncomment.text));
 							LoadsComments();
 						}
 						else
 						{
-							MessageBox.Show("Невірний логін або пароль: " + loginResult.message);
+							MessageBox.Show(commentResult.message);
 						}
 
 					}
@@ -336,123 +385,92 @@ namespace VideoSharingSystem
 					MessageBox.Show(ex.Message);
 				}
 			}
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand("INSERT INTO Comments (IdUser, IdVideo, TextComment, Date) VALUES(@IdUser, @IdVideo, @TextComment, GETDATE())", connection);
-			//	command.Parameters.Add("@IdUser", SqlDbType.Int);
-			//	command.Parameters.Add("@IdVideo", SqlDbType.Int);
-			//	command.Parameters.Add("@TextComment", SqlDbType.VarChar, 500);
-
-			//	command.Parameters["@IdUser"].Value = myUserId;
-			//	command.Parameters["@IdVideo"].Value = currentVideoId;
-			//	command.Parameters["@TextComment"].Value = comment;
-			//	try
-			//	{
-			//		connection.Open();
-			//		command.ExecuteNonQuery();
-			//		LoadsComments();
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
 		}
-		public void AddRatings(int IdRatingType)
+		public async void AddRatings(int IdRatingType)
 		{
 			if (currentUserId == -1 || currentVideoId == -1)
 				return;
 			if (myRateId == IdRatingType)
 				IdRatingType = 0;
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand("Delete FROM Ratings WHERE IdUser = @IdUser AND IdVideo = @IdVideo", connection);
-			//	command.Parameters.Add("@IdUser", SqlDbType.Int);
-			//	command.Parameters.Add("@IdVideo", SqlDbType.Int);
-			//	command.Parameters.Add("@IdRatingType", SqlDbType.Int);
 
-			//	command.Parameters["@IdUser"].Value = myUserId;
-			//	command.Parameters["@IdVideo"].Value = currentVideoId;
-			//	command.Parameters["@IdRatingType"].Value = IdRatingType;
-			//	try
-			//	{
-			//		connection.Open();
-			//		command.ExecuteNonQuery();
-			//		command.CommandText = "INSERT INTO Ratings (IdUser, IdVideo, IdRatingType, RatingTime) VALUES (@IdUser, @IdVideo, @IdRatingType, GETDATE())";
-			//		if (IdRatingType != 0)
-			//			command.ExecuteNonQuery();
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
-			LoadsRatingAndVievers();
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string loginUrl = $"{url_host}/video/rating/{currentVideoId}";
+				var loginData = new { rating = IdRatingType };
+				string json = JsonSerializer.Serialize(loginData);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+				button1.Enabled = false;
+				button2.Enabled = false;
+
+				try
+				{
+					HttpResponseMessage response = await client.PostAsync(loginUrl, content);
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var ratingResult = JsonSerializer.Deserialize<RaringInfo>(responseBody);
+
+						if (ratingResult != null )
+						{
+							myRateId = ratingResult.user_rating;
+							label14.Text = $"Рейтинг:  {ratingResult.likes - ratingResult.dislikes} (+{ratingResult.likes}/-{ratingResult.dislikes})";
+							label14.Visible = true;
+							UpdateLikeButtons();
+						}
+						else
+						{
+							//MessageBox.Show(ratingResult.message);
+						}
+
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+
+				button1.Enabled = true;
+				button2.Enabled = true;
+			}
 		}
-		public void LoadsRatingAndVievers()
+
+
+		public void UpdateLikeButtons() {
+			switch (myRateId)
+			{
+				case -1:
+					this.button1.BackColor = System.Drawing.Color.Transparent;
+					this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+					break;
+				case 0:
+					this.button1.BackColor = System.Drawing.Color.Transparent;
+					this.button2.BackColor = System.Drawing.Color.Transparent;
+					break;
+				case 1:
+					this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+					this.button2.BackColor = System.Drawing.Color.Transparent;
+					break;
+			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
 		{
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand(
-			//		"SELECT * FROM GetRatingAndViewes WHERE IdVideo = @IdVideo", connection);
-			//	command.Parameters.AddWithValue("@IdVideo", currentVideoId);
-			//	command.Parameters.AddWithValue("@IdUser", myUserId);
+			AddRatings(1);
+		}
 
-			//	try
-			//	{
-			//		connection.Open();
-			//		{
-			//			SqlDataReader reader = command.ExecuteReader();
-			//			if (reader.Read())
-			//			{
-			//				int views = Convert.ToInt32(reader[3].ToString());
-			//				int uniqueviews = Convert.ToInt32(reader[4].ToString());
-			//				int likes = Convert.ToInt32(reader[1].ToString());
-			//				int dislikes = Convert.ToInt32(reader[2].ToString());
-
-			//				label13.Text = $"Кількість переглядів: {views} ({uniqueviews} унікальних)";
-			//				label14.Text = $"Рейтинг:  {likes - dislikes} (+{likes}/-{dislikes})";
-			//				label13.Visible = true;
-			//				label14.Visible = true;
-			//			}
-			//			reader.Close();
-			//		}
-			//		{
-			//			command.CommandText = "SELECT IdRatingType FROM Ratings WHERE IdVideo = @IdVideo AND IdUser = @IdUser";
-			//			SqlDataReader reader = command.ExecuteReader();
-			//			if (reader.Read())
-			//			{
-			//				myRateId = Convert.ToInt32(reader[0].ToString());
-			//			}
-			//			else
-			//				myRateId = 0;
-			//		}
-			//		{
-			//			switch (myRateId)
-			//			{
-			//				case 0:
-			//					this.button1.BackColor = System.Drawing.Color.Transparent;
-			//					this.button2.BackColor = System.Drawing.Color.Transparent;
-			//					break;
-			//				case 1:
-			//					this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			//					this.button2.BackColor = System.Drawing.Color.Transparent;
-			//					break;
-			//				case 2:
-			//					this.button1.BackColor = System.Drawing.Color.Transparent;
-			//					this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-			//					break;
-			//			}
-			//		}
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
+		private void button2_Click(object sender, EventArgs e)
+		{
+			AddRatings(-1);
 		}
 
 		~Form1()

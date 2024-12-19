@@ -1,6 +1,29 @@
 ﻿
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace VideoSharingSystem
 {
+	//public class TransparentBackgroundTextBox : TextBox
+	//{
+	//	public TransparentBackgroundTextBox()
+	//	{
+
+	//		SetStyle(ControlStyles.SupportsTransparentBackColor |
+	//				 ControlStyles.OptimizedDoubleBuffer |
+	//				 ControlStyles.AllPaintingInWmPaint |
+	//				 ControlStyles.ResizeRedraw |
+	//				 ControlStyles.UserPaint, true);
+	//		BackColor = Color.Transparent;
+	//	}
+
+	//	public sealed override Color BackColor
+	//	{
+	//		get => base.BackColor;
+	//		set => base.BackColor = value;
+	//	}
+	//}
+
 	partial class AddVideo
 	{
 		/// <summary>
@@ -42,6 +65,7 @@ namespace VideoSharingSystem
 			this.button3 = new System.Windows.Forms.Button();
 			this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
 			this.label4 = new System.Windows.Forms.Label();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -69,7 +93,7 @@ namespace VideoSharingSystem
 			this.textBox1.Location = new System.Drawing.Point(63, 14);
 			this.textBox1.MaxLength = 40;
 			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(262, 20);
+			this.textBox1.Size = new System.Drawing.Size(427, 20);
 			this.textBox1.TabIndex = 2;
 			// 
 			// richTextBox1
@@ -150,6 +174,13 @@ namespace VideoSharingSystem
 			this.label4.Text = "Теги:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
 			// 
+			// progressBar1
+			// 
+			this.progressBar1.Location = new System.Drawing.Point(63, 32);
+			this.progressBar1.Name = "progressBar1";
+			this.progressBar1.Size = new System.Drawing.Size(427, 11);
+			this.progressBar1.TabIndex = 11;
+			// 
 			// AddVideo
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -166,6 +197,7 @@ namespace VideoSharingSystem
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.progressBar1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -192,5 +224,6 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.CheckedListBox checkedListBox1;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ProgressBar progressBar1;
 	}
 }

@@ -24,6 +24,12 @@ namespace VideoSharingSystem
 	{
 		public string message { get; set; }
 		public string token { get; set; }
+		public int user_id { get; set; }
+	}
+
+	public class GeneralResult
+	{
+		public string message { get; set; }
 	}
 
 	public partial class LoginForm : Form
@@ -77,7 +83,7 @@ namespace VideoSharingSystem
 						if (loginResult != null || loginResult.message == "success")
 						{
 							Visible = false;
-							var mainFrorm = new Form1(loginResult.token, url_host);
+							var mainFrorm = new Form1(loginResult.token, url_host, loginResult.user_id);
 							mainFrorm.ShowDialog();
 							mainFrorm.Dispose();
 							Visible = true;

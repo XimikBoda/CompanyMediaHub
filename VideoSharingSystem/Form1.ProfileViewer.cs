@@ -17,10 +17,10 @@ namespace VideoSharingSystem
 	{
 		public class VideoInfo
 		{
-			public string id { get; set; }
+			public int id { get; set; }
 			public string name { get; set; }
 			public string description { get; set; }
-			public DateTime uploadTime { get; set; }
+			public DateTime upload_time { get; set; }
 		}
 		public class VideosInfo
 		{
@@ -39,48 +39,40 @@ namespace VideoSharingSystem
 		{
 			//currentUserId = id;
 
-			//using (HttpClient client = new HttpClient())
-			//{
-			//	string loginUrl = $"http://25.18.114.207:8080/video/get?v={0}";
-			//	//var loginData = new { username = textBox1.Text, password = textBox2.Text };
-			//	//string json = JsonSerializer.Serialize(loginData);
-			//	//var content = new StringContent(json, Encoding.UTF8, "application/json");
+			using (HttpClient client = new HttpClient())
+			{
+				string loginUrl = $"http://25.18.114.207:8080/video";
 
-			//	try
-			//	{
-			//		HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
 
-			//		if (response.IsSuccessStatusCode)
-			//		{
-			//			string responseBody = response.Content.ReadAsStringAsync().Result;
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
 
-			//			var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
+						var videosResult = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
 
-			//			if (loginResult != null || loginResult.message == "success")
-			//			{
-			//				Visible = false;
-			//				var mainFrorm = new Form1(loginResult.token);
-			//				mainFrorm.ShowDialog();
-			//				mainFrorm.Dispose();
-			//				Visible = true;
-			//			}
-			//			else
-			//			{
-			//				MessageBox.Show("Невірний логін або пароль: " + loginResult.message);
-			//			}
+						foreach (var el in videoElements)
+							el.Deatach();
+						videoElements.Clear();
 
-			//		}
-			//		else
-			//		{
-			//			MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
-			//		}
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
+						foreach (var item in videosResult)
+							videoElements.Add(new VideoElement(flowLayoutPanel1, this,
+								item.id, item.name, item.description, item.upload_time.ToString()));
+
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 
 
 

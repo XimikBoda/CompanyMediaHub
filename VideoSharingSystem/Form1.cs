@@ -30,7 +30,7 @@ namespace VideoSharingSystem
 			public List<Tag> tags { get; set; }
 		}
 
-		public int myUserId = 1;
+		public int myUserId = -1;
 		public bool isAdmin = false;
 
 		public AuthenticationHeaderValue bearer_token;
@@ -38,12 +38,12 @@ namespace VideoSharingSystem
 
 		public Tags tags;
 
-		public Form1(string token, string url_host)
+		public Form1(string token, string url_host, int user_id)
 		{
 			bearer_token = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			this.url_host = url_host;
 
-			myUserId = 0;//UserId;
+			myUserId = user_id;
 			this.isAdmin = false;//isAdmin;
 
 			commentElements = new();
@@ -53,16 +53,13 @@ namespace VideoSharingSystem
 			findVideoElements = new();
 			findUserElement = new();
 
-			{
-				Random rnd = new();
-				rand_number = rnd.Next(0, 100000);
-			}
+
 			InitializeComponent();
 			InitProfileViewer(myUserId);
 			InitHistory();
 			GetTags();
 
-			InitVideoPlayer(41);
+			//InitVideoPlayer(41);
 		}
 
 		private void GetTags()
@@ -163,16 +160,6 @@ namespace VideoSharingSystem
 			}
 		}
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-			AddRatings(1);
-		}
-
-		private void button2_Click(object sender, EventArgs e)
-		{
-			AddRatings(2);
-		}
-
 		private void button8_Click(object sender, EventArgs e)
 		{
 			AddVideo f = new(this);
@@ -211,6 +198,11 @@ namespace VideoSharingSystem
 		}
 
 		private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label2_Click(object sender, EventArgs e)
 		{
 
 		}
