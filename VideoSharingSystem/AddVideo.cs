@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -30,10 +31,10 @@ namespace VideoSharingSystem
 			InitializeComponent();
 
 			foreach (var item in _mainForm.tags.tags)
-				checkedListBox1.Items.Add(item);
+				TagsCheckedListBox.Items.Add(item);
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void selectButton_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -45,18 +46,18 @@ namespace VideoSharingSystem
 			{
 				_selectedFileName = openFileDialog.FileName;
 
-				if (textBox1.Text.Length == 0)
-					textBox1.Text = Path.GetFileName(_selectedFileName);
+				if (nameTextBox.Text.Length == 0)
+					nameTextBox.Text = Path.GetFileName(_selectedFileName);
 
 				axWindowsMediaPlayer1.Visible = true;
 				axWindowsMediaPlayer1.URL = _selectedFileName;
 
-				button3.Enabled = true;
+				UploadButton.Enabled = true;
 			}
 		}
 
 
-		private async void button3_Click(object sender, EventArgs e)
+		private async void UploadButton_Click(object sender, EventArgs e)
 		{
 			if (_mainForm.currentUserId == -1)
 				return;
@@ -82,13 +83,13 @@ namespace VideoSharingSystem
 
 
 					List<int> tags = new List<int>();
-					foreach (object itemChecked in checkedListBox1.CheckedItems)
+					foreach (object itemChecked in TagsCheckedListBox.CheckedItems)
 					{
 						Tag tag = (Tag)itemChecked;
 						tags.Add(tag.id);
 					}
 
-					var videoInfo = new { name = textBox1.Text, description = richTextBox1.Text, idCompany = 1, tags = tags };
+					var videoInfo = new { name = nameTextBox.Text, description = descriptionRichTextBox.Text, idCompany = 1, tags = tags };
 					string json = JsonSerializer.Serialize(videoInfo);
 					string url = $"http://25.18.114.207:8080/video/upload";
 
@@ -100,11 +101,11 @@ namespace VideoSharingSystem
 						formData.Add(stringContent);
 						formData.Add(fileStreamContent, "file", Path.GetFileName(_selectedFileName));
 
-						textBox1.Enabled = false;
-						button1.Enabled = false;
-						button3.Enabled = false;
-						richTextBox1.Enabled = false;
-						checkedListBox1.Enabled = false;
+						nameTextBox.Enabled = false;
+						selectButton.Enabled = false;
+						UploadButton.Enabled = false;
+						descriptionRichTextBox.Enabled = false;
+						TagsCheckedListBox.Enabled = false;
 						var response = await client.PostAsync(url, formData);
 
 						if (response.IsSuccessStatusCode)
@@ -121,11 +122,11 @@ namespace VideoSharingSystem
 						{
 							MessageBox.Show("Помилка при виконанні запита: " + response.StatusCode);
 						}
-						textBox1.Enabled = true;
-						button1.Enabled = true;
-						button3.Enabled = true;
-						richTextBox1.Enabled = true;
-						checkedListBox1.Enabled = true;
+						nameTextBox.Enabled = true;
+						selectButton.Enabled = true;
+						UploadButton.Enabled = true;
+						descriptionRichTextBox.Enabled = true;
+						TagsCheckedListBox.Enabled = true;
 					}
 				}
 
@@ -133,7 +134,7 @@ namespace VideoSharingSystem
 			}
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void CancelButton_Click(object sender, EventArgs e)
 		{
 			axWindowsMediaPlayer1.close();
 			Close();
@@ -143,5 +144,37 @@ namespace VideoSharingSystem
 		{
 			axWindowsMediaPlayer1.close();
 		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			var wasPlaying = axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying;
+			if(wasPlaying)
+				axWindowsMediaPlayer1.Ctlcontrols.pause();
+
+			var old_size = axWindowsMediaPlayer1.Size;
+			axWindowsMediaPlayer1.Size = new Size(240, 240);
+
+			var old_mode = axWindowsMediaPlayer1.uiMode;
+			axWindowsMediaPlayer1.uiMode = "None";
+
+			Rectangle bounds = axWindowsMediaPlayer1.Bounds;
+			Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
+
+			using (Graphics g = Graphics.FromImage(bitmap))
+			{
+				// Capture the frame from the AxWindowsMediaPlayer control
+				g.CopyFromScreen(axWindowsMediaPlayer1.PointToScreen(Point.Empty), Point.Empty, bounds.Size);
+			}
+
+			pictureBox1.Image = bitmap;
+
+			axWindowsMediaPlayer1.Ctlenabled = true;
+			axWindowsMediaPlayer1.uiMode = old_mode;
+			axWindowsMediaPlayer1.Size = old_size;
+
+			if (wasPlaying)
+				axWindowsMediaPlayer1.Ctlcontrols.play();
+		}
+
 	}
 }
