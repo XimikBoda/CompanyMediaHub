@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Remoting.Messaging;
@@ -58,7 +59,7 @@ namespace VideoSharingSystem
 		public bool isSubscribedToCurrent = false;
 		public int currentCompanyId = 1;
 
-		public async void InitProfileViewer(int id)
+		public async Task InitProfileViewer(int id)
 		{
 			currentCompanyId = id;
 			using (HttpClient client = new HttpClient())
@@ -78,7 +79,7 @@ namespace VideoSharingSystem
 						var companyResult = JsonSerializer.Deserialize<CompanyInfo>(responseBody);
 
 						currentCompanyId = companyResult.id;
-						label2.Text = companyResult.name;
+						companyNameLabel.Text = companyResult.name;
 						richTextBox3.Text = companyResult.about;
 
 						SetSubscribeState(companyResult.is_subscribed, companyResult.subscribers);
@@ -95,6 +96,26 @@ namespace VideoSharingSystem
 					{
 						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
 					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string url = $"{url_host}/company/{currentCompanyId}/logo";
+
+				try
+				{
+					byte[] imageBytes = await client.GetByteArrayAsync(url);
+					using MemoryStream ms = new MemoryStream(imageBytes);
+					Image image = Image.FromStream(ms);
+					companyLogoPictureBox.Image = image;
 				}
 				catch (Exception ex)
 				{
@@ -125,11 +146,13 @@ namespace VideoSharingSystem
 							el.Deatach();
 						videoElements.Clear();
 
+						flowLayoutPanel1.ResumeLayout();
+
 						foreach (var item in videosResult)
 							videoElements.Add(new VideoElement(flowLayoutPanel1, this,
 								item.id, item.name, item.description, item.upload_time.ToString()));
 
-						flowLayoutPanel1.ResumeLayout();
+
 
 
 					}
@@ -194,17 +217,17 @@ namespace VideoSharingSystem
 			if (state)
 			{
 				isSubscribedToCurrent = true;
-				button6.Enabled = true;
-				button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-				button6.Text = "Підписаний";
+				subscribeButton.Enabled = true;
+				subscribeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+				subscribeButton.Text = "Підписаний";
 			}
 			else
 			{
 
 				isSubscribedToCurrent = false;
-				button6.Enabled = true;
-				button6.BackColor = Color.Transparent;
-				button6.Text = "Підписатися";
+				subscribeButton.Enabled = true;
+				subscribeButton.BackColor = Color.Transparent;
+				subscribeButton.Text = "Підписатися";
 			}
 		}
 
@@ -224,7 +247,7 @@ namespace VideoSharingSystem
 
 				try
 				{
-					button6.Enabled = false;
+					subscribeButton.Enabled = false;
 
 					HttpResponseMessage response = await client.PostAsync(loginUrl, null);
 
@@ -248,8 +271,9 @@ namespace VideoSharingSystem
 					Console.WriteLine(ex.Message);
 					MessageBox.Show(ex.Message);
 				}
-				button6.Enabled = true;
+				subscribeButton.Enabled = true;
 			}
 		}
+
 	}
 }

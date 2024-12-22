@@ -84,7 +84,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 				
-				string loginUrl = $"{url_host}/video/get/{id}";
+				string loginUrl = $"{url_host}/video/{id}/get";
 
 				try
 				{
@@ -119,6 +119,7 @@ namespace VideoSharingSystem
 
 						UpdateLikeButtons();
 
+						tabControl1.SelectedIndex = 1;
 					}
 					else
 					{
@@ -228,7 +229,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/comments/{currentVideoId}";
+				string loginUrl = $"{url_host}/video/{currentVideoId}/comments";
 
 				try
 				{
@@ -349,7 +350,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/comments/{currentVideoId}";
+				string loginUrl = $"{url_host}/video/{currentVideoId}/comments";
 				var loginData = new { message = comment };
 				string json = JsonSerializer.Serialize(loginData);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -399,7 +400,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/rating/{currentVideoId}";
+				string loginUrl = $"{url_host}/video/{currentVideoId}/rating";
 				var loginData = new { rating = IdRatingType };
 				string json = JsonSerializer.Serialize(loginData);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");

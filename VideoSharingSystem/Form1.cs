@@ -59,6 +59,7 @@ namespace VideoSharingSystem
 			InitHistory();
 			GetTags();
 			GetMySubscriptions();
+
 			InitProfileViewer(1);
 		}
 
@@ -115,7 +116,7 @@ namespace VideoSharingSystem
 		void UpdateSomeElementPositionOnProfile()
 		{
 			label10.Location = new Point(splitContainer6.SplitterDistance + 541 - 527, label10.Location.Y);
-			button8.Location = new Point(splitContainer6.SplitterDistance + 381 - 527, button8.Location.Y);
+			uploadButton.Location = new Point(splitContainer6.SplitterDistance + 381 - 527, uploadButton.Location.Y);
 		}
 
 		private void Form1_Resized(object sender, EventArgs e)
@@ -166,10 +167,9 @@ namespace VideoSharingSystem
 		{
 			AddVideo f = new(this);
 			f.ShowDialog(this);
-			InitProfileViewer(myUserId);
 		}
 
-		
+
 
 		private void label12_Click(object sender, EventArgs e)
 		{
@@ -205,6 +205,11 @@ namespace VideoSharingSystem
 		}
 
 		private void label2_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
 
 		}

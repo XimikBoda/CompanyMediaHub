@@ -59,7 +59,6 @@ namespace VideoSharingSystem
 			this.nameTextBox = new System.Windows.Forms.TextBox();
 			this.descriptionRichTextBox = new System.Windows.Forms.RichTextBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			this.selectButton = new System.Windows.Forms.Button();
 			this.CancelButton = new System.Windows.Forms.Button();
 			this.UploadButton = new System.Windows.Forms.Button();
@@ -70,8 +69,9 @@ namespace VideoSharingSystem
 			this.stopFrameButton = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.SelectImageButton = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
+			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -118,16 +118,6 @@ namespace VideoSharingSystem
 			this.label3.Size = new System.Drawing.Size(78, 13);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Оберіть файл:";
-			// 
-			// axWindowsMediaPlayer1
-			// 
-			this.axWindowsMediaPlayer1.Enabled = true;
-			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(490, 49);
-			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(249, 255);
-			this.axWindowsMediaPlayer1.TabIndex = 5;
-			this.axWindowsMediaPlayer1.Visible = false;
 			// 
 			// selectButton
 			// 
@@ -223,6 +213,17 @@ namespace VideoSharingSystem
 			this.SelectImageButton.TabIndex = 15;
 			this.SelectImageButton.Text = "Огляд";
 			this.SelectImageButton.UseVisualStyleBackColor = true;
+			this.SelectImageButton.Click += new System.EventHandler(this.SelectImageButton_Click);
+			// 
+			// axWindowsMediaPlayer1
+			// 
+			this.axWindowsMediaPlayer1.Enabled = true;
+			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(490, 49);
+			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(249, 255);
+			this.axWindowsMediaPlayer1.TabIndex = 5;
+			this.axWindowsMediaPlayer1.Visible = false;
 			// 
 			// AddVideo
 			// 
@@ -252,8 +253,8 @@ namespace VideoSharingSystem
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Завантажити відео";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddVideo_FormClosed);
-			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

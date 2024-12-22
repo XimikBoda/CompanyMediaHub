@@ -32,17 +32,19 @@ namespace VideoSharingSystem
 			System.Windows.Forms.TabPage tabPage1;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-			this.button9 = new System.Windows.Forms.Button();
-			this.button8 = new System.Windows.Forms.Button();
+			this.companyLogoPictureBox = new System.Windows.Forms.PictureBox();
+			this.companyEditButton = new System.Windows.Forms.Button();
+			this.uploadButton = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
-			this.button6 = new System.Windows.Forms.Button();
+			this.subscribeButton = new System.Windows.Forms.Button();
 			this.richTextBox3 = new System.Windows.Forms.RichTextBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
+			this.companyNameLabel = new System.Windows.Forms.Label();
 			this.splitContainer6 = new System.Windows.Forms.SplitContainer();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -78,18 +80,21 @@ namespace VideoSharingSystem
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button5 = new System.Windows.Forms.Button();
+			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
 			this.splitContainer5.Panel1.SuspendLayout();
 			this.splitContainer5.Panel2.SuspendLayout();
 			this.splitContainer5.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.companyLogoPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
 			this.splitContainer6.Panel1.SuspendLayout();
 			this.splitContainer6.Panel2.SuspendLayout();
 			this.splitContainer6.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -115,6 +120,7 @@ namespace VideoSharingSystem
 			this.splitContainer4.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.panel3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabPage1
@@ -137,14 +143,15 @@ namespace VideoSharingSystem
 			// 
 			// splitContainer5.Panel1
 			// 
-			this.splitContainer5.Panel1.Controls.Add(this.button9);
-			this.splitContainer5.Panel1.Controls.Add(this.button8);
+			this.splitContainer5.Panel1.Controls.Add(this.companyLogoPictureBox);
+			this.splitContainer5.Panel1.Controls.Add(this.companyEditButton);
+			this.splitContainer5.Panel1.Controls.Add(this.uploadButton);
 			this.splitContainer5.Panel1.Controls.Add(this.label10);
 			this.splitContainer5.Panel1.Controls.Add(this.label9);
-			this.splitContainer5.Panel1.Controls.Add(this.button6);
+			this.splitContainer5.Panel1.Controls.Add(this.subscribeButton);
 			this.splitContainer5.Panel1.Controls.Add(this.richTextBox3);
 			this.splitContainer5.Panel1.Controls.Add(this.label3);
-			this.splitContainer5.Panel1.Controls.Add(this.label2);
+			this.splitContainer5.Panel1.Controls.Add(this.companyNameLabel);
 			this.splitContainer5.Panel1MinSize = 125;
 			// 
 			// splitContainer5.Panel2
@@ -154,27 +161,37 @@ namespace VideoSharingSystem
 			this.splitContainer5.SplitterDistance = 136;
 			this.splitContainer5.TabIndex = 0;
 			// 
-			// button9
+			// companyLogoPictureBox
 			// 
-			this.button9.Location = new System.Drawing.Point(127, 82);
-			this.button9.Name = "button9";
-			this.button9.Size = new System.Drawing.Size(101, 23);
-			this.button9.TabIndex = 7;
-			this.button9.Text = "Редагувати";
-			this.button9.UseVisualStyleBackColor = true;
-			this.button9.Click += new System.EventHandler(this.button9_Click);
+			this.companyLogoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("companyLogoPictureBox.Image")));
+			this.companyLogoPictureBox.Location = new System.Drawing.Point(12, 11);
+			this.companyLogoPictureBox.Name = "companyLogoPictureBox";
+			this.companyLogoPictureBox.Size = new System.Drawing.Size(100, 100);
+			this.companyLogoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.companyLogoPictureBox.TabIndex = 8;
+			this.companyLogoPictureBox.TabStop = false;
 			// 
-			// button8
+			// companyEditButton
 			// 
-			this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button8.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.button8.Location = new System.Drawing.Point(381, 102);
-			this.button8.Name = "button8";
-			this.button8.Size = new System.Drawing.Size(146, 24);
-			this.button8.TabIndex = 2;
-			this.button8.Text = "Завантажити медіафайл";
-			this.button8.UseVisualStyleBackColor = true;
-			this.button8.Click += new System.EventHandler(this.button8_Click);
+			this.companyEditButton.Location = new System.Drawing.Point(225, 88);
+			this.companyEditButton.Name = "companyEditButton";
+			this.companyEditButton.Size = new System.Drawing.Size(101, 23);
+			this.companyEditButton.TabIndex = 7;
+			this.companyEditButton.Text = "Редагувати";
+			this.companyEditButton.UseVisualStyleBackColor = true;
+			this.companyEditButton.Click += new System.EventHandler(this.button9_Click);
+			// 
+			// uploadButton
+			// 
+			this.uploadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.uploadButton.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.uploadButton.Location = new System.Drawing.Point(381, 102);
+			this.uploadButton.Name = "uploadButton";
+			this.uploadButton.Size = new System.Drawing.Size(146, 24);
+			this.uploadButton.TabIndex = 2;
+			this.uploadButton.Text = "Завантажити медіафайл";
+			this.uploadButton.UseVisualStyleBackColor = true;
+			this.uploadButton.Click += new System.EventHandler(this.button8_Click);
 			// 
 			// label10
 			// 
@@ -196,15 +213,15 @@ namespace VideoSharingSystem
 			this.label9.Text = "Завантаженні медія:";
 			this.label9.Click += new System.EventHandler(this.label9_Click);
 			// 
-			// button6
+			// subscribeButton
 			// 
-			this.button6.Location = new System.Drawing.Point(20, 82);
-			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(101, 23);
-			this.button6.TabIndex = 3;
-			this.button6.Text = "Підписатися";
-			this.button6.UseVisualStyleBackColor = true;
-			this.button6.Click += new System.EventHandler(this.button6_Click);
+			this.subscribeButton.Location = new System.Drawing.Point(118, 88);
+			this.subscribeButton.Name = "subscribeButton";
+			this.subscribeButton.Size = new System.Drawing.Size(101, 23);
+			this.subscribeButton.TabIndex = 3;
+			this.subscribeButton.Text = "Підписатися";
+			this.subscribeButton.UseVisualStyleBackColor = true;
+			this.subscribeButton.Click += new System.EventHandler(this.button6_Click);
 			// 
 			// richTextBox3
 			// 
@@ -218,22 +235,22 @@ namespace VideoSharingSystem
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(19, 41);
+			this.label3.Location = new System.Drawing.Point(120, 36);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(35, 13);
 			this.label3.TabIndex = 1;
 			this.label3.Text = "label3";
 			// 
-			// label2
+			// companyNameLabel
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label2.Location = new System.Drawing.Point(15, 10);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(135, 25);
-			this.label2.TabIndex = 0;
-			this.label2.Text = "Компанія А";
-			this.label2.Click += new System.EventHandler(this.label2_Click);
+			this.companyNameLabel.AutoSize = true;
+			this.companyNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.companyNameLabel.Location = new System.Drawing.Point(118, 11);
+			this.companyNameLabel.Name = "companyNameLabel";
+			this.companyNameLabel.Size = new System.Drawing.Size(135, 25);
+			this.companyNameLabel.TabIndex = 0;
+			this.companyNameLabel.Text = "Компанія А";
+			this.companyNameLabel.Click += new System.EventHandler(this.label2_Click);
 			// 
 			// splitContainer6
 			// 
@@ -267,6 +284,7 @@ namespace VideoSharingSystem
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.pictureBox1);
 			this.panel1.Controls.Add(this.label8);
 			this.panel1.Controls.Add(this.label7);
 			this.panel1.Controls.Add(this.label6);
@@ -276,11 +294,22 @@ namespace VideoSharingSystem
 			this.panel1.TabIndex = 0;
 			this.panel1.Visible = false;
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+			this.pictureBox1.Location = new System.Drawing.Point(9, 9);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(60, 60);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox1.TabIndex = 3;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+			// 
 			// label8
 			// 
 			this.label8.AutoSize = true;
 			this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label8.Location = new System.Drawing.Point(17, 52);
+			this.label8.Location = new System.Drawing.Point(76, 52);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(41, 13);
 			this.label8.TabIndex = 2;
@@ -289,7 +318,7 @@ namespace VideoSharingSystem
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(17, 31);
+			this.label7.Location = new System.Drawing.Point(76, 31);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(35, 13);
 			this.label7.TabIndex = 1;
@@ -300,7 +329,7 @@ namespace VideoSharingSystem
 			this.label6.AutoSize = true;
 			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label6.ForeColor = System.Drawing.SystemColors.HotTrack;
-			this.label6.Location = new System.Drawing.Point(16, 9);
+			this.label6.Location = new System.Drawing.Point(75, 9);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(52, 18);
 			this.label6.TabIndex = 0;
@@ -317,6 +346,7 @@ namespace VideoSharingSystem
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.pictureBox2);
 			this.panel2.Controls.Add(this.label11);
 			this.panel2.Location = new System.Drawing.Point(3, 3);
 			this.panel2.Name = "panel2";
@@ -329,7 +359,7 @@ namespace VideoSharingSystem
 			this.label11.AutoSize = true;
 			this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label11.ForeColor = System.Drawing.SystemColors.HotTrack;
-			this.label11.Location = new System.Drawing.Point(6, 13);
+			this.label11.Location = new System.Drawing.Point(44, 9);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(61, 18);
 			this.label11.TabIndex = 1;
@@ -702,6 +732,16 @@ namespace VideoSharingSystem
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
+			// pictureBox2
+			// 
+			this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
+			this.pictureBox2.Location = new System.Drawing.Point(3, 3);
+			this.pictureBox2.Name = "pictureBox2";
+			this.pictureBox2.Size = new System.Drawing.Size(35, 35);
+			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox2.TabIndex = 4;
+			this.pictureBox2.TabStop = false;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -719,6 +759,7 @@ namespace VideoSharingSystem
 			this.splitContainer5.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
 			this.splitContainer5.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.companyLogoPictureBox)).EndInit();
 			this.splitContainer6.Panel1.ResumeLayout(false);
 			this.splitContainer6.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
@@ -726,6 +767,7 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
@@ -755,6 +797,7 @@ namespace VideoSharingSystem
 			this.splitContainer4.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -778,10 +821,10 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.RichTextBox richTextBox2;
 		private System.Windows.Forms.Button button5;
 		private System.Windows.Forms.SplitContainer splitContainer5;
-		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.Button subscribeButton;
 		private System.Windows.Forms.RichTextBox richTextBox3;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label companyNameLabel;
 		private System.Windows.Forms.SplitContainer splitContainer6;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
@@ -800,14 +843,17 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Button button7;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
-		private System.Windows.Forms.Button button8;
+		private System.Windows.Forms.Button uploadButton;
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Button button9;
+		private System.Windows.Forms.Button companyEditButton;
 		private System.Windows.Forms.Button button10;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
+		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox companyLogoPictureBox;
+		private System.Windows.Forms.PictureBox pictureBox2;
 	}
 }
 

@@ -34,29 +34,6 @@ namespace VideoSharingSystem
 				TagsCheckedListBox.Items.Add(item);
 		}
 
-		private void selectButton_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog openFileDialog = new OpenFileDialog();
-
-			openFileDialog.Filter = "Video file (*.mp4, *.avi)|*.mp4;*.avi|All files (*.*)|*.*";
-			openFileDialog.FilterIndex = 0;
-			openFileDialog.RestoreDirectory = true;
-
-			if (openFileDialog.ShowDialog() == DialogResult.OK)
-			{
-				_selectedFileName = openFileDialog.FileName;
-
-				if (nameTextBox.Text.Length == 0)
-					nameTextBox.Text = Path.GetFileName(_selectedFileName);
-
-				axWindowsMediaPlayer1.Visible = true;
-				axWindowsMediaPlayer1.URL = _selectedFileName;
-
-				UploadButton.Enabled = true;
-			}
-		}
-
-
 		private async void UploadButton_Click(object sender, EventArgs e)
 		{
 			if (_mainForm.currentCompanyId == -1)
@@ -70,6 +47,8 @@ namespace VideoSharingSystem
 				progress.HttpSendProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
 				{
 					int progressPercentage = (int)(e.BytesTransferred * 100 / filestream.Length);
+					if (progressPercentage > 100)
+						progressPercentage = 100;
 					this.Invoke(new MethodInvoker(delegate ()
 					{
 						progressBar1.Value = progressPercentage;
@@ -93,13 +72,26 @@ namespace VideoSharingSystem
 					string json = JsonSerializer.Serialize(videoInfo);
 					string url = $"http://25.18.114.207:8080/video/upload";
 
+					HttpContent imageStreamContent = null;
 					HttpContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 					HttpContent fileStreamContent = new StreamContent(filestream);
+					MemoryStream imageStream = null;
+
+					bool imageExist = pictureBox1.Image != null;
+					if (imageExist)
+					{
+						imageStream = new MemoryStream();
+						pictureBox1.Image.Save(imageStream, ImageFormat.Jpeg);
+						imageStreamContent = new ByteArrayContent(imageStream.ToArray());
+					}
+					
 					using (var formData = new MultipartFormDataContent())
 					{
 
 						formData.Add(stringContent);
 						formData.Add(fileStreamContent, "file", Path.GetFileName(_selectedFileName));
+						if(imageExist)
+							formData.Add(imageStreamContent, "preview", "preview.jpg");
 
 						nameTextBox.Enabled = false;
 						selectButton.Enabled = false;
@@ -176,5 +168,46 @@ namespace VideoSharingSystem
 				axWindowsMediaPlayer1.Ctlcontrols.play();
 		}
 
+		private void selectButton_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+
+			openFileDialog.Filter = "Video file|*.mp4;*.avi;*.mkv|Audio|*.mp3|All files (*.*)|*.*";
+			openFileDialog.FilterIndex = 0;
+			openFileDialog.RestoreDirectory = true;
+
+			if (openFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				_selectedFileName = openFileDialog.FileName;
+
+				if (nameTextBox.Text.Length == 0)
+					nameTextBox.Text = Path.GetFileName(_selectedFileName);
+
+				axWindowsMediaPlayer1.Visible = true;
+				axWindowsMediaPlayer1.URL = _selectedFileName;
+
+				UploadButton.Enabled = true;
+			}
+		}
+
+		public static Image resizeImage(Image imgToResize, Size size)
+		{
+			return (Image)(new Bitmap(imgToResize, size));
+		}
+
+		private void SelectImageButton_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+
+			openFileDialog.Filter = "Image|*.png;*.jpg|All files (*.*)|*.*";
+			openFileDialog.FilterIndex = 0;
+			openFileDialog.RestoreDirectory = true;
+
+			if (openFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				Image image = Image.FromFile(openFileDialog.FileName);
+				pictureBox1.Image = resizeImage(image, new Size(240, 240));
+			}
+		}
 	}
 }
