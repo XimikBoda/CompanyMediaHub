@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static VideoSharingSystem.Form1;
 
 namespace VideoSharingSystem
 {
@@ -36,7 +37,7 @@ namespace VideoSharingSystem
 		public AuthenticationHeaderValue bearer_token;
 		public string url_host;
 
-		public Tags tags;
+		public Tags tags = new Tags();
 
 		public Form1(string token, string url_host, int user_id)
 		{
@@ -55,11 +56,10 @@ namespace VideoSharingSystem
 
 
 			InitializeComponent();
-			InitProfileViewer(myUserId);
 			InitHistory();
 			GetTags();
-
-			//InitVideoPlayer(41);
+			GetMySubscriptions();
+			InitProfileViewer(1);
 		}
 
 		private void GetTags()
@@ -82,11 +82,13 @@ namespace VideoSharingSystem
 					}
 					else
 					{
+						tags = new Tags();
 						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
 					}
 				}
 				catch (Exception ex)
 				{
+					tags = new Tags();
 					Console.WriteLine(ex.Message);
 					MessageBox.Show(ex.Message);
 				}
@@ -176,8 +178,8 @@ namespace VideoSharingSystem
 
 		private void button9_Click(object sender, EventArgs e)
 		{
-			new EditUser(this, currentUserId, isAdmin).ShowDialog(this);
-			InitProfileViewer(currentUserId);
+			new EditUser(this, currentCompanyId, isAdmin).ShowDialog(this);
+			InitProfileViewer(currentCompanyId);
 		}
 
 		private void button6_Click(object sender, EventArgs e)

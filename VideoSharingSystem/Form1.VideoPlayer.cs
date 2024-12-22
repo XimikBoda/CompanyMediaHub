@@ -30,6 +30,8 @@ namespace VideoSharingSystem
 			public int likes { get; set; }
 			public int dislikes { get; set; }
 			public int user_rating { get; set; }
+			public int total_views { get; set; }
+			public int unique_viewers { get; set; }
 		}
 
 		public class CommentInfo
@@ -110,9 +112,9 @@ namespace VideoSharingSystem
 						splitContainer1.Enabled = true;
 
 						myRateId = linkResult.user_rating;
-						//label13.Text = $"Кількість переглядів: {views} ({uniqueviews} унікальних)";
+						label13.Text = $"Кількість переглядів: {linkResult.total_views} ({linkResult.unique_viewers} унікальних)";
 						label14.Text = $"Рейтинг:  {linkResult.likes - linkResult.dislikes} (+{linkResult.likes}/-{linkResult.dislikes})";
-						//label13.Visible = true;
+						label13.Visible = true;
 						label14.Visible = true;
 
 						UpdateLikeButtons();
@@ -366,7 +368,7 @@ namespace VideoSharingSystem
 						{
 							var ncomment = commentResult.comment;
 							commentElements.Add(new CommentElement(flowLayoutPanel3, this, ncomment.id, ncomment.user_id, ncomment.user_login, ncomment.text));
-							LoadsComments();
+							//LoadsComments();
 						}
 						else
 						{
@@ -388,7 +390,7 @@ namespace VideoSharingSystem
 		}
 		public async void AddRatings(int IdRatingType)
 		{
-			if (currentUserId == -1 || currentVideoId == -1)
+			if (currentCompanyId == -1 || currentVideoId == -1)
 				return;
 			if (myRateId == IdRatingType)
 				IdRatingType = 0;

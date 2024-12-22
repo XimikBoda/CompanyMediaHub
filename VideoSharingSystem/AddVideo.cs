@@ -59,7 +59,7 @@ namespace VideoSharingSystem
 
 		private async void UploadButton_Click(object sender, EventArgs e)
 		{
-			if (_mainForm.currentUserId == -1)
+			if (_mainForm.currentCompanyId == -1)
 				return;
 
 

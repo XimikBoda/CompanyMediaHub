@@ -5,11 +5,13 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace VideoSharingSystem
 {
@@ -28,38 +30,65 @@ namespace VideoSharingSystem
 
 			public string message { get; set; }
 		}
+		public class CompanyInfo
+		{
+			public int id { get; set; }
+			public string name { get; set; }
+			public string about { get; set; }
+			public int subscribers { get; set; }
+			public bool is_subscribed { get; set; }
+		}
+
+		public class SubscribeResult
+		{
+			public bool is_subscribed { get; set; }
+			public int subscribers { get; set; }
+			public string message { get; set; }
+		}
+		public class SubscribeInfo
+		{
+			public int company_id { get; set; }
+			public string company_name { get; set; }
+		}
+
 
 		List<VideoElement> videoElements;
 		List<SubscriberElement> subscriberElement;
 
 		public bool isSubscribedToCurrent = false;
-		public int currentUserId = 1;
+		public int currentCompanyId = 1;
 
-		public void InitProfileViewer(int id)
+		public async void InitProfileViewer(int id)
 		{
-			//currentUserId = id;
-
+			currentCompanyId = id;
 			using (HttpClient client = new HttpClient())
 			{
-				string loginUrl = $"http://25.18.114.207:8080/video";
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string loginUrl = $"{url_host}/company/{currentCompanyId}";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = await client.GetAsync(loginUrl);
 
 					if (response.IsSuccessStatusCode)
 					{
-						string responseBody = response.Content.ReadAsStringAsync().Result;
+						string responseBody = await response.Content.ReadAsStringAsync();
 
-						var videosResult = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
+						var companyResult = JsonSerializer.Deserialize<CompanyInfo>(responseBody);
 
-						foreach (var el in videoElements)
-							el.Deatach();
-						videoElements.Clear();
+						currentCompanyId = companyResult.id;
+						label2.Text = companyResult.name;
+						richTextBox3.Text = companyResult.about;
 
-						foreach (var item in videosResult)
-							videoElements.Add(new VideoElement(flowLayoutPanel1, this,
-								item.id, item.name, item.description, item.upload_time.ToString()));
+						SetSubscribeState(companyResult.is_subscribed, companyResult.subscribers);
+
+						//if (currentUserId == myUserId || isAdmin)
+						//	button9.Visible = true;
+						//else
+						//	button9.Visible = false;
+
+						//button8.Visible = currentUserId == myUserId;
 
 					}
 					else
@@ -74,163 +103,153 @@ namespace VideoSharingSystem
 				}
 			}
 
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string loginUrl = $"{url_host}/company/{currentCompanyId}/videos";
+
+				try
+				{
+					HttpResponseMessage response = await client.GetAsync(loginUrl);
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = await response.Content.ReadAsStringAsync();
+
+						var videosResult = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
+
+						flowLayoutPanel1.SuspendLayout();
+
+						foreach (var el in videoElements)
+							el.Deatach();
+						videoElements.Clear();
+
+						foreach (var item in videosResult)
+							videoElements.Add(new VideoElement(flowLayoutPanel1, this,
+								item.id, item.name, item.description, item.upload_time.ToString()));
+
+						flowLayoutPanel1.ResumeLayout();
 
 
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand(
-			//		"SELECT IdUser, Email, LoginUser, NameUser, Surname, Patronymic, Birthday, RegisterTime, About FROM Users WHERE IdUser = @id ", connection);
-			//	command.Parameters.AddWithValue("@id", id);
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+		}
+		public async void GetMySubscriptions() {
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-			//	SqlCommand command2 = new SqlCommand(
-			//		"SELECT IdVideo, NameV, DescriptionV, UploadTime FROM Videos WHERE IdUser = @id ORDER BY UploadTime DESC", connection);
-			//	command2.Parameters.AddWithValue("@id", id);
+				string loginUrl = $"{url_host}/profile/subscriptions";
 
+				try
+				{
+					HttpResponseMessage response = await client.GetAsync(loginUrl);
 
-			//	SqlCommand command3 = new SqlCommand(
-			//		"SELECT IdSubscriber, IdTargetUser, S.IdUser, NameUser, Surname FROM Subscribers S JOIN Users U ON S.IdTargetUser = U.IdUser WHERE S.IdUser = @id ", connection);
-			//	command3.Parameters.AddWithValue("@id", id);
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = await response.Content.ReadAsStringAsync();
 
+						var subscribesResult = JsonSerializer.Deserialize<List<SubscribeInfo>>(responseBody);
 
-			//	try
-			//	{
-			//		connection.Open();
-			//		{
-			//			SqlDataReader reader = command.ExecuteReader();
-			//			if (reader.Read())
-			//			{
-			//				foreach (var el in videoElements)
-			//					el.Deatach();
-			//				videoElements.Clear();
+						flowLayoutPanel2.SuspendLayout();
 
-			//				foreach (var el in subscriberElement)
-			//					el.Deatach();
-			//				subscriberElement.Clear();
+						foreach (var el in subscriberElement)
+							el.Deatach();
+						subscriberElement.Clear();
 
-			//				currentUserId = Convert.ToInt32(reader[0].ToString());
-			//				label2.Text = reader[3].ToString().Trim() + ' ' + reader[4].ToString().Trim();
-			//				label3.Text = reader[1].ToString().Trim();
-			//				//label6.Text = reader[6].ToString().Trim();
-			//				richTextBox3.Text = reader[8].ToString().Trim();
+						foreach (var item in subscribesResult)
+							subscriberElement.Add(new SubscriberElement(flowLayoutPanel2, this,
+								item.company_id, item.company_name));
 
-			//				if (currentUserId == myUserId || isAdmin)
-			//					button9.Visible = true;
-			//				else
-			//					button9.Visible = false;
-
-			//				button8.Visible = currentUserId == myUserId;
-
-			//			}
-			//			reader.Close();
-			//		}
-			//		{
-			//			SqlDataReader reader = command2.ExecuteReader();
-			//			while (reader.Read())
-			//			{
-
-			//				videoElements.Add(new VideoElement(flowLayoutPanel1, this,
-			//					Convert.ToInt32(reader[0].ToString()),
-			//					reader[1].ToString().Trim(), reader[2].ToString().Trim(), reader[3].ToString().Trim()));
-			//			}
-			//			reader.Close();
-			//		}
-			//		{
-			//			SqlDataReader reader = command3.ExecuteReader();
-			//			while (reader.Read())
-			//			{
-
-			//				subscriberElement.Add(new SubscriberElement(flowLayoutPanel2, this,
-			//					Convert.ToInt32(reader[1].ToString()),
-			//					reader[3].ToString().Trim() + ' ' + reader[4].ToString().Trim()));
-			//			}
-			//			reader.Close();
-			//		}
-			//		CheckSubscribe();
-
-			//		tabControl1.SelectedIndex = 0;
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
+						flowLayoutPanel2.ResumeLayout();
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 
-		public void CheckSubscribe()
-		{
-			//if (myUserId == currentUserId)
-			//{
-			//	isSubscribedToCurrent = false;
-			//	button6.Enabled = false;
-			//	button6.BackColor = Color.Transparent;
-			//	button6.Text = "Підписатися";
-			//}
-			//else
-			//	using (SqlConnection connection = new SqlConnection(connectionString))
-			//	{
 
-			//		SqlCommand command = new SqlCommand(
-			//			"SELECT IdUser, IdTargetUser FROM Subscribers WHERE IdUser = @MyIdUser AND IdTargetUser = @IdTargetUser", connection);
-			//		command.Parameters.AddWithValue("@MyIdUser", myUserId);
-			//		command.Parameters.AddWithValue("@IdTargetUser", currentUserId);
+		public void SetSubscribeState(bool state, int subscribers) {
 
-			//		try
-			//		{
-			//			connection.Open();
-			//			{
-			//				SqlDataReader reader = command.ExecuteReader();
-			//				if (reader.Read())
-			//				{
-			//					isSubscribedToCurrent = true;
-			//					button6.Enabled = true;
-			//					button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			//					button6.Text = "Підписаний";
-			//				}
-			//				else
-			//				{
+			label3.Text = "Кількість підписників: " + subscribers.ToString();
+			if (state)
+			{
+				isSubscribedToCurrent = true;
+				button6.Enabled = true;
+				button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+				button6.Text = "Підписаний";
+			}
+			else
+			{
 
-			//					isSubscribedToCurrent = false;
-			//					button6.Enabled = true;
-			//					button6.BackColor = Color.Transparent;
-			//					button6.Text = "Підписатися";
-			//				}
-			//				reader.Close();
-			//			}
-			//		}
-			//		catch (Exception ex)
-			//		{
-			//			Console.WriteLine(ex.Message);
-			//			MessageBox.Show(ex.Message);
-			//		}
-			//	}
+				isSubscribedToCurrent = false;
+				button6.Enabled = true;
+				button6.BackColor = Color.Transparent;
+				button6.Text = "Підписатися";
+			}
 		}
-		public void SetSubscribe()
-		{
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand("", connection);
-			//	command.Parameters.Add("@MyIdUser", SqlDbType.Int);
-			//	command.Parameters.Add("@IdTargetUser", SqlDbType.Int);
 
-			//	command.Parameters["@MyIdUser"].Value = myUserId;
-			//	command.Parameters["@IdTargetUser"].Value = currentUserId;
-			//	try
-			//	{
-			//		connection.Open();
-			//		if (isSubscribedToCurrent)
-			//			command.CommandText = "Delete FROM Subscribers WHERE IdUser = @MyIdUser AND IdTargetUser = @IdTargetUser";
-			//		else
-			//			command.CommandText = "INSERT INTO Subscribers (IdUser, IdTargetUser) VALUES (@MyIdUser, @IdTargetUser)";
-			//		command.ExecuteNonQuery();
-			//		CheckSubscribe();
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
+		public async void SetSubscribe()
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string act;
+				if (isSubscribedToCurrent)
+					act = "unsubscribe";
+				else
+					act = "subscribe";
+
+				string loginUrl = $"{url_host}/company/{currentCompanyId}/{act}";
+
+				try
+				{
+					button6.Enabled = false;
+
+					HttpResponseMessage response = await client.PostAsync(loginUrl, null);
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = await response.Content.ReadAsStringAsync();
+
+						var subscribeResult = JsonSerializer.Deserialize<SubscribeResult>(responseBody);
+
+						SetSubscribeState(subscribeResult.is_subscribed, subscribeResult.subscribers);
+
+						GetMySubscriptions();
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+				button6.Enabled = true;
+			}
 		}
 	}
 }

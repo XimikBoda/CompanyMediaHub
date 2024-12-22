@@ -58,6 +58,7 @@ namespace VideoSharingSystem
 			this.label13 = new System.Windows.Forms.Label();
 			this.label12 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
+			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			this.button3 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
@@ -77,7 +78,6 @@ namespace VideoSharingSystem
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button5 = new System.Windows.Forms.Button();
-			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -98,6 +98,7 @@ namespace VideoSharingSystem
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
 			this.splitContainer3.Panel1.SuspendLayout();
 			this.splitContainer3.Panel2.SuspendLayout();
@@ -114,7 +115,6 @@ namespace VideoSharingSystem
 			this.splitContainer4.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.panel3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabPage1
@@ -125,7 +125,7 @@ namespace VideoSharingSystem
 			tabPage1.Padding = new System.Windows.Forms.Padding(3);
 			tabPage1.Size = new System.Drawing.Size(792, 506);
 			tabPage1.TabIndex = 0;
-			tabPage1.Text = "Перегляд профілю";
+			tabPage1.Text = "Перегляд профілю компанії";
 			tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// splitContainer5
@@ -182,9 +182,9 @@ namespace VideoSharingSystem
 			this.label10.AutoSize = true;
 			this.label10.Location = new System.Drawing.Point(541, 113);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(56, 13);
+			this.label10.Size = new System.Drawing.Size(75, 13);
 			this.label10.TabIndex = 6;
-			this.label10.Text = "Підписки:";
+			this.label10.Text = "Мої підписки:";
 			// 
 			// label9
 			// 
@@ -456,6 +456,19 @@ namespace VideoSharingSystem
 			this.label1.TabIndex = 4;
 			this.label1.Text = "Спочатку оберіть відео в одній з інших вкладок";
 			// 
+			// axWindowsMediaPlayer1
+			// 
+			this.axWindowsMediaPlayer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.axWindowsMediaPlayer1.Enabled = true;
+			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
+			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(526, 388);
+			this.axWindowsMediaPlayer1.TabIndex = 3;
+			this.axWindowsMediaPlayer1.Enter += new System.EventHandler(this.axWindowsMediaPlayer1_Enter);
+			// 
 			// button3
 			// 
 			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -689,19 +702,6 @@ namespace VideoSharingSystem
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
-			// axWindowsMediaPlayer1
-			// 
-			this.axWindowsMediaPlayer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.axWindowsMediaPlayer1.Enabled = true;
-			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
-			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(526, 388);
-			this.axWindowsMediaPlayer1.TabIndex = 3;
-			this.axWindowsMediaPlayer1.Enter += new System.EventHandler(this.axWindowsMediaPlayer1_Enter);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -736,6 +736,7 @@ namespace VideoSharingSystem
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
 			this.splitContainer3.Panel1.ResumeLayout(false);
 			this.splitContainer3.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
@@ -754,7 +755,6 @@ namespace VideoSharingSystem
 			this.splitContainer4.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
 			this.ResumeLayout(false);
 
 		}

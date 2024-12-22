@@ -103,6 +103,12 @@ namespace VideoSharingSystem
 				{
 					Console.WriteLine(ex.Message);
 					MessageBox.Show(ex.Message);
+
+					//Visible = false;
+					//var mainFrorm = new Form1("loginResult.token", url_host, -1);
+					//mainFrorm.ShowDialog();
+					//mainFrorm.Dispose();
+					//Visible = true;
 				}
 			}
 		}
