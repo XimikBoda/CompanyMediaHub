@@ -26,7 +26,7 @@ namespace VideoSharingSystem
 			public string name { get; set; }
 			public string surname { get; set; }
 			public bool is_admin { get; set; }
-			public List<int> mod { get; set; }
+			public List<SubscribeInfo> mod { get; set; }
 			public List<SubscribeInfo> comp_owner { get; set; }
 		}
 
@@ -233,7 +233,9 @@ namespace VideoSharingSystem
 		private void button9_Click(object sender, EventArgs e)
 		{
 			new EditCompany(this, currentCompanyId).ShowDialog(this);
-			//InitProfileViewer(currentCompanyId);
+			int companyId = currentCompanyId;
+			currentCompanyId = -1;
+			InitProfileViewer(companyId);
 		}
 
 		private void button6_Click(object sender, EventArgs e)

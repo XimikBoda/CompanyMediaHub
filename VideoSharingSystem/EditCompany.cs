@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using static VideoSharingSystem.Form1;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace VideoSharingSystem
 {
@@ -30,8 +31,10 @@ namespace VideoSharingSystem
 		Form1 mainForm;
 		int currentCompanyId;
 		CompanyInfo oldCompanyInfo;
+		List<Moderator> moderators;
 
 		bool logo_changed = false;
+		int selectedIdUser = -1;
 
 
 		public EditCompany(Form1 mainForm, int company_id)
@@ -39,11 +42,14 @@ namespace VideoSharingSystem
 			this.mainForm = mainForm;
 			this.currentCompanyId = company_id;
 			InitializeComponent();
+			addModeratorButton.Enabled = false;
+			deleteModeratorButton.Enabled = false;
 			LoadInfo();
 			LoadModerators();
 		}
 
-		void LoadModerators() {
+		void LoadModerators()
+		{
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
@@ -61,7 +67,8 @@ namespace VideoSharingSystem
 
 						var moderators = JsonSerializer.Deserialize<List<Moderator>>(responseBody);
 
-						foreach (var item in mainForm.tags.tags)
+						ModeratorsCheckedListBox.Items.Clear();
+						foreach (var item in moderators)
 							ModeratorsCheckedListBox.Items.Add(item);
 					}
 					else
@@ -201,7 +208,7 @@ namespace VideoSharingSystem
 
 					using (var formData = new MultipartFormDataContent())
 					{
-						if(nameTextBox.Text != oldCompanyInfo.name || descriptionRichTextBox.Text != oldCompanyInfo.about)
+						if (nameTextBox.Text != oldCompanyInfo.name || descriptionRichTextBox.Text != oldCompanyInfo.about)
 							formData.Add(stringContent);
 						if (logo_changed)
 							formData.Add(imageStreamContent, "logo", "logo.jpg");
@@ -213,8 +220,6 @@ namespace VideoSharingSystem
 							string responseBody = response.Content.ReadAsStringAsync().Result;
 
 							var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
-
-							MessageBox.Show(loginResult.message);
 
 							Close();
 						}
@@ -229,6 +234,169 @@ namespace VideoSharingSystem
 					Console.WriteLine(ex.Message);
 					MessageBox.Show(ex.Message);
 				}
+			}
+		}
+
+		void Find()
+		{
+			if (findComboBox.Text.Length == 0)
+				return;
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
+
+				string url = $"{mainForm.url_host}/user/search?s={findComboBox.Text}";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(url).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						moderators = JsonSerializer.Deserialize<List<Moderator>>(responseBody);
+
+						findComboBox.Items.Clear();
+						foreach (var item in moderators)
+							findComboBox.Items.Add(item);
+
+						findComboBox.DroppedDown = true;
+						findComboBox.SelectionStart = findComboBox.Text.Length;
+						findComboBox.SelectionLength = 0;
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+		}
+
+		void findSelectedId()
+		{
+			if (moderators.Exists(x => x.Email == findComboBox.Text))
+				selectedIdUser = moderators.Find(x => x.Email == findComboBox.Text).user_id;
+			else
+				selectedIdUser = -1;
+		}
+
+		private void findComboBox_TextChanged(object sender, EventArgs e)
+		{
+			Find();
+			findSelectedId();
+			addModeratorButton.Enabled = selectedIdUser != -1;
+		}
+
+		private void addModeratorButton_Click(object sender, EventArgs e)
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
+
+				string url = $"{mainForm.url_host}/company/{currentCompanyId}/moderators/{selectedIdUser}";
+
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(url, null).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						LoadModerators();
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+		}
+
+		private void findComboBox_SelectedValueChanged(object sender, EventArgs e)
+		{
+			findSelectedId();
+			addModeratorButton.Enabled = selectedIdUser != -1;
+
+		}
+
+		private void findComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			findSelectedId();
+			addModeratorButton.Enabled = selectedIdUser != -1;
+
+		}
+
+		private void ModeratorsCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+		{
+			this.BeginInvoke((MethodInvoker)(
+				() => deleteModeratorButton.Enabled = (ModeratorsCheckedListBox.CheckedItems.Count > 0)));
+
+		}
+
+		private void deleteModeratorButton_Click(object sender, EventArgs e)
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
+
+				string url = $"{mainForm.url_host}/company/{currentCompanyId}/moderators";
+				List<int> ids = new();
+				foreach (var item in ModeratorsCheckedListBox.CheckedItems)
+					ids.Add(((Moderator)item).user_id);
+				string json = JsonSerializer.Serialize(ids);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+				var request = new HttpRequestMessage
+				{
+					Method = HttpMethod.Delete,
+					RequestUri = new Uri(url),
+					Content = content
+				};
+
+				try
+				{
+					HttpResponseMessage response = client.SendAsync(request).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						LoadModerators();
+						deleteModeratorButton.Enabled = (ModeratorsCheckedListBox.CheckedItems.Count > 0);
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+		}
+
+		private void findComboBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				addModeratorButton_Click(null, null);
+				e.Handled = true;
 			}
 		}
 	}

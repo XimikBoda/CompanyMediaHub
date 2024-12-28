@@ -38,8 +38,8 @@
 			this.ModeratorsCheckedListBox = new System.Windows.Forms.CheckedListBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.button1 = new System.Windows.Forms.Button();
+			this.findComboBox = new System.Windows.Forms.ComboBox();
+			this.deleteModeratorButton = new System.Windows.Forms.Button();
 			this.addModeratorButton = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.saveButton = new System.Windows.Forms.Button();
@@ -122,6 +122,7 @@
 			this.ModeratorsCheckedListBox.Name = "ModeratorsCheckedListBox";
 			this.ModeratorsCheckedListBox.Size = new System.Drawing.Size(201, 289);
 			this.ModeratorsCheckedListBox.TabIndex = 23;
+			this.ModeratorsCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ModeratorsCheckedListBox_ItemCheck);
 			// 
 			// label3
 			// 
@@ -143,23 +144,28 @@
 			this.label4.Text = "Додати модератора:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.BottomRight;
 			// 
-			// comboBox1
+			// findComboBox
 			// 
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(405, 369);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(198, 21);
-			this.comboBox1.TabIndex = 26;
+			this.findComboBox.FormattingEnabled = true;
+			this.findComboBox.Location = new System.Drawing.Point(405, 369);
+			this.findComboBox.Name = "findComboBox";
+			this.findComboBox.Size = new System.Drawing.Size(198, 21);
+			this.findComboBox.TabIndex = 26;
+			this.findComboBox.SelectedIndexChanged += new System.EventHandler(this.findComboBox_SelectedIndexChanged);
+			this.findComboBox.SelectedValueChanged += new System.EventHandler(this.findComboBox_SelectedValueChanged);
+			this.findComboBox.TextChanged += new System.EventHandler(this.findComboBox_TextChanged);
+			this.findComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.findComboBox_KeyDown);
 			// 
-			// button1
+			// deleteModeratorButton
 			// 
-			this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-			this.button1.Location = new System.Drawing.Point(402, 327);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(201, 23);
-			this.button1.TabIndex = 27;
-			this.button1.Text = "Видалити обраних";
-			this.button1.UseVisualStyleBackColor = false;
+			this.deleteModeratorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+			this.deleteModeratorButton.Location = new System.Drawing.Point(402, 327);
+			this.deleteModeratorButton.Name = "deleteModeratorButton";
+			this.deleteModeratorButton.Size = new System.Drawing.Size(201, 23);
+			this.deleteModeratorButton.TabIndex = 27;
+			this.deleteModeratorButton.Text = "Видалити обраних";
+			this.deleteModeratorButton.UseVisualStyleBackColor = false;
+			this.deleteModeratorButton.Click += new System.EventHandler(this.deleteModeratorButton_Click);
 			// 
 			// addModeratorButton
 			// 
@@ -169,6 +175,7 @@
 			this.addModeratorButton.TabIndex = 28;
 			this.addModeratorButton.Text = "Додати";
 			this.addModeratorButton.UseVisualStyleBackColor = true;
+			this.addModeratorButton.Click += new System.EventHandler(this.addModeratorButton_Click);
 			// 
 			// button2
 			// 
@@ -208,8 +215,8 @@
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.saveButton);
 			this.Controls.Add(this.addModeratorButton);
-			this.Controls.Add(this.button1);
-			this.Controls.Add(this.comboBox1);
+			this.Controls.Add(this.deleteModeratorButton);
+			this.Controls.Add(this.findComboBox);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.ModeratorsCheckedListBox);
@@ -241,8 +248,8 @@
 		private System.Windows.Forms.CheckedListBox ModeratorsCheckedListBox;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.ComboBox findComboBox;
+		private System.Windows.Forms.Button deleteModeratorButton;
 		private System.Windows.Forms.Button addModeratorButton;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button saveButton;
