@@ -129,6 +129,12 @@
     </Compile>
     <Compile Include="BDStream.cs" />
     <Compile Include="CommentElement.cs" />
+    <Compile Include="EditCompany.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditCompany.Designer.cs">
+      <DependentUpon>EditCompany.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditUser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     <Compile Include="VideoElement.cs" />
     <EmbeddedResource Include="AddVideo.resx">
       <DependentUpon>AddVideo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditCompany.resx">
+      <DependentUpon>EditCompany.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditUser.resx">
       <DependentUpon>EditUser.cs</DependentUpon>

@@ -9,10 +9,12 @@ using System.Net.Http;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
+using static VideoSharingSystem.Form1;
 
 namespace VideoSharingSystem
 {
@@ -52,16 +54,27 @@ namespace VideoSharingSystem
 			public string company_name { get; set; }
 		}
 
-
+		
 		List<VideoElement> videoElements;
 		List<SubscriberElement> subscriberElement;
 
 		public bool isSubscribedToCurrent = false;
-		public int currentCompanyId = 1;
+		public int currentCompanyId = -1;
+		bool cs_label_company = false;
 
 		public async Task InitProfileViewer(int id)
 		{
+			if (currentCompanyId == id) {
+				tabControl1.SelectedIndex = 0;
+				return;
+			}
 			currentCompanyId = id;
+
+			if (profileInfo.comp_owner.Exists(x => x.company_id == currentCompanyId) || is_admin)
+				companyEditButton.Visible = uploadButton.Visible = true;
+			else
+				companyEditButton.Visible = uploadButton.Visible = false;
+
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
@@ -83,13 +96,6 @@ namespace VideoSharingSystem
 						richTextBox3.Text = companyResult.about;
 
 						SetSubscribeState(companyResult.is_subscribed, companyResult.subscribers);
-
-						//if (currentUserId == myUserId || isAdmin)
-						//	button9.Visible = true;
-						//else
-						//	button9.Visible = false;
-
-						//button8.Visible = currentUserId == myUserId;
 
 					}
 					else
@@ -124,6 +130,13 @@ namespace VideoSharingSystem
 				}
 			}
 
+			new Task(() => GetMediaList()).Start();
+
+			//new GetMediaList();
+
+		}
+
+		public async Task GetMediaList() {
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
@@ -132,28 +145,42 @@ namespace VideoSharingSystem
 
 				try
 				{
-					HttpResponseMessage response = await client.GetAsync(loginUrl);
+					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
-						string responseBody = await response.Content.ReadAsStringAsync();
+						string responseBody = response.Content.ReadAsStringAsync().Result;
 
 						var videosResult = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
 
-						flowLayoutPanel1.SuspendLayout();
+						this.Invoke(new MethodInvoker(delegate ()
+						{
+							flowLayoutPanel1.SuspendLayout();
 
-						foreach (var el in videoElements)
-							el.Deatach();
-						videoElements.Clear();
+							foreach (var el in videoElements)
+								el.Deatach();
+							videoElements.Clear();
 
-						flowLayoutPanel1.ResumeLayout();
+							
+							flowLayoutPanel1.ResumeLayout();
+						}));
+
+						int c = 0;
 
 						foreach (var item in videosResult)
-							videoElements.Add(new VideoElement(flowLayoutPanel1, this,
-								item.id, item.name, item.description, item.upload_time.ToString()));
-
-
-
+						{
+							this.Invoke(new MethodInvoker(delegate ()
+							{
+								videoElements.Add(new VideoElement(flowLayoutPanel1, this,
+									item.id, item.name, item.description, item.upload_time.ToString()));
+							}));
+							if(c>10)
+								Thread.Sleep(10);
+							++c;
+						}
+						this.Invoke(new MethodInvoker(delegate ()
+						{
+						}));
 
 					}
 					else
@@ -168,6 +195,7 @@ namespace VideoSharingSystem
 				}
 			}
 		}
+
 		public async void GetMySubscriptions() {
 			using (HttpClient client = new HttpClient())
 			{
@@ -273,6 +301,41 @@ namespace VideoSharingSystem
 				}
 				subscribeButton.Enabled = true;
 			}
+		}
+
+		void SetCS_viewer(bool company) {
+			if (company == cs_label_company)
+				return;
+			cs_label_company = company;
+
+			if (!cs_label_company)
+			{
+				cs_label.Text = "Мої підписки:";
+				GetMySubscriptions();
+			}
+			else {
+				cs_label.Text = "Мої компанії:";
+				{
+					flowLayoutPanel2.SuspendLayout();
+
+					foreach (var el in subscriberElement)
+						el.Deatach();
+					subscriberElement.Clear();
+
+					foreach (var item in profileInfo.comp_owner)
+						subscriberElement.Add(new SubscriberElement(flowLayoutPanel2, this,
+							item.company_id, item.company_name));
+
+					flowLayoutPanel2.ResumeLayout();
+				}
+			}
+
+		}
+
+		private void cs_label_Click(object sender, EventArgs e)
+		{
+			if (is_comp_owner)
+				SetCS_viewer(!cs_label_company);
 		}
 
 	}

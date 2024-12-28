@@ -25,6 +25,7 @@ namespace VideoSharingSystem
 	{
 		Form1 _mainForm;
 		string _selectedFileName;
+		CancellationTokenSource cancelToken = new CancellationTokenSource();
 		public AddVideo(Form1 mainForm)
 		{
 			_mainForm = mainForm;
@@ -46,20 +47,23 @@ namespace VideoSharingSystem
 
 				progress.HttpSendProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
 				{
-					int progressPercentage = (int)(e.BytesTransferred * 100 / filestream.Length);
+					int progressPercentage = (int)(e.BytesTransferred * 100 / e.TotalBytes);
 					if (progressPercentage > 100)
 						progressPercentage = 100;
-					this.Invoke(new MethodInvoker(delegate ()
+					try
 					{
-						progressBar1.Value = progressPercentage;
-					}));
+						if (!cancelToken.Token.IsCancellationRequested)
+							this.Invoke(new MethodInvoker(delegate ()
+							{
+								progressBar1.Value = progressPercentage;
+							}));
+					} catch (Exception ex) { }
 				};
-
 
 				using (HttpClient client = HttpClientFactory.Create(progress))
 				{
 					client.DefaultRequestHeaders.Authorization = _mainForm.bearer_token;
-
+					client.DefaultRequestHeaders.Add("X-idCompany", 1.ToString());
 
 					List<int> tags = new List<int>();
 					foreach (object itemChecked in TagsCheckedListBox.CheckedItems)
@@ -70,55 +74,64 @@ namespace VideoSharingSystem
 
 					var videoInfo = new { name = nameTextBox.Text, description = descriptionRichTextBox.Text, idCompany = 1, tags = tags };
 					string json = JsonSerializer.Serialize(videoInfo);
-					string url = $"http://25.18.114.207:8080/video/upload";
+					string url = $"{_mainForm.url_host}/video/upload";
 
-					HttpContent imageStreamContent = null;
-					HttpContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-					HttpContent fileStreamContent = new StreamContent(filestream);
-					MemoryStream imageStream = null;
-
-					bool imageExist = pictureBox1.Image != null;
-					if (imageExist)
+					try
 					{
-						imageStream = new MemoryStream();
-						pictureBox1.Image.Save(imageStream, ImageFormat.Jpeg);
-						imageStreamContent = new ByteArrayContent(imageStream.ToArray());
+
+						HttpContent imageStreamContent = null;
+						HttpContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+						HttpContent fileStreamContent = new StreamContent(filestream);
+						MemoryStream imageStream = null;
+
+						bool imageExist = pictureBox1.Image != null;
+						if (imageExist)
+						{
+							imageStream = new MemoryStream();
+							pictureBox1.Image.Save(imageStream, ImageFormat.Jpeg);
+							imageStreamContent = new ByteArrayContent(imageStream.ToArray());
+						}
+
+						using (var formData = new MultipartFormDataContent())
+						{
+
+							formData.Add(stringContent);
+							formData.Add(fileStreamContent, "file", Path.GetFileName(_selectedFileName));
+							if (imageExist)
+								formData.Add(imageStreamContent, "preview", "preview.jpg");
+
+							nameTextBox.Enabled = false;
+							selectButton.Enabled = false;
+							UploadButton.Enabled = false;
+							descriptionRichTextBox.Enabled = false;
+							TagsCheckedListBox.Enabled = false;
+							var response = await client.PostAsync(url, formData, cancelToken.Token);
+
+							if (response.IsSuccessStatusCode)
+							{
+								string responseBody = response.Content.ReadAsStringAsync().Result;
+
+								var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
+
+								MessageBox.Show(loginResult.message);
+
+								Close();
+							}
+							else
+							{
+								MessageBox.Show("Помилка при виконанні запита: " + response.StatusCode);
+							}
+							nameTextBox.Enabled = true;
+							selectButton.Enabled = true;
+							UploadButton.Enabled = true;
+							descriptionRichTextBox.Enabled = true;
+							TagsCheckedListBox.Enabled = true;
+						}
 					}
-					
-					using (var formData = new MultipartFormDataContent())
+					catch (Exception ex)
 					{
-
-						formData.Add(stringContent);
-						formData.Add(fileStreamContent, "file", Path.GetFileName(_selectedFileName));
-						if(imageExist)
-							formData.Add(imageStreamContent, "preview", "preview.jpg");
-
-						nameTextBox.Enabled = false;
-						selectButton.Enabled = false;
-						UploadButton.Enabled = false;
-						descriptionRichTextBox.Enabled = false;
-						TagsCheckedListBox.Enabled = false;
-						var response = await client.PostAsync(url, formData);
-
-						if (response.IsSuccessStatusCode)
-						{
-							string responseBody = response.Content.ReadAsStringAsync().Result;
-
-							var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
-
-							MessageBox.Show(loginResult.message);
-
-							Close();
-						}
-						else
-						{
-							MessageBox.Show("Помилка при виконанні запита: " + response.StatusCode);
-						}
-						nameTextBox.Enabled = true;
-						selectButton.Enabled = true;
-						UploadButton.Enabled = true;
-						descriptionRichTextBox.Enabled = true;
-						TagsCheckedListBox.Enabled = true;
+						Console.WriteLine(ex.Message);
+						MessageBox.Show(ex.Message);
 					}
 				}
 
@@ -128,19 +141,21 @@ namespace VideoSharingSystem
 
 		private void CancelButton_Click(object sender, EventArgs e)
 		{
+			cancelToken.Cancel();
 			axWindowsMediaPlayer1.close();
 			Close();
 		}
 
 		private void AddVideo_FormClosed(object sender, FormClosedEventArgs e)
 		{
+			cancelToken.Cancel();
 			axWindowsMediaPlayer1.close();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
 			var wasPlaying = axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying;
-			if(wasPlaying)
+			if (wasPlaying)
 				axWindowsMediaPlayer1.Ctlcontrols.pause();
 
 			var old_size = axWindowsMediaPlayer1.Size;

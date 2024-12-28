@@ -25,6 +25,9 @@ namespace VideoSharingSystem
 		public string message { get; set; }
 		public string token { get; set; }
 		public int user_id { get; set; }
+		public bool is_admin { get; set; }
+		public bool is_comp_owner { get; set; }
+		public bool is_mod{ get; set; }
 	}
 
 	public class GeneralResult
@@ -83,7 +86,8 @@ namespace VideoSharingSystem
 						if (loginResult != null || loginResult.message == "success")
 						{
 							Visible = false;
-							var mainFrorm = new Form1(loginResult.token, url_host, loginResult.user_id);
+							var mainFrorm = new Form1(loginResult.token, url_host, loginResult.user_id, 
+								loginResult.is_admin, loginResult.is_comp_owner, loginResult.is_mod);
 							mainFrorm.ShowDialog();
 							mainFrorm.Dispose();
 							Visible = true;

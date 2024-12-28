@@ -19,6 +19,17 @@ namespace VideoSharingSystem
 {
 	public partial class Form1 : Form
 	{
+		public class ProfileInfo
+		{
+			public int user_id { get; set; }
+			public string login { get; set; }
+			public string name { get; set; }
+			public string surname { get; set; }
+			public bool is_admin { get; set; }
+			public List<int> mod { get; set; }
+			public List<SubscribeInfo> comp_owner { get; set; }
+		}
+
 		public class Tag
 		{
 			public int id { get; set; }
@@ -32,20 +43,26 @@ namespace VideoSharingSystem
 		}
 
 		public int myUserId = -1;
-		public bool isAdmin = false;
+		public bool is_admin = false;
+		public bool is_comp_owner = false;
+		public bool is_mod = false;
 
 		public AuthenticationHeaderValue bearer_token;
 		public string url_host;
 
+		public ProfileInfo profileInfo;
+
 		public Tags tags = new Tags();
 
-		public Form1(string token, string url_host, int user_id)
+		public Form1(string token, string url_host, int user_id, bool is_admin, bool is_comp_owner, bool is_mod)
 		{
 			bearer_token = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			this.url_host = url_host;
 
 			myUserId = user_id;
-			this.isAdmin = false;//isAdmin;
+			this.is_admin = is_admin;
+			this.is_comp_owner = is_comp_owner;
+			this.is_mod = is_mod;
 
 			commentElements = new();
 			videoElements = new();
@@ -54,13 +71,50 @@ namespace VideoSharingSystem
 			findVideoElements = new();
 			findUserElement = new();
 
-
 			InitializeComponent();
+
+			GetProfileInfo();
+			if (is_comp_owner)
+			{
+				cs_label.ForeColor = System.Drawing.SystemColors.HotTrack;
+				SetCS_viewer(true);
+			}
+
 			InitHistory();
 			GetTags();
-			GetMySubscriptions();
 
 			InitProfileViewer(1);
+		}
+
+		private void GetProfileInfo()
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string url = $"{url_host}/profile";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(url).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						profileInfo = JsonSerializer.Deserialize<ProfileInfo>(responseBody);
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 
 		private void GetTags()
@@ -115,7 +169,7 @@ namespace VideoSharingSystem
 
 		void UpdateSomeElementPositionOnProfile()
 		{
-			label10.Location = new Point(splitContainer6.SplitterDistance + 541 - 527, label10.Location.Y);
+			cs_label.Location = new Point(splitContainer6.SplitterDistance + 541 - 527, cs_label.Location.Y);
 			uploadButton.Location = new Point(splitContainer6.SplitterDistance + 381 - 527, uploadButton.Location.Y);
 		}
 
@@ -178,8 +232,8 @@ namespace VideoSharingSystem
 
 		private void button9_Click(object sender, EventArgs e)
 		{
-			new EditUser(this, currentCompanyId, isAdmin).ShowDialog(this);
-			InitProfileViewer(currentCompanyId);
+			new EditCompany(this, currentCompanyId).ShowDialog(this);
+			//InitProfileViewer(currentCompanyId);
 		}
 
 		private void button6_Click(object sender, EventArgs e)
@@ -213,5 +267,7 @@ namespace VideoSharingSystem
 		{
 
 		}
+
+		
 	}
 }

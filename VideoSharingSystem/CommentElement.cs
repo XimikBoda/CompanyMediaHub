@@ -104,7 +104,7 @@ namespace VideoSharingSystem
 		private void Delete(object sender, EventArgs e) 
 		{
 			if (((MouseEventArgs)e).Button == MouseButtons.Middle)
-				if (_main.isAdmin || _userId == _main.myUserId)
+				if (_main.is_admin || _userId == _main.myUserId)
 				{
 					if (MessageBox.Show("Ви дійсно хочете видалити цей коментар?\nТю дію буде неможливо відминити!",
 						"Видалення коментаря", MessageBoxButtons.OKCancel) == DialogResult.OK)

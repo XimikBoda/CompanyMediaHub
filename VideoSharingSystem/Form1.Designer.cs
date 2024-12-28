@@ -35,7 +35,7 @@ namespace VideoSharingSystem
 			this.companyLogoPictureBox = new System.Windows.Forms.PictureBox();
 			this.companyEditButton = new System.Windows.Forms.Button();
 			this.uploadButton = new System.Windows.Forms.Button();
-			this.label10 = new System.Windows.Forms.Label();
+			this.cs_label = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
 			this.subscribeButton = new System.Windows.Forms.Button();
 			this.richTextBox3 = new System.Windows.Forms.RichTextBox();
@@ -50,12 +50,13 @@ namespace VideoSharingSystem
 			this.label6 = new System.Windows.Forms.Label();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.label11 = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button10 = new System.Windows.Forms.Button();
+			this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
 			this.label14 = new System.Windows.Forms.Label();
 			this.label13 = new System.Windows.Forms.Label();
 			this.label12 = new System.Windows.Forms.Label();
@@ -80,7 +81,6 @@ namespace VideoSharingSystem
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button5 = new System.Windows.Forms.Button();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -97,6 +97,7 @@ namespace VideoSharingSystem
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.panel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -120,7 +121,6 @@ namespace VideoSharingSystem
 			this.splitContainer4.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.panel3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabPage1
@@ -146,7 +146,7 @@ namespace VideoSharingSystem
 			this.splitContainer5.Panel1.Controls.Add(this.companyLogoPictureBox);
 			this.splitContainer5.Panel1.Controls.Add(this.companyEditButton);
 			this.splitContainer5.Panel1.Controls.Add(this.uploadButton);
-			this.splitContainer5.Panel1.Controls.Add(this.label10);
+			this.splitContainer5.Panel1.Controls.Add(this.cs_label);
 			this.splitContainer5.Panel1.Controls.Add(this.label9);
 			this.splitContainer5.Panel1.Controls.Add(this.subscribeButton);
 			this.splitContainer5.Panel1.Controls.Add(this.richTextBox3);
@@ -193,15 +193,17 @@ namespace VideoSharingSystem
 			this.uploadButton.UseVisualStyleBackColor = true;
 			this.uploadButton.Click += new System.EventHandler(this.button8_Click);
 			// 
-			// label10
+			// cs_label
 			// 
-			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(541, 113);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(75, 13);
-			this.label10.TabIndex = 6;
-			this.label10.Text = "Мої підписки:";
+			this.cs_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.uploadButton.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.cs_label.AutoSize = true;
+			this.cs_label.Location = new System.Drawing.Point(541, 113);
+			this.cs_label.Name = "cs_label";
+			this.cs_label.Size = new System.Drawing.Size(75, 13);
+			this.cs_label.TabIndex = 6;
+			this.cs_label.Text = "Мої підписки:";
+			this.cs_label.Click += new System.EventHandler(this.cs_label_Click);
 			// 
 			// label9
 			// 
@@ -354,6 +356,16 @@ namespace VideoSharingSystem
 			this.panel2.TabIndex = 0;
 			this.panel2.Visible = false;
 			// 
+			// pictureBox2
+			// 
+			this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
+			this.pictureBox2.Location = new System.Drawing.Point(3, 3);
+			this.pictureBox2.Name = "pictureBox2";
+			this.pictureBox2.Size = new System.Drawing.Size(35, 35);
+			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox2.TabIndex = 4;
+			this.pictureBox2.TabStop = false;
+			// 
 			// label11
 			// 
 			this.label11.AutoSize = true;
@@ -396,8 +408,8 @@ namespace VideoSharingSystem
 			// 
 			// splitContainer1.Panel1
 			// 
-			this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel7);
 			this.splitContainer1.Panel1.Controls.Add(this.button10);
+			this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel7);
 			this.splitContainer1.Panel1.Controls.Add(this.label14);
 			this.splitContainer1.Panel1.Controls.Add(this.label13);
 			this.splitContainer1.Panel1.Controls.Add(this.label12);
@@ -414,15 +426,6 @@ namespace VideoSharingSystem
 			this.splitContainer1.SplitterDistance = 528;
 			this.splitContainer1.TabIndex = 0;
 			// 
-			// flowLayoutPanel7
-			// 
-			this.flowLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.flowLayoutPanel7.AutoScroll = true;
-			this.flowLayoutPanel7.Location = new System.Drawing.Point(11, 427);
-			this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-			this.flowLayoutPanel7.Size = new System.Drawing.Size(420, 37);
-			this.flowLayoutPanel7.TabIndex = 9;
-			// 
 			// button10
 			// 
 			this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -434,6 +437,17 @@ namespace VideoSharingSystem
 			this.button10.UseVisualStyleBackColor = true;
 			this.button10.Visible = false;
 			this.button10.Click += new System.EventHandler(this.button10_Click);
+			// 
+			// flowLayoutPanel7
+			// 
+			this.flowLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.flowLayoutPanel7.AutoScroll = true;
+			this.flowLayoutPanel7.Location = new System.Drawing.Point(11, 427);
+			this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+			this.flowLayoutPanel7.Size = new System.Drawing.Size(514, 42);
+			this.flowLayoutPanel7.TabIndex = 9;
+			this.flowLayoutPanel7.WrapContents = false;
 			// 
 			// label14
 			// 
@@ -732,16 +746,6 @@ namespace VideoSharingSystem
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
-			this.pictureBox2.Location = new System.Drawing.Point(3, 3);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(35, 35);
-			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox2.TabIndex = 4;
-			this.pictureBox2.TabStop = false;
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -771,6 +775,7 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage3.ResumeLayout(false);
 			this.splitContainer1.Panel1.ResumeLayout(false);
@@ -797,7 +802,6 @@ namespace VideoSharingSystem
 			this.splitContainer4.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -837,7 +841,7 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label cs_label;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Panel panel3;
