@@ -67,7 +67,6 @@ namespace VideoSharingSystem
 					surname = textBox4.Text,
 					patronymic = textBox5.Text,
 					birthday = dateTimePicker1.Value,
-					about = richTextBox1.Text,
 					password = textBox6.Text,
 					passwordAgain = textBox7.Text
 				};

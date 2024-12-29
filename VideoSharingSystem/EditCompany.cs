@@ -245,7 +245,7 @@ namespace VideoSharingSystem
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
 
-				string url = $"{mainForm.url_host}/user/search?s={findComboBox.Text}";
+				string url = $"{mainForm.url_host}/users/search?s={findComboBox.Text}";
 
 				try
 				{

@@ -73,6 +73,8 @@ namespace VideoSharingSystem
 
 			InitializeComponent();
 
+			button6.Visible = is_admin;
+
 			GetProfileInfo();
 			if (is_comp_owner)
 			{
@@ -83,7 +85,7 @@ namespace VideoSharingSystem
 			InitHistory();
 			GetTags();
 
-			InitProfileViewer(1);
+			InitcompanyViewer(1);
 		}
 
 		private void GetProfileInfo()
@@ -227,7 +229,7 @@ namespace VideoSharingSystem
 
 		private void label12_Click(object sender, EventArgs e)
 		{
-			InitProfileViewer(currentVideoUserId);
+			InitcompanyViewer(currentVideoUserId);
 		}
 
 		private void button9_Click(object sender, EventArgs e)
@@ -235,7 +237,7 @@ namespace VideoSharingSystem
 			new EditCompany(this, currentCompanyId).ShowDialog(this);
 			int companyId = currentCompanyId;
 			currentCompanyId = -1;
-			InitProfileViewer(companyId);
+			InitcompanyViewer(companyId);
 		}
 
 		private void button6_Click(object sender, EventArgs e)
@@ -279,6 +281,9 @@ namespace VideoSharingSystem
 
 		}
 
-		
+		private void button6_Click_1(object sender, EventArgs e)
+		{
+			new AddCompany(this).ShowDialog(this);
+		}
 	}
 }

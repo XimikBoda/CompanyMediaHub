@@ -62,7 +62,7 @@ namespace VideoSharingSystem
 		public int currentCompanyId = -1;
 		bool cs_label_company = false;
 
-		public async Task InitProfileViewer(int id)
+		public async Task InitcompanyViewer(int id)
 		{
 			if (currentCompanyId == id) {
 				tabControl1.SelectedIndex = 0;

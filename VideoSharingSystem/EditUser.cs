@@ -24,7 +24,7 @@ namespace VideoSharingSystem
 			public string login { get; set; }
 			public string name { get; set; }
 			public string surname { get; set; }
-			public string patromic { get; set; }
+			public string patronymic { get; set; }
 			public DateTime birthday { get; set; }
 		}
 
@@ -41,7 +41,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-				string url = $"{mainForm.url_host}/user/{userId}";
+				string url = $"{mainForm.url_host}/users/{userId}";
 
 				try
 				{
@@ -57,7 +57,7 @@ namespace VideoSharingSystem
 						loginTextBox.Text = oldUserInfo.login;
 						nameTextBox.Text = oldUserInfo.name;
 						surnameTextBox.Text = oldUserInfo.surname;
-						patronymicTextBox.Text = oldUserInfo.patromic;
+						patronymicTextBox.Text = oldUserInfo.patronymic;
 						birthDateTimePicker.Value = oldUserInfo.birthday;
 
 						oldPassTextBox.Text = "";
@@ -66,14 +66,12 @@ namespace VideoSharingSystem
 					else
 					{
 						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
-						Close();
 					}
 				}
 				catch (Exception ex)
 				{
 					Console.WriteLine(ex.Message);
 					MessageBox.Show(ex.Message);
-					Close();
 				}
 			}
 		}
@@ -89,7 +87,7 @@ namespace VideoSharingSystem
 			loginTextBox.Text != oldUserInfo.login ||
 			nameTextBox.Text != oldUserInfo.name ||
 			surnameTextBox.Text != oldUserInfo.surname ||
-			patronymicTextBox.Text != oldUserInfo.patromic ||
+			patronymicTextBox.Text != oldUserInfo.patronymic ||
 			birthDateTimePicker.Value != oldUserInfo.birthday;
 
 		bool IsSomeChanged() => IsPassChanged() || IsInfoChanged();
@@ -100,7 +98,7 @@ namespace VideoSharingSystem
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			if (oldPassTextBox.Text == "" && newPassTextBox.Text != "")
+			if (oldPassTextBox.Text == "" && newPassTextBox.Text != "" && !mainForm.is_admin)
 			{
 				MessageBox.Show("Введіть старий пароль");
 				return;
@@ -129,12 +127,12 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-				string url = $"{mainForm.url_host}/user/{userId}";
+				string url = $"{mainForm.url_host}/users/{userId}";
 				var registerInfo = new
 				{
 					email = emailTextBox.Text,
-					loginUser = loginTextBox.Text,
-					nameUser = nameTextBox.Text,
+					login = loginTextBox.Text,
+					name = nameTextBox.Text,
 					surname = surnameTextBox.Text,
 					patronymic = patronymicTextBox.Text,
 					birthday = birthDateTimePicker.Value,
@@ -179,7 +177,7 @@ namespace VideoSharingSystem
 				{
 					client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-					string url = $"{mainForm.url_host}/user/{userId}";
+					string url = $"{mainForm.url_host}/users/{userId}";
 
 					try
 					{

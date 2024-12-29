@@ -35,8 +35,6 @@ namespace VideoSharingSystem
 			this.label5 = new System.Windows.Forms.Label();
 			this.textBox4 = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-			this.label10 = new System.Windows.Forms.Label();
 			this.textBox3 = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -113,24 +111,6 @@ namespace VideoSharingSystem
 			this.label4.TabIndex = 6;
 			this.label4.Text = "Фамілія:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// richTextBox1
-			// 
-			this.richTextBox1.Location = new System.Drawing.Point(161, 197);
-			this.richTextBox1.MaxLength = 500;
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(300, 151);
-			this.richTextBox1.TabIndex = 7;
-			this.richTextBox1.Text = "";
-			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(101, 200);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(57, 13);
-			this.label10.TabIndex = 6;
-			this.label10.Text = "Про себе:";
 			// 
 			// textBox3
 			// 
@@ -292,10 +272,8 @@ namespace VideoSharingSystem
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(587, 361);
+			this.ClientSize = new System.Drawing.Size(587, 199);
 			this.Controls.Add(this.button2);
-			this.Controls.Add(this.richTextBox1);
-			this.Controls.Add(this.label10);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -306,7 +284,6 @@ namespace VideoSharingSystem
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -318,8 +295,6 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TextBox textBox4;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.TextBox textBox3;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;

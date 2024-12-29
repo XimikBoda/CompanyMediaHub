@@ -52,6 +52,7 @@ namespace VideoSharingSystem
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.label11 = new System.Windows.Forms.Label();
+			this.button6 = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -375,6 +376,18 @@ namespace VideoSharingSystem
 			this.label11.Size = new System.Drawing.Size(61, 18);
 			this.label11.TabIndex = 1;
 			this.label11.Text = "label11";
+			// 
+			// button6
+			// 
+			this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.button6.ForeColor = System.Drawing.SystemColors.Highlight;
+			this.button6.Location = new System.Drawing.Point(588, 0);
+			this.button6.Name = "button6";
+			this.button6.Size = new System.Drawing.Size(122, 23);
+			this.button6.TabIndex = 2;
+			this.button6.Text = "Створити компанію";
+			this.button6.UseVisualStyleBackColor = true;
+			this.button6.Click += new System.EventHandler(this.button6_Click_1);
 			// 
 			// tabControl1
 			// 
@@ -751,6 +764,7 @@ namespace VideoSharingSystem
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 532);
 			this.Controls.Add(this.button5);
+			this.Controls.Add(this.button6);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "Form1";
 			this.Text = "Company Media Hub";
@@ -857,6 +871,7 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.PictureBox companyLogoPictureBox;
 		private System.Windows.Forms.PictureBox pictureBox2;
+		private System.Windows.Forms.Button button6;
 	}
 }
 

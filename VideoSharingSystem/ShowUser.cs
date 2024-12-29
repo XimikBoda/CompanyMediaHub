@@ -32,7 +32,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-				string url = $"{mainForm.url_host}/user/{userId}";
+				string url = $"{mainForm.url_host}/users/{userId}";
 
 				try
 				{
@@ -48,7 +48,7 @@ namespace VideoSharingSystem
 						loginTextBox.Text = userInfo.login;
 						nameTextBox.Text = userInfo.name;
 						surnameTextBox.Text = userInfo.surname;
-						patronymicTextBox.Text = userInfo.patromic;
+						patronymicTextBox.Text = userInfo.patronymic;
 						birthDateTimePicker.Value = userInfo.birthday;
 					}
 					else

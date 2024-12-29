@@ -100,7 +100,7 @@ namespace VideoSharingSystem
 		}
 		private void GoToProfile(object sender, EventArgs e)
 		{
-			_main.InitProfileViewer(_IdUser);
+			_main.InitcompanyViewer(_IdUser);
 		}
 
 		public async void LoadImage()
