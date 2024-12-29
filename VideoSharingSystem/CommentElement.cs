@@ -116,7 +116,7 @@ namespace VideoSharingSystem
 
 		private void GoToProfile(object sender, EventArgs e)
 		{
-			_main.InitProfileViewer(_userId);
+			new ShowUser(_main, _userId).ShowDialog(_main);
 		}
 	}
 }

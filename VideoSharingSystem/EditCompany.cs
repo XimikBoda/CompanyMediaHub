@@ -295,6 +295,8 @@ namespace VideoSharingSystem
 
 		private void addModeratorButton_Click(object sender, EventArgs e)
 		{
+			if (selectedIdUser == -1)
+				return;
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;

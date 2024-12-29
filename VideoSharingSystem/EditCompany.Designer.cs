@@ -228,7 +228,7 @@
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Name = "EditCompany";
-			this.Text = "EditCompany";
+			this.Text = "Редагівання компанії";
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);

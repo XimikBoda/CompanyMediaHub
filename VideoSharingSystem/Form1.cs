@@ -154,7 +154,7 @@ namespace VideoSharingSystem
 
 		private void button5_Click(object sender, EventArgs e)
 		{
-			InitProfileViewer(myUserId);
+			new EditUser(this, myUserId).ShowDialog(this);
 		}
 
 		private void label9_Click(object sender, EventArgs e)

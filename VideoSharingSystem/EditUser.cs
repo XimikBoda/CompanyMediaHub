@@ -5,59 +5,77 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static VideoSharingSystem.Form1;
 
 namespace VideoSharingSystem
 {
 	public partial class EditUser : Form
 	{
-		Form1 _mainForm;
-		int _userId;
-		bool _isAdmin;
-		public EditUser(Form1 mainForm, int userId, bool isAdmin)
+		public class UserInfo
 		{
-			_mainForm = mainForm;
-			_userId = userId;
-			_isAdmin = isAdmin;
+			public int user_id { get; set; }
+			public string email { get; set; }
+			public string login { get; set; }
+			public string name { get; set; }
+			public string surname { get; set; }
+			public string patromic { get; set; }
+			public DateTime birthday { get; set; }
+		}
+
+		Form1 mainForm;
+		int userId;
+		UserInfo oldUserInfo;
+		public EditUser(Form1 mainForm, int userId)
+		{
+			this.mainForm = mainForm;
+			this.userId = userId;
 			InitializeComponent();
 
-			//using (SqlConnection connection = new SqlConnection(_mainForm.connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand(
-			//		"SELECT Email, LoginUser, NameUser, Surname, Patronymic, Birthday, About, IsAdmin FROM Users WHERE IdUser = @id ", connection);
-			//	command.Parameters.AddWithValue("@id", _userId);
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-			//	try
-			//	{
-			//		connection.Open();
-			//		{
-			//			SqlDataReader reader = command.ExecuteReader();
-			//			if (reader.Read())
-			//			{
-			//				textBox1.Text = reader[0].ToString();
-			//				textBox2.Text = reader[1].ToString();
-			//				textBox3.Text = reader[2].ToString();
-			//				textBox4.Text = reader[3].ToString();
-			//				textBox5.Text = reader[4].ToString();
-			//				dateTimePicker1.Value = (DateTime)reader[5];
-			//				richTextBox1.Text = reader[6].ToString();
-			//				checkBox1.Checked = reader.GetBoolean(7);
-			//				checkBox1.Enabled = isAdmin;
-			//			}
-			//			else
-			//				Close();
-			//			reader.Close();
-			//		}
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//		Close();
-			//	}
-			//}
+				string url = $"{mainForm.url_host}/user/{userId}";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(url).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						oldUserInfo = JsonSerializer.Deserialize<UserInfo>(responseBody);
+
+						emailTextBox.Text = oldUserInfo.email;
+						loginTextBox.Text = oldUserInfo.login;
+						nameTextBox.Text = oldUserInfo.name;
+						surnameTextBox.Text = oldUserInfo.surname;
+						patronymicTextBox.Text = oldUserInfo.patromic;
+						birthDateTimePicker.Value = oldUserInfo.birthday;
+
+						oldPassTextBox.Text = "";
+						newPassTextBox.Text = "";
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+						Close();
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+					Close();
+				}
+			}
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -65,87 +83,89 @@ namespace VideoSharingSystem
 			Close();
 		}
 
+		bool IsPassChanged() => oldPassTextBox.Text != "" || newPassTextBox.Text != "";
+		bool IsInfoChanged() =>
+			emailTextBox.Text != oldUserInfo.email ||
+			loginTextBox.Text != oldUserInfo.login ||
+			nameTextBox.Text != oldUserInfo.name ||
+			surnameTextBox.Text != oldUserInfo.surname ||
+			patronymicTextBox.Text != oldUserInfo.patromic ||
+			birthDateTimePicker.Value != oldUserInfo.birthday;
+
+		bool IsSomeChanged() => IsPassChanged() || IsInfoChanged();
+		void updateSaveButton()
+		{
+			button1.Enabled = IsSomeChanged();
+		}
+
 		private void button1_Click(object sender, EventArgs e)
 		{
-			if (textBox6.Text == "" && textBox7.Text != "")
+			if (oldPassTextBox.Text == "" && newPassTextBox.Text != "")
 			{
 				MessageBox.Show("Введіть старий пароль");
 				return;
 			}
-			if (textBox6.Text != "" && textBox7.Text == "")
+			if (oldPassTextBox.Text != "" && newPassTextBox.Text == "")
 			{
 				MessageBox.Show("Введіть новий пароль");
 				return;
 			}
-			//if (textBox6.Text != "" && textBox7.Text != "")
-				//using (SqlConnection connection = new SqlConnection(_mainForm.connectionString))
-				//{
-				//	SqlCommand command = new SqlCommand("SetNewPassword", connection);
-				//	command.CommandType = CommandType.StoredProcedure;
-				//	command.Parameters.Add("@IdUser", SqlDbType.Int);
-				//	command.Parameters.Add("@OldPassword", SqlDbType.VarChar, 20);
-				//	command.Parameters.Add("@NewPassword", SqlDbType.VarChar, 30);
+			if (loginTextBox.Text == "")
+			{
+				MessageBox.Show("Логін не має буди пустим");
+				return;
+			}
+			if (emailTextBox.Text == "")
+			{
+				MessageBox.Show("Email не має буди пустим");
+				return;
+			}
+			if (nameTextBox.Text == "")
+			{
+				MessageBox.Show("Ім'я не має буди пустим");
+				return;
+			}
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-				//	command.Parameters["@IdUser"].Value = _userId;
-				//	command.Parameters["@OldPassword"].Value = textBox6.Text;
-				//	command.Parameters["@NewPassword"].Value = textBox7.Text;
-				//	try
-				//	{
-				//		connection.Open();
-				//		if (command.ExecuteScalar().ToString() == "1")
-				//		{
-				//			MessageBox.Show("Пароль оновленно");
-				//			textBox6.Text = textBox7.Text = "";
-				//		}
-				//		else
-				//			MessageBox.Show("Старий пароль не вірний");
-				//		Close();
-				//	}
-				//	catch (Exception ex)
-				//	{
-				//		Console.WriteLine(ex.Message);
-				//		MessageBox.Show("Пароль не було оновленно, можливо невірний старий пароль" + ex.Message);
-				//		return;
-				//	}
-				//}
-			//using (SqlConnection connection = new SqlConnection(_mainForm.connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand("UPDATE Users SET Email = @Email, LoginUser = @LoginUser, NameUser = @NameUser, " +
-			//		"Surname = @Surname, Patronymic = @Patronymic, Birthday  = @Birthday, About = @About, IsAdmin = @IsAdmin " +
-			//		"WHERE IdUser = @IdUser", connection);
-			//	command.Parameters.Add("@Email", SqlDbType.VarChar, 30);
-			//	command.Parameters.Add("@LoginUser", SqlDbType.VarChar, 20);
-			//	command.Parameters.Add("@NameUser", SqlDbType.VarChar, 30);
-			//	command.Parameters.Add("@Surname", SqlDbType.VarChar, 30);
-			//	command.Parameters.Add("@Patronymic", SqlDbType.VarChar, 30);
-			//	command.Parameters.Add("@Birthday", SqlDbType.Date);
-			//	command.Parameters.Add("@About", SqlDbType.VarChar, 500);
-			//	command.Parameters.Add("@IsAdmin", SqlDbType.Bit);
-			//	command.Parameters.Add("@IdUser", SqlDbType.Int);
+				string url = $"{mainForm.url_host}/user/{userId}";
+				var registerInfo = new
+				{
+					email = emailTextBox.Text,
+					loginUser = loginTextBox.Text,
+					nameUser = nameTextBox.Text,
+					surname = surnameTextBox.Text,
+					patronymic = patronymicTextBox.Text,
+					birthday = birthDateTimePicker.Value,
+					oldPassword = oldPassTextBox.Text,
+					newPassword = newPassTextBox.Text
+				};
+				string json = JsonSerializer.Serialize(registerInfo);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-			//	command.Parameters["@Email"].Value = textBox1.Text;
-			//	command.Parameters["@LoginUser"].Value = textBox2.Text;
-			//	command.Parameters["@NameUser"].Value = textBox3.Text;
-			//	command.Parameters["@Surname"].Value = textBox4.Text;
-			//	command.Parameters["@Patronymic"].Value = textBox5.Text;
-			//	command.Parameters["@Birthday"].Value = dateTimePicker1.Value;
-			//	command.Parameters["@About"].Value = richTextBox1.Text;
-			//	command.Parameters["@IsAdmin"].Value = checkBox1.Checked;
-			//	command.Parameters["@IdUser"].Value = _userId;
-			//	try
-			//	{
-			//		connection.Open();
-			//		command.ExecuteNonQuery();
-			//		Close();
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//		return;
-			//	}
-			//}
+				try
+				{
+					HttpResponseMessage response = client.PutAsync(url, content).Result;
 
+					string responseBody = response.Content.ReadAsStringAsync().Result;
+
+					var loginResult = JsonSerializer.Deserialize<GeneralResult>(responseBody);
+					if (response.IsSuccessStatusCode)
+					{
+						Close();
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode + "\n" + loginResult.message);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 
 		private void button3_Click(object sender, EventArgs e)
@@ -155,32 +175,47 @@ namespace VideoSharingSystem
 
 			if (result == DialogResult.OK)
 			{
-				//using (SqlConnection connection = new SqlConnection(_mainForm.connectionString))
-				//{
-				//	SqlCommand command = new SqlCommand("Delete FROM Users WHERE IdUser = @IdUser", connection);
-				//	command.Parameters.Add("@IdUser", SqlDbType.Int);
+				using (HttpClient client = new HttpClient())
+				{
+					client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 
-				//	command.Parameters["@IdUser"].Value = _userId;
-				//	try
-				//	{
-				//		connection.Open();
-				//		command.ExecuteNonQuery();
-				//		MessageBox.Show("Профіль видаленно");
-				//		Close();
-				//		if (_userId == _mainForm.myUserId)
-				//			_mainForm.Close();
-				//		else
-				//		{
-				//			_mainForm.InitProfileViewer(_mainForm.myUserId);
-				//		}
-				//	}
-				//	catch (Exception ex)
-				//	{
-				//		Console.WriteLine(ex.Message);
-				//		MessageBox.Show("Профіль не вдалося видалити\n" + ex.Message);
-				//	}
-				//}
+					string url = $"{mainForm.url_host}/user/{userId}";
+
+					try
+					{
+						HttpResponseMessage response = client.DeleteAsync(url).Result;
+
+						if (response.IsSuccessStatusCode)
+						{
+							string responseBody = response.Content.ReadAsStringAsync().Result;
+
+							MessageBox.Show("Профіль видаленно");
+							Close();
+							if (userId == mainForm.myUserId)
+								mainForm.Close();
+						}
+						else
+						{
+							MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+						}
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+						MessageBox.Show(ex.Message);
+					}
+				}
 			}
+		}
+
+		private void emailTextBox_TextChanged(object sender, EventArgs e)
+		{
+			updateSaveButton();
+		}
+
+		private void birthDateTimePicker_ValueChanged(object sender, EventArgs e)
+		{
+			updateSaveButton();
 		}
 	}
 }
