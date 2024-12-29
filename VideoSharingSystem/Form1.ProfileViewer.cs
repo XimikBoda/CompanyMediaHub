@@ -137,6 +137,8 @@ namespace VideoSharingSystem
 		}
 
 		public async Task GetMediaList() {
+			int curCompId = currentCompanyId;
+
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
@@ -152,6 +154,9 @@ namespace VideoSharingSystem
 						string responseBody = response.Content.ReadAsStringAsync().Result;
 
 						var videosResult = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
+
+						if (curCompId != currentCompanyId)
+							return;
 
 						this.Invoke(new MethodInvoker(delegate ()
 						{
@@ -174,7 +179,9 @@ namespace VideoSharingSystem
 								videoElements.Add(new VideoElement(flowLayoutPanel1, this,
 									item.id, item.name, item.description, item.upload_time.ToString()));
 							}));
-							if(c>10)
+							if (curCompId != currentCompanyId)
+								return;
+							//if (c>4)
 								Thread.Sleep(10);
 							++c;
 						}

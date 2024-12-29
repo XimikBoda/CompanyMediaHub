@@ -45,6 +45,7 @@
 			this.saveButton = new System.Windows.Forms.Button();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.addOwnerButton = new System.Windows.Forms.Button();
+			this.deleteCompanyButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
@@ -219,11 +220,24 @@
 			this.addOwnerButton.UseVisualStyleBackColor = false;
 			this.addOwnerButton.Click += new System.EventHandler(this.addOwnerButton_Click);
 			// 
+			// deleteCompanyButton
+			// 
+			this.deleteCompanyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+			this.deleteCompanyButton.Location = new System.Drawing.Point(256, 327);
+			this.deleteCompanyButton.Name = "deleteCompanyButton";
+			this.deleteCompanyButton.Size = new System.Drawing.Size(126, 23);
+			this.deleteCompanyButton.TabIndex = 33;
+			this.deleteCompanyButton.Text = "Видалити компанію";
+			this.deleteCompanyButton.UseVisualStyleBackColor = false;
+			this.deleteCompanyButton.Visible = false;
+			this.deleteCompanyButton.Click += new System.EventHandler(this.deleteCompanyButton_Click);
+			// 
 			// EditCompany
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(618, 425);
+			this.Controls.Add(this.deleteCompanyButton);
 			this.Controls.Add(this.addOwnerButton);
 			this.Controls.Add(this.pictureBox2);
 			this.Controls.Add(this.button2);
@@ -269,5 +283,6 @@
 		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.Button addOwnerButton;
+		private System.Windows.Forms.Button deleteCompanyButton;
 	}
 }

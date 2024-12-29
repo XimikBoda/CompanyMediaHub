@@ -45,7 +45,8 @@ namespace VideoSharingSystem
 			InitializeComponent();
 			addModeratorButton.Enabled = false;
 			deleteModeratorButton.Enabled = false;
-			addOwnerButton.Enabled = mainForm.is_admin;
+			addOwnerButton.Visible = mainForm.is_admin;
+			deleteCompanyButton.Visible = mainForm.is_admin;
 			if (mainForm.is_admin)
 				label3.Text = "Модератори та власники:";
 			LoadInfo();
@@ -546,7 +547,45 @@ namespace VideoSharingSystem
 			}
 		}
 
+		private void deleteCompanyButton_Click(object sender, EventArgs e)
+		{
+			var result = MessageBox.Show("Ви впевненні, що хочете видалити цю компаныю?\nВидалиться вся інформація пов'язанна з профілем (завантаженні медія, коментарі).\nЦю дію буде неможливо відминити!",
+				"Видалення профілю", MessageBoxButtons.OKCancel);
 
+			if (result == DialogResult.OK)
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+
+					string url = $"{mainForm.url_host}/company/{currentCompanyId}";
+
+					try
+					{
+						HttpResponseMessage response = client.DeleteAsync(url).Result;
+
+						if (response.IsSuccessStatusCode)
+						{
+							string responseBody = response.Content.ReadAsStringAsync().Result;
+
+							MessageBox.Show("Компаныю видаленно");
+							Close();
+							//if (userId == mainForm.myUserId)
+							//	mainForm.Close();
+						}
+						else
+						{
+							MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+						}
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+						MessageBox.Show(ex.Message);
+					}
+				}
+			}
+		}
 	}
 
 }

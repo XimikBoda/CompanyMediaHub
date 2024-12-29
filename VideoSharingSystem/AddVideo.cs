@@ -24,11 +24,13 @@ namespace VideoSharingSystem
 	public partial class AddVideo : Form
 	{
 		Form1 _mainForm;
+		int idCompany;
 		string _selectedFileName;
 		CancellationTokenSource cancelToken = new CancellationTokenSource();
-		public AddVideo(Form1 mainForm)
+		public AddVideo(Form1 mainForm, int idCompany)
 		{
 			_mainForm = mainForm;
+			this.idCompany = idCompany;
 			InitializeComponent();
 
 			foreach (var item in _mainForm.tags.tags)
@@ -63,7 +65,7 @@ namespace VideoSharingSystem
 				using (HttpClient client = HttpClientFactory.Create(progress))
 				{
 					client.DefaultRequestHeaders.Authorization = _mainForm.bearer_token;
-					client.DefaultRequestHeaders.Add("X-idCompany", 1.ToString());
+					client.DefaultRequestHeaders.Add("X-idCompany", idCompany.ToString());
 
 					List<int> tags = new List<int>();
 					foreach (object itemChecked in TagsCheckedListBox.CheckedItems)
@@ -72,7 +74,7 @@ namespace VideoSharingSystem
 						tags.Add(tag.id);
 					}
 
-					var videoInfo = new { name = nameTextBox.Text, description = descriptionRichTextBox.Text, idCompany = 1, tags = tags };
+					var videoInfo = new { name = nameTextBox.Text, description = descriptionRichTextBox.Text, idCompany = idCompany, tags = tags };
 					string json = JsonSerializer.Serialize(videoInfo);
 					string url = $"{_mainForm.url_host}/video/upload";
 

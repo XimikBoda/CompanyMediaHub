@@ -221,8 +221,11 @@ namespace VideoSharingSystem
 
 		private void button8_Click(object sender, EventArgs e)
 		{
-			AddVideo f = new(this);
+			AddVideo f = new(this, currentCompanyId);
 			f.ShowDialog(this);
+			int ccurrentCompanyId = currentCompanyId;
+			currentCompanyId = -1;
+			InitcompanyViewer(ccurrentCompanyId);
 		}
 
 
