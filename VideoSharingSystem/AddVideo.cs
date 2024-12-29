@@ -169,7 +169,6 @@ namespace VideoSharingSystem
 
 			using (Graphics g = Graphics.FromImage(bitmap))
 			{
-				// Capture the frame from the AxWindowsMediaPlayer control
 				g.CopyFromScreen(axWindowsMediaPlayer1.PointToScreen(Point.Empty), Point.Empty, bounds.Size);
 			}
 

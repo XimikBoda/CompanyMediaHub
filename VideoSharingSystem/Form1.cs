@@ -246,10 +246,19 @@ namespace VideoSharingSystem
 		private void button10_Click(object sender, EventArgs e)
 		{
 			int ccurrentVideoId = currentVideoId;
+
+			var wasPlaying = axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying;
+			if (wasPlaying)
+				axWindowsMediaPlayer1.Ctlcontrols.pause();
+
 			new EditVideo(this, currentVideoId).ShowDialog(this);
-			if (currentVideoId == -1)
+
+			if (wasPlaying)
+				axWindowsMediaPlayer1.Ctlcontrols.play();
+
+			if (currentVideoId != -1)
 			{
-				//DeInitVideoPlayer();
+				DeInitVideoPlayer();
 				//currentVideoId = -1;
 				InitVideoPlayer(ccurrentVideoId);
 			}

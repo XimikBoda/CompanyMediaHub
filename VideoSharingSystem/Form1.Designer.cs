@@ -196,7 +196,6 @@ namespace VideoSharingSystem
 			// cs_label
 			// 
 			this.cs_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.uploadButton.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.cs_label.AutoSize = true;
 			this.cs_label.Location = new System.Drawing.Point(541, 113);
 			this.cs_label.Name = "cs_label";
@@ -814,7 +813,7 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.TabPage tabPage4;
 		private System.Windows.Forms.SplitContainer splitContainer3;
 		private System.Windows.Forms.RichTextBox richTextBox1;
-		private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+		public AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button1;

@@ -14,6 +14,7 @@ using AxWMPLib;
 using System.Security.Policy;
 using System.Net;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace VideoSharingSystem
 {
@@ -32,6 +33,7 @@ namespace VideoSharingSystem
 			public int user_rating { get; set; }
 			public int total_views { get; set; }
 			public int unique_viewers { get; set; }
+			public int company_id { get; set; }
 		}
 
 		public class CommentInfo
@@ -108,6 +110,8 @@ namespace VideoSharingSystem
 							foreach (var item in linkResult.tags)
 								tagElements.Add(new TagElement(flowLayoutPanel7, this, item.name));
 						}
+
+						button10.Visible = is_admin || profileInfo.comp_owner.Exists(x => x.company_id == linkResult.company_id);
 
 						splitContainer1.Enabled = true;
 
