@@ -25,7 +25,8 @@ namespace VideoSharingSystem
 		{
 			public int user_id { get; set; }
 			public string Email { get; set; }
-			public override string ToString() => Email;
+			public bool owner { get; set; }
+			public override string ToString() => (owner ? "(Власник) " : "") + Email;
 		}
 
 		Form1 mainForm;
@@ -44,12 +45,17 @@ namespace VideoSharingSystem
 			InitializeComponent();
 			addModeratorButton.Enabled = false;
 			deleteModeratorButton.Enabled = false;
+			addOwnerButton.Enabled = mainForm.is_admin;
+			if (mainForm.is_admin)
+				label3.Text = "Модератори та власники:";
 			LoadInfo();
 			LoadModerators();
 		}
 
 		void LoadModerators()
 		{
+			//if (mainForm.is_admin)
+			LoadOwners();
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
@@ -67,9 +73,52 @@ namespace VideoSharingSystem
 
 						var moderators = JsonSerializer.Deserialize<List<Moderator>>(responseBody);
 
-						ModeratorsCheckedListBox.Items.Clear();
+						//if (!mainForm.is_admin)
+						//ModeratorsCheckedListBox.Items.Clear();
 						foreach (var item in moderators)
+						{
+							item.owner = false;
 							ModeratorsCheckedListBox.Items.Add(item);
+						}
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+		}
+
+		void LoadOwners()
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
+
+				string loginUrl = $"{mainForm.url_host}/company/{currentCompanyId}/owners";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var owners = JsonSerializer.Deserialize<List<Moderator>>(responseBody);
+
+						ModeratorsCheckedListBox.Items.Clear();
+						foreach (var item in owners)
+						{
+							item.owner = true;
+							ModeratorsCheckedListBox.Items.Add(item);
+						}
 					}
 					else
 					{
@@ -302,11 +351,52 @@ namespace VideoSharingSystem
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
 
-				string url = $"{mainForm.url_host}/company/{currentCompanyId}/moderators/{selectedIdUser}";
+				string url = $"{mainForm.url_host}/company/{currentCompanyId}/moderators";
+
+				var idData = new { id = selectedIdUser };
+				string json = JsonSerializer.Serialize(idData);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
 				try
 				{
-					HttpResponseMessage response = client.PostAsync(url, null).Result;
+					HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						LoadModerators();
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
+		}
+
+		private void addOwnerButton_Click(object sender, EventArgs e)
+		{
+			if (selectedIdUser == -1)
+				return;
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
+
+				string url = $"{mainForm.url_host}/company/{currentCompanyId}/owners";
+
+				var idData = new { id = selectedIdUser };
+				string json = JsonSerializer.Serialize(idData);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(url, content).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -343,8 +433,18 @@ namespace VideoSharingSystem
 
 		private void ModeratorsCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
-			this.BeginInvoke((MethodInvoker)(
-				() => deleteModeratorButton.Enabled = (ModeratorsCheckedListBox.CheckedItems.Count > 0)));
+			this.BeginInvoke((MethodInvoker)(() =>
+				{
+					deleteModeratorButton.Enabled = (ModeratorsCheckedListBox.CheckedItems.Count > 0);
+					if(!mainForm.is_admin)
+						for (int i = 0; i < ModeratorsCheckedListBox.Items.Count; i++)
+						{
+							bool owner = ((Moderator)ModeratorsCheckedListBox.Items[i]).owner;
+							if (owner)
+								ModeratorsCheckedListBox.SetItemCheckState(i, CheckState.Unchecked);
+						}
+				}
+			));
 
 		}
 
@@ -358,7 +458,8 @@ namespace VideoSharingSystem
 				string url = $"{mainForm.url_host}/company/{currentCompanyId}/moderators";
 				List<int> ids = new();
 				foreach (var item in ModeratorsCheckedListBox.CheckedItems)
-					ids.Add(((Moderator)item).user_id);
+					if (!((Moderator)item).owner)
+						ids.Add(((Moderator)item).user_id);
 				string json = JsonSerializer.Serialize(ids);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 				var request = new HttpRequestMessage
@@ -376,7 +477,8 @@ namespace VideoSharingSystem
 					{
 						string responseBody = response.Content.ReadAsStringAsync().Result;
 
-						LoadModerators();
+						if (!mainForm.is_admin)
+							LoadModerators();
 						deleteModeratorButton.Enabled = (ModeratorsCheckedListBox.CheckedItems.Count > 0);
 					}
 					else
@@ -390,6 +492,49 @@ namespace VideoSharingSystem
 					MessageBox.Show(ex.Message);
 				}
 			}
+
+			if (mainForm.is_admin)
+				using (HttpClient client = new HttpClient())
+				{
+					client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
+					client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
+
+					string url = $"{mainForm.url_host}/company/{currentCompanyId}/owners";
+					List<int> ids = new();
+					foreach (var item in ModeratorsCheckedListBox.CheckedItems)
+						if (((Moderator)item).owner)
+							ids.Add(((Moderator)item).user_id);
+					string json = JsonSerializer.Serialize(ids);
+					var content = new StringContent(json, Encoding.UTF8, "application/json");
+					var request = new HttpRequestMessage
+					{
+						Method = HttpMethod.Delete,
+						RequestUri = new Uri(url),
+						Content = content
+					};
+
+					try
+					{
+						HttpResponseMessage response = client.SendAsync(request).Result;
+
+						if (response.IsSuccessStatusCode)
+						{
+							string responseBody = response.Content.ReadAsStringAsync().Result;
+
+							LoadModerators();
+							deleteModeratorButton.Enabled = (ModeratorsCheckedListBox.CheckedItems.Count > 0);
+						}
+						else
+						{
+							MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+						}
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+						MessageBox.Show(ex.Message);
+					}
+				}
 		}
 
 		private void findComboBox_KeyDown(object sender, KeyEventArgs e)
@@ -400,6 +545,8 @@ namespace VideoSharingSystem
 				e.Handled = true;
 			}
 		}
+
+
 	}
 
 }

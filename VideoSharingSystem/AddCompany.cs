@@ -92,6 +92,7 @@ namespace VideoSharingSystem
 							var result = JsonSerializer.Deserialize<AddCompanyResult>(responseBody);
 
 							mainForm.InitcompanyViewer(result.id);
+							new EditCompany(mainForm, result.id).ShowDialog(this);
 
 							Close();
 						}

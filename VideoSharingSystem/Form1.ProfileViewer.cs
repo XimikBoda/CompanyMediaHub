@@ -178,9 +178,6 @@ namespace VideoSharingSystem
 								Thread.Sleep(10);
 							++c;
 						}
-						this.Invoke(new MethodInvoker(delegate ()
-						{
-						}));
 
 					}
 					else
@@ -190,8 +187,8 @@ namespace VideoSharingSystem
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine(ex.Message);
-					MessageBox.Show(ex.Message);
+				//	Console.WriteLine(ex.Message);
+				//	MessageBox.Show(ex.Message);
 				}
 			}
 		}

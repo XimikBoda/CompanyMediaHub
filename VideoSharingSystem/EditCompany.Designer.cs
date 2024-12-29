@@ -44,6 +44,7 @@
 			this.button2 = new System.Windows.Forms.Button();
 			this.saveButton = new System.Windows.Forms.Button();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
+			this.addOwnerButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
@@ -206,11 +207,24 @@
 			this.pictureBox2.TabIndex = 31;
 			this.pictureBox2.TabStop = false;
 			// 
+			// addOwnerButton
+			// 
+			this.addOwnerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.addOwnerButton.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.addOwnerButton.Location = new System.Drawing.Point(486, 396);
+			this.addOwnerButton.Name = "addOwnerButton";
+			this.addOwnerButton.Size = new System.Drawing.Size(117, 20);
+			this.addOwnerButton.TabIndex = 32;
+			this.addOwnerButton.Text = "Додати власника";
+			this.addOwnerButton.UseVisualStyleBackColor = false;
+			this.addOwnerButton.Click += new System.EventHandler(this.addOwnerButton_Click);
+			// 
 			// EditCompany
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(618, 425);
+			this.Controls.Add(this.addOwnerButton);
 			this.Controls.Add(this.pictureBox2);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.saveButton);
@@ -254,5 +268,6 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.PictureBox pictureBox2;
+		private System.Windows.Forms.Button addOwnerButton;
 	}
 }
