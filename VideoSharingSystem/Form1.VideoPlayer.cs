@@ -42,6 +42,8 @@ namespace VideoSharingSystem
 			public int user_id { get; set; }
 			public string text { get; set; }
 			public string user_login { get; set; }
+			public bool can_delete { get; set; }
+			public bool reported { get; set; }
 		}
 		public class NewCommentnfo
 		{
@@ -251,7 +253,7 @@ namespace VideoSharingSystem
 							commentElements.Clear();
 
 							foreach (var item in commentsResult)
-								commentElements.Add(new CommentElement(flowLayoutPanel3, this, item.id, item.user_id, item.user_login, item.text));
+								commentElements.Add(new CommentElement(flowLayoutPanel3, this, item.id, item.user_id, item.user_login, item.text, item.can_delete, item.reported));
 						}
 
 						splitContainer1.Enabled = true;
@@ -268,38 +270,6 @@ namespace VideoSharingSystem
 					MessageBox.Show(ex.Message);
 				}
 			}
-
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand command = new SqlCommand(
-			//		"SELECT IdComment, U.IdUser, NameUser, Surname, TextComment " +
-			//		"FROM Comments C JOIN Users U ON C.IdUser = U.IdUser WHERE IdVideo = @id ORDER BY IdComment DESC", connection);
-			//	command.Parameters.AddWithValue("@id", currentVideoId);
-
-			//	try
-			//	{
-			//		connection.Open();
-			//		{
-			//			SqlDataReader reader = command.ExecuteReader();
-			//			foreach (var el in commentElements)
-			//				el.Deatach();
-			//			commentElements.Clear();
-			//			while (reader.Read())
-			//			{
-
-			//				commentElements.Add(new CommentElement(flowLayoutPanel3, this,
-			//					Convert.ToInt32(reader[0].ToString()), Convert.ToInt32(reader[1].ToString()),
-			//					reader[2].ToString().Trim() + ' ' + reader[3].ToString().Trim(), reader[4].ToString().Trim()));
-			//			}
-			//			reader.Close();
-			//		}
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
 		}
 
 		public void DeleteComment(int id)
@@ -372,7 +342,7 @@ namespace VideoSharingSystem
 						if (commentResult != null)
 						{
 							var ncomment = commentResult.comment;
-							commentElements.Add(new CommentElement(flowLayoutPanel3, this, ncomment.id, ncomment.user_id, ncomment.user_login, ncomment.text));
+							commentElements.Add(new CommentElement(flowLayoutPanel3, this, ncomment.id, ncomment.user_id, ncomment.user_login, ncomment.text, true, false));
 							//LoadsComments();
 						}
 						else

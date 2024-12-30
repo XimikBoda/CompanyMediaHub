@@ -81,6 +81,14 @@ namespace VideoSharingSystem
 			this.button7 = new System.Windows.Forms.Button();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+			this.panel4 = new System.Windows.Forms.Panel();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label16 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
 			this.button5 = new System.Windows.Forms.Button();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
@@ -122,6 +130,9 @@ namespace VideoSharingSystem
 			this.splitContainer4.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.panel3.SuspendLayout();
+			this.tabPage2.SuspendLayout();
+			this.flowLayoutPanel6.SuspendLayout();
+			this.panel4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabPage1
@@ -394,12 +405,15 @@ namespace VideoSharingSystem
 			this.tabControl1.Controls.Add(tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Controls.Add(this.tabPage4);
+			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(800, 532);
 			this.tabControl1.TabIndex = 0;
+			this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
+			this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
 			// 
 			// tabPage3
 			// 
@@ -408,7 +422,7 @@ namespace VideoSharingSystem
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Size = new System.Drawing.Size(792, 506);
 			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "Перегляд відео";
+			this.tabPage3.Text = "Перегляд медія";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
 			// splitContainer1
@@ -746,6 +760,90 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel5.WrapContents = false;
 			this.flowLayoutPanel5.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel5_Paint);
 			// 
+			// tabPage2
+			// 
+			this.tabPage2.Controls.Add(this.flowLayoutPanel6);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Size = new System.Drawing.Size(792, 506);
+			this.tabPage2.TabIndex = 0;
+			this.tabPage2.Text = "Панель модератора";
+			// 
+			// flowLayoutPanel6
+			// 
+			this.flowLayoutPanel6.AutoScroll = true;
+			this.flowLayoutPanel6.Controls.Add(this.panel4);
+			this.flowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.flowLayoutPanel6.Location = new System.Drawing.Point(0, 0);
+			this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+			this.flowLayoutPanel6.Size = new System.Drawing.Size(792, 506);
+			this.flowLayoutPanel6.TabIndex = 1;
+			this.flowLayoutPanel6.WrapContents = false;
+			// 
+			// panel4
+			// 
+			this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel4.Controls.Add(this.label17);
+			this.panel4.Controls.Add(this.label16);
+			this.panel4.Controls.Add(this.label2);
+			this.panel4.Controls.Add(this.label10);
+			this.panel4.Controls.Add(this.label15);
+			this.panel4.Location = new System.Drawing.Point(3, 3);
+			this.panel4.Name = "panel4";
+			this.panel4.Size = new System.Drawing.Size(479, 112);
+			this.panel4.TabIndex = 0;
+			this.panel4.Visible = false;
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(3, 56);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(60, 13);
+			this.label17.TabIndex = 4;
+			this.label17.Text = "Коментар:";
+			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(16, 34);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(29, 13);
+			this.label16.TabIndex = 3;
+			this.label16.Text = "Ім\'я:";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label2.Location = new System.Drawing.Point(51, 34);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(41, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "label2";
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label10.Location = new System.Drawing.Point(6, 11);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(39, 13);
+			this.label10.TabIndex = 1;
+			this.label10.Text = "Медія:";
+			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label15.ForeColor = System.Drawing.SystemColors.HotTrack;
+			this.label15.Location = new System.Drawing.Point(51, 6);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(61, 18);
+			this.label15.TabIndex = 0;
+			this.label15.Text = "label15";
+			// 
 			// button5
 			// 
 			this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -815,6 +913,10 @@ namespace VideoSharingSystem
 			this.splitContainer4.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
+			this.tabPage2.ResumeLayout(false);
+			this.flowLayoutPanel6.ResumeLayout(false);
+			this.panel4.ResumeLayout(false);
+			this.panel4.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -872,6 +974,14 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.PictureBox companyLogoPictureBox;
 		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+		private System.Windows.Forms.Panel panel4;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.Label label16;
 	}
 }
 

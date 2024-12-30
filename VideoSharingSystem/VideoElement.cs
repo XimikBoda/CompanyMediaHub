@@ -44,17 +44,7 @@ namespace VideoSharingSystem
 
 			//_mainFlowPanel.SuspendLayout();
 
-			_panel.SuspendLayout();
-			_panel.Controls.Add(_uploadTimeLabel);
-			_panel.Controls.Add(_descriptionLabel);
-			_panel.Controls.Add(_nameLabel);
-			_panel.Controls.Add(_pictureBox1);
-			_panel.Location = new System.Drawing.Point(3, 3);
-			_panel.Name = "panel1";
-			_panel.Size = new System.Drawing.Size(479, 79);
-			_panel.TabIndex = 0;
-			_panel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_Paint);
-			_panel.Click += GoToVideo;
+			
 			//_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
 			// 
 			// label6
@@ -101,6 +91,18 @@ namespace VideoSharingSystem
 			_pictureBox1.TabStop = false;
 			_pictureBox1.Click += GoToVideo;
 
+			_panel.SuspendLayout();
+			_panel.Controls.Add(_uploadTimeLabel);
+			_panel.Controls.Add(_descriptionLabel);
+			_panel.Controls.Add(_nameLabel);
+			_panel.Controls.Add(_pictureBox1);
+			_panel.Location = new System.Drawing.Point(3, 3);
+			_panel.Name = "panel1";
+			_panel.Size = new System.Drawing.Size(479, 79);
+			_panel.TabIndex = 0;
+			_panel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_Paint);
+			_panel.Click += GoToVideo;
+
 
 			if (description.Length == 0)
 			{
@@ -114,8 +116,8 @@ namespace VideoSharingSystem
 
 			//_mainFlowPanel.ResumeLayout(false);
 
-			_mainFlowPanel.Controls.Add(_panel);
 			_panel.ResumeLayout();
+			_mainFlowPanel.Controls.Add(_panel);
 
 			//_panel.Visible = false;
 			//_panel.Visible = true;

@@ -16,36 +16,25 @@ namespace VideoSharingSystem
 		FlowLayoutPanel _flowPanel;
 		Label _nameLabel;
 		Label _commentLabel;
+		ContextMenu cm = new ContextMenu();
 
 		int _userId;
 		int _commentId;
-		public CommentElement(FlowLayoutPanel mainFlowPanel, Form1 main, int commentId, int userId, string name, string comment)
+		bool can_delete;
+		bool reported;
+		public CommentElement(FlowLayoutPanel mainFlowPanel, Form1 main, int commentId, int userId, string name, string comment, bool can_delete, bool reported)
 		{
 			_userId = userId;
 			_mainFlowPanel = mainFlowPanel;
 			_main = main;
 			_commentId = commentId;
 
+			this.can_delete = can_delete;
+			this.reported = reported;
+
 			_flowPanel = new();
 			_nameLabel = new();
 			_commentLabel = new();
-
-			_mainFlowPanel.SuspendLayout();
-			_flowPanel.SuspendLayout();
-
-
-			_mainFlowPanel.Controls.Add(_flowPanel);
-
-			_flowPanel.AutoSize = true;
-			_flowPanel.Controls.Add(_nameLabel);
-			_flowPanel.Controls.Add(_commentLabel);
-			_flowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			_flowPanel.Location = new System.Drawing.Point(3, 3);
-			_flowPanel.Name = "flowLayoutPanel4";
-			_flowPanel.Size = new System.Drawing.Size(41, 26);
-			_flowPanel.TabIndex = 0;
-			//_flowPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-
 
 			// 
 			// label4
@@ -59,6 +48,7 @@ namespace VideoSharingSystem
 			_nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			_nameLabel.ForeColor = System.Drawing.SystemColors.HotTrack;
 			_nameLabel.Click += GoToProfile;
+			//_nameLabel.ContextMenu = cm;
 
 
 
@@ -71,17 +61,36 @@ namespace VideoSharingSystem
 			_commentLabel.Size = new System.Drawing.Size(35, 13);
 			_commentLabel.TabIndex = 1;
 			_commentLabel.Text = comment;
-			_commentLabel.Click += Delete;
+			//_commentLabel.Click += Delete;
+			_commentLabel.ContextMenu = cm;
+
+			cm.MenuItems.Add("Поскаржитися", new EventHandler(Repport));
+			if (can_delete)
+				cm.MenuItems.Add("Видалити", new EventHandler(Delete));
 
 			SetSize();
 
+			_flowPanel.SuspendLayout();
+			_flowPanel.AutoSize = true;
+			_flowPanel.Controls.Add(_nameLabel);
+			_flowPanel.Controls.Add(_commentLabel);
+			_flowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			_flowPanel.Location = new System.Drawing.Point(3, 3);
+			_flowPanel.Name = "flowLayoutPanel4";
+			_flowPanel.Size = new System.Drawing.Size(41, 26);
+			_flowPanel.TabIndex = 0;
+			_flowPanel.ContextMenu = cm;
+			if (reported)
+				_flowPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+
 			_flowPanel.ResumeLayout(false);
-			_mainFlowPanel.ResumeLayout(false);
 
-			_flowPanel.Visible = false;
-			_flowPanel.Visible = true;
+			_mainFlowPanel.Controls.Add(_flowPanel);
 
-			_mainFlowPanel.Update();
+			//_flowPanel.Visible = false;
+			//_flowPanel.Visible = true;
+
+			//_mainFlowPanel.Update();
 
 			_mainFlowPanel.Resize += OnResized;
 		}
@@ -101,17 +110,20 @@ namespace VideoSharingSystem
 		{
 			SetSize();
 		}
-		private void Delete(object sender, EventArgs e) 
+		private void Repport(object sender, EventArgs e)
 		{
-			if (((MouseEventArgs)e).Button == MouseButtons.Middle)
-				if (_main.is_admin || _userId == _main.myUserId)
-				{
-					if (MessageBox.Show("Ви дійсно хочете видалити цей коментар?\nТю дію буде неможливо відминити!",
-						"Видалення коментаря", MessageBoxButtons.OKCancel) == DialogResult.OK)
-						_main.DeleteComment(_commentId);
-				}
-				else
-					MessageBox.Show("Ви не можете видалити чужий коментар");
+			new CommentReport(_main, _commentId, _userId, _nameLabel.Text, _commentLabel.Text).ShowDialog(_main);
+		}
+		private void Delete(object sender, EventArgs e)
+		{
+			if (can_delete)
+			{
+				if (MessageBox.Show("Ви дійсно хочете видалити цей коментар?\nТю дію буде неможливо відминити!",
+					"Видалення коментаря", MessageBoxButtons.OKCancel) == DialogResult.OK)
+					_main.DeleteComment(_commentId);
+			}
+			else
+				MessageBox.Show("Ви не можете видалити чужий коментар");
 		}
 
 		private void GoToProfile(object sender, EventArgs e)

@@ -9,8 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static VideoSharingSystem.Form1;
@@ -28,6 +30,18 @@ namespace VideoSharingSystem
 			public bool is_admin { get; set; }
 			public List<SubscribeInfo> mod { get; set; }
 			public List<SubscribeInfo> comp_owner { get; set; }
+		}
+		public class ReportInfo
+		{
+			public int user_id { get; set; }
+			public string user_name { get; set; }
+			public int video_id { get; set; }
+			public string video_name { get; set; }
+			public int comment_id { get; set; }
+			public string comment { get; set; }
+			public int report_id { get; set; }
+			public string report_reason { get; set; }
+			public DateTime report_time { get; set; }
 		}
 
 		public class Tag
@@ -53,6 +67,9 @@ namespace VideoSharingSystem
 		public ProfileInfo profileInfo;
 
 		public Tags tags = new Tags();
+
+
+		List<ReportElement> reportElements = new();
 
 		public Form1(string token, string url_host, int user_id, bool is_admin, bool is_comp_owner, bool is_mod)
 		{
@@ -287,6 +304,69 @@ namespace VideoSharingSystem
 		private void button6_Click_1(object sender, EventArgs e)
 		{
 			new AddCompany(this).ShowDialog(this);
+		}
+
+		private void tabControl1_TabIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		public void deleteReportsByCommetId(int id) {
+			for (int i = 0; i < reportElements.Count; ++i)
+				if (reportElements[i].commentId == id) {
+					reportElements[i].Deatach();
+					reportElements.RemoveAt(i);
+					--i;
+				}
+		}
+
+		private void tabControl1_Selected(object sender, TabControlEventArgs e)
+		{
+			if (tabControl1.SelectedIndex == 3)
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.DefaultRequestHeaders.Authorization = bearer_token;
+
+					string url = $"{url_host}/reports";
+
+					try
+					{
+						HttpResponseMessage response = client.GetAsync(url).Result;
+
+						if (response.IsSuccessStatusCode)
+						{
+							string responseBody = response.Content.ReadAsStringAsync().Result;
+
+							var videosResult = JsonSerializer.Deserialize<List<ReportInfo>>(responseBody);
+
+							foreach (var el in reportElements)
+								el.Deatach();
+							reportElements.Clear();
+
+							int c = 0;
+
+							foreach (var item in videosResult)
+							{
+
+								reportElements.Add(new ReportElement(flowLayoutPanel6, this,
+									item.video_id, item.user_id, item.comment_id, item.report_id, item.video_name, item.user_name, item.comment, item.report_reason, item.report_time.ToString()));
+
+							}
+
+						}
+						else
+						{
+							MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+						}
+					}
+					catch (Exception ex)
+					{
+						//	Console.WriteLine(ex.Message);
+						//	MessageBox.Show(ex.Message);
+					}
+				}
+			}
 		}
 	}
 }
