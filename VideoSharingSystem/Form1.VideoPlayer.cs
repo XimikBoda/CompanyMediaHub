@@ -81,7 +81,7 @@ namespace VideoSharingSystem
 		{
 			if (currentVideoId == id)
 			{
-				tabControl1.SelectedIndex = 1;
+				tabControl1.SelectedIndex = 2;
 				return;
 			}
 
@@ -133,7 +133,7 @@ namespace VideoSharingSystem
 
 						UpdateLikeButtons();
 
-						tabControl1.SelectedIndex = 1;
+						tabControl1.SelectedIndex = 2;
 					}
 					else
 					{
@@ -148,60 +148,6 @@ namespace VideoSharingSystem
 			}
 			
 			LoadsComments();
-
-			//	try
-			//	{
-			//		connection.Open();
-			//		{
-			//			SqlDataReader reader = command.ExecuteReader();
-			//			if (reader.Read())
-			//			{
-			//				int lastCurrentVideoId = currentVideoId;
-
-			//				currentVideoId = Convert.ToInt32(reader[0].ToString());
-			//				label1.Text = reader[1].ToString().Trim();
-			//				richTextBox1.Text = reader[2].ToString().Trim();
-			//				label12.Text = reader[4].ToString().Trim() + ' ' + reader[5].ToString().Trim();
-			//				currentVideoUserId = Convert.ToInt32(reader[6].ToString());
-
-			//				if (currentVideoUserId == myUserId || isAdmin)
-			//					button10.Visible = true;
-			//				else
-			//					button10.Visible = false;
-
-			//				{
-			//					byte[] data = (byte[])reader[3];
-			//					var file = File.Create(getTempFilePlaceById(currentVideoId));
-			//					file.Write(data, 0, data.Length);
-			//					file.Close();
-			//				}
-			//				axWindowsMediaPlayer1.URL = getTempFilePlaceById(currentVideoId);
-			//				//axWindowsMediaPlayer1.Ctlcontrols.play();
-
-			//				if (lastCurrentVideoId != -1)
-			//					File.Delete(getTempFilePlaceById(lastCurrentVideoId));
-
-			//				splitContainer1.Enabled = true;
-			//				label12.Visible = true;
-			//			}
-			//			reader.Close();
-			//			{
-			//				command.CommandText = "INSERT INTO ViewHistory (IdUser, IdVideo, ViewTime)" +
-			//					"VALUES (@IdUser, @IdVideo, GETDATE())";
-			//				command.ExecuteNonQuery();
-			//			}
-			//		}
-			//		
-			//		LoadsRatingAndVievers();
-
-			//		tabControl1.SelectedIndex = 1;
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//		MessageBox.Show(ex.Message);
-			//	}
-			//}
 		}
 
 		private void button3_Click(object sender, EventArgs e)

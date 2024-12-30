@@ -67,10 +67,12 @@ namespace VideoSharingSystem
 		public async Task InitCompanyViewer(int id)
 		{
 			if (currentCompanyId == id) {
-				tabControl1.SelectedIndex = 0;
+				tabControl1.SelectedIndex = 1;
 				return;
 			}
 			currentCompanyId = id;
+
+			subscribeButton.Enabled = true;
 
 			if (profileInfo.comp_owner.Exists(x => x.company_id == currentCompanyId) || is_admin)
 				companyEditButton.Visible = uploadButton.Visible = true;
@@ -99,6 +101,7 @@ namespace VideoSharingSystem
 
 						SetSubscribeState(companyResult.is_subscribed, companyResult.subscribers);
 
+						tabControl1.SelectedIndex = 1;
 					}
 					else
 					{

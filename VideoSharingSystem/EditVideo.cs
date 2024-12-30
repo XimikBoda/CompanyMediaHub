@@ -148,7 +148,7 @@ namespace VideoSharingSystem
 						{
 							string responseBody = response.Content.ReadAsStringAsync().Result;
 
-							var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
+							var loginResult = JsonSerializer.Deserialize<GeneralResult>(responseBody);
 
 							Close();
 						}

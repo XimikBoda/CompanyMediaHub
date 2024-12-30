@@ -268,7 +268,7 @@ namespace VideoSharingSystem
 						{
 							string responseBody = response.Content.ReadAsStringAsync().Result;
 
-							var loginResult = JsonSerializer.Deserialize<LoginResult>(responseBody);
+							var loginResult = JsonSerializer.Deserialize<GeneralResult>(responseBody);
 
 							Close();
 						}
@@ -549,7 +549,7 @@ namespace VideoSharingSystem
 
 		private void deleteCompanyButton_Click(object sender, EventArgs e)
 		{
-			var result = MessageBox.Show("Ви впевненні, що хочете видалити цю компаныю?\nВидалиться вся інформація пов'язанна з профілем (завантаженні медія, коментарі).\nЦю дію буде неможливо відминити!",
+			var result = MessageBox.Show("Ви впевненні, що хочете видалити цю компаныю?\nВидалиться вся інформація пов'язанна з профілем (завантаженні медіа, коментарі).\nЦю дію буде неможливо відминити!",
 				"Видалення профілю", MessageBoxButtons.OKCancel);
 
 			if (result == DialogResult.OK)

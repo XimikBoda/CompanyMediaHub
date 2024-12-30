@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.ComponentModel.Design;
 
 namespace VideoSharingSystem
 {
@@ -41,8 +42,6 @@ namespace VideoSharingSystem
 		public LoginForm()
 		{
 			InitializeComponent();
-			textBox1.Text = "test";
-			textBox2.Text = "password";
 		}
 
 		void UpdateLoginButton()
@@ -61,6 +60,37 @@ namespace VideoSharingSystem
 		private void textBox2_TextChanged(object sender, EventArgs e)
 		{
 			UpdateLoginButton();
+		}
+
+		void logout(string token) {
+			using (HttpClient client = new HttpClient())
+			{
+				var bearer_token = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string url = $"{url_host}/profile/logout";
+
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(url, null).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var result = JsonSerializer.Deserialize<GeneralResult>(responseBody);
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 
 		void login()
@@ -90,6 +120,9 @@ namespace VideoSharingSystem
 								loginResult.is_admin, loginResult.is_comp_owner, loginResult.is_mod);
 							mainFrorm.ShowDialog();
 							mainFrorm.Dispose();
+
+							logout(loginResult.token);
+
 							Visible = true;
 						}
 						else

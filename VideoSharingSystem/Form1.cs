@@ -55,6 +55,11 @@ namespace VideoSharingSystem
 		{
 			public List<Tag> tags { get; set; }
 		}
+		public class Recomendation
+		{
+			public List<VideoInfo> video { get; set; }
+			public List<VideoInfo> audio { get; set; }
+		}
 
 		public int myUserId = -1;
 		public bool is_admin = false;
@@ -69,6 +74,7 @@ namespace VideoSharingSystem
 		public Tags tags = new Tags();
 
 		List<VideoElement> recomedationVideoElements = new();
+		List<VideoElement> recomedationAudioElements = new();
 
 
 		List<ReportElement> reportElements = new();
@@ -89,6 +95,9 @@ namespace VideoSharingSystem
 
 			InitializeComponent();
 
+			if (!is_mod)
+				tabControl1.TabPages.Remove(tabPage2);
+
 			button6.Visible = is_admin;
 
 			GetProfileInfo();
@@ -100,13 +109,15 @@ namespace VideoSharingSystem
 
 			InitHistory();
 			GetTags();
+			GetMySubscriptions();
 
 			foreach (var item in tags.tags)
 				TagsCheckedListBox.Items.Add(item);
 
 			GetRecomedation();
 
-			InitCompanyViewer(1);
+			if(profileInfo.comp_owner.Count>=1)
+				InitCompanyViewer(profileInfo.comp_owner[0].company_id);
 		}
 
 		void GetRecomedation()
@@ -125,14 +136,29 @@ namespace VideoSharingSystem
 					{
 						string responseBody = response.Content.ReadAsStringAsync().Result;
 
-						var recomendations = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
+						var recomendations = JsonSerializer.Deserialize<Recomendation>(responseBody);
 
+						recomendationVideoLayoutPanel.SuspendLayout();
 						foreach (var el in recomedationVideoElements)
 							el.Deatach();
 						recomedationVideoElements.Clear();
+						recomendationVideoLayoutPanel.ResumeLayout();
 
-						foreach (var item in recomendations)
+						foreach (var item in recomendations.video)
 							recomedationVideoElements.Add(new VideoElement(recomendationVideoLayoutPanel, this,
+								item.id, item.name, item.description, item.upload_time.ToString(),
+								item.company_id, item.company_name
+							)
+						);
+
+						recomendationVideoLayoutPanel.SuspendLayout();
+						foreach (var el in recomedationAudioElements)
+							el.Deatach();
+						recomedationAudioElements.Clear();
+						recomendationVideoLayoutPanel.ResumeLayout();
+
+						foreach (var item in recomendations.audio)
+							recomedationAudioElements.Add(new VideoElement(recomendationAudioLayoutPanel, this,
 								item.id, item.name, item.description, item.upload_time.ToString(),
 								item.company_id, item.company_name
 							)
@@ -347,7 +373,9 @@ namespace VideoSharingSystem
 
 		private void tabControl1_Selected(object sender, TabControlEventArgs e)
 		{
-			if (tabControl1.SelectedIndex == 3)
+			//if (tabControl1.SelectedIndex == 1 && currentCompanyId == -1)
+			//	tabControl1.SelectedIndex = 0;
+			if (tabControl1.SelectedIndex == 4)
 			{
 				using (HttpClient client = new HttpClient())
 				{
@@ -392,6 +420,25 @@ namespace VideoSharingSystem
 					}
 				}
 			}
+		}
+
+		private void recomendationUpdateButton_Click(object sender, EventArgs e)
+		{
+			GetRecomedation();
+		}
+
+		void updateRecomendationPositions() {
+			label21.Location = new Point(splitContainer7.SplitterDistance + splitContainer7.Location.X, label21.Location.Y);
+		}
+
+		private void splitContainer7_SplitterMoved(object sender, SplitterEventArgs e)
+		{
+			updateRecomendationPositions();
+		}
+
+		private void splitContainer7_SizeChanged(object sender, EventArgs e)
+		{
+			updateRecomendationPositions();
 		}
 	}
 }

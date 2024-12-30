@@ -128,7 +128,8 @@ namespace VideoSharingSystem
 
 		private void GoToProfile(object sender, EventArgs e)
 		{
-			new ShowUser(_main, _userId).ShowDialog(_main);
+			if (((MouseEventArgs)e).Button == MouseButtons.Left)
+				new ShowUser(_main, _userId).ShowDialog(_main);
 		}
 	}
 }

@@ -57,7 +57,7 @@ namespace VideoSharingSystem
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(99, 23);
 			this.button2.TabIndex = 9;
-			this.button2.Text = "Відминити";
+			this.button2.Text = "Відмінити";
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
@@ -105,11 +105,11 @@ namespace VideoSharingSystem
 			// 
 			this.label4.AutoSize = true;
 			this.label4.Dock = System.Windows.Forms.DockStyle.Right;
-			this.label4.Location = new System.Drawing.Point(92, 66);
+			this.label4.Location = new System.Drawing.Point(84, 66);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(51, 22);
+			this.label4.Size = new System.Drawing.Size(59, 22);
 			this.label4.TabIndex = 6;
-			this.label4.Text = "Фамілія:";
+			this.label4.Text = "Прізвище:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// textBox3

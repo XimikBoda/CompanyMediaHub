@@ -124,11 +124,11 @@
 			// 
 			this.label4.AutoSize = true;
 			this.label4.Dock = System.Windows.Forms.DockStyle.Right;
-			this.label4.Location = new System.Drawing.Point(92, 63);
+			this.label4.Location = new System.Drawing.Point(84, 63);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(51, 21);
+			this.label4.Size = new System.Drawing.Size(59, 21);
 			this.label4.TabIndex = 6;
-			this.label4.Text = "Фамілія:";
+			this.label4.Text = "Прізвище:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// nameTextBox
@@ -221,7 +221,7 @@
 			this.editButton.Name = "editButton";
 			this.editButton.Size = new System.Drawing.Size(86, 23);
 			this.editButton.TabIndex = 6;
-			this.editButton.Text = "Рерагувати";
+			this.editButton.Text = "Редаагувати";
 			this.editButton.UseVisualStyleBackColor = false;
 			this.editButton.Visible = false;
 			this.editButton.Click += new System.EventHandler(this.editButton_Click);
@@ -234,6 +234,9 @@
 			this.Controls.Add(this.editButton);
 			this.Controls.Add(this.closeButton);
 			this.Controls.Add(this.tableLayoutPanel1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "ShowUser";
 			this.Text = "Профіль користувача";
 			this.tableLayoutPanel1.ResumeLayout(false);

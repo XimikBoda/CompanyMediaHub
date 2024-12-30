@@ -43,17 +43,16 @@ namespace VideoSharingSystem
 			this.companyNameLabel = new System.Windows.Forms.Label();
 			this.splitContainer6 = new System.Windows.Forms.SplitContainer();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.label11 = new System.Windows.Forms.Label();
 			this.button6 = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabPage5 = new System.Windows.Forms.TabPage();
+			this.recomendationUpdateButton = new System.Windows.Forms.Button();
+			this.label21 = new System.Windows.Forms.Label();
+			this.label20 = new System.Windows.Forms.Label();
+			this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+			this.recomendationVideoLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+			this.recomendationAudioLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.button10 = new System.Windows.Forms.Button();
@@ -70,9 +69,6 @@ namespace VideoSharingSystem
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-			this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.richTextBox2 = new System.Windows.Forms.RichTextBox();
 			this.button4 = new System.Windows.Forms.Button();
@@ -98,8 +94,6 @@ namespace VideoSharingSystem
 			this.label10 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
 			this.button5 = new System.Windows.Forms.Button();
-			this.tabPage5 = new System.Windows.Forms.TabPage();
-			this.recomendationVideoLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -111,13 +105,12 @@ namespace VideoSharingSystem
 			this.splitContainer6.Panel1.SuspendLayout();
 			this.splitContainer6.Panel2.SuspendLayout();
 			this.splitContainer6.SuspendLayout();
-			this.flowLayoutPanel1.SuspendLayout();
-			this.panel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-			this.flowLayoutPanel2.SuspendLayout();
-			this.panel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.tabControl1.SuspendLayout();
+			this.tabPage5.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
+			this.splitContainer7.Panel1.SuspendLayout();
+			this.splitContainer7.Panel2.SuspendLayout();
+			this.splitContainer7.SuspendLayout();
 			this.tabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -132,8 +125,6 @@ namespace VideoSharingSystem
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			this.flowLayoutPanel3.SuspendLayout();
-			this.flowLayoutPanel4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
 			this.splitContainer4.Panel1.SuspendLayout();
 			this.splitContainer4.Panel2.SuspendLayout();
@@ -144,7 +135,6 @@ namespace VideoSharingSystem
 			this.tabPage2.SuspendLayout();
 			this.flowLayoutPanel6.SuspendLayout();
 			this.panel4.SuspendLayout();
-			this.tabPage5.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabPage1
@@ -203,6 +193,7 @@ namespace VideoSharingSystem
 			this.companyEditButton.TabIndex = 7;
 			this.companyEditButton.Text = "Редагувати";
 			this.companyEditButton.UseVisualStyleBackColor = true;
+			this.companyEditButton.Visible = false;
 			this.companyEditButton.Click += new System.EventHandler(this.button9_Click);
 			// 
 			// uploadButton
@@ -215,6 +206,7 @@ namespace VideoSharingSystem
 			this.uploadButton.TabIndex = 2;
 			this.uploadButton.Text = "Завантажити медіафайл";
 			this.uploadButton.UseVisualStyleBackColor = true;
+			this.uploadButton.Visible = false;
 			this.uploadButton.Click += new System.EventHandler(this.button8_Click);
 			// 
 			// cs_label
@@ -235,11 +227,12 @@ namespace VideoSharingSystem
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(111, 13);
 			this.label9.TabIndex = 4;
-			this.label9.Text = "Завантаженні медія:";
+			this.label9.Text = "Завантаженні медіа:";
 			this.label9.Click += new System.EventHandler(this.label9_Click);
 			// 
 			// subscribeButton
 			// 
+			this.subscribeButton.Enabled = false;
 			this.subscribeButton.Location = new System.Drawing.Point(118, 88);
 			this.subscribeButton.Name = "subscribeButton";
 			this.subscribeButton.Size = new System.Drawing.Size(101, 23);
@@ -250,10 +243,10 @@ namespace VideoSharingSystem
 			// 
 			// richTextBox3
 			// 
-			this.richTextBox3.Location = new System.Drawing.Point(358, 3);
+			this.richTextBox3.Location = new System.Drawing.Point(462, 3);
 			this.richTextBox3.Name = "richTextBox3";
 			this.richTextBox3.ReadOnly = true;
-			this.richTextBox3.Size = new System.Drawing.Size(423, 93);
+			this.richTextBox3.Size = new System.Drawing.Size(319, 93);
 			this.richTextBox3.TabIndex = 2;
 			this.richTextBox3.Text = "";
 			// 
@@ -262,9 +255,9 @@ namespace VideoSharingSystem
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(120, 36);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(35, 13);
+			this.label3.Size = new System.Drawing.Size(25, 13);
 			this.label3.TabIndex = 1;
-			this.label3.Text = "label3";
+			this.label3.Text = "___";
 			// 
 			// companyNameLabel
 			// 
@@ -272,9 +265,9 @@ namespace VideoSharingSystem
 			this.companyNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.companyNameLabel.Location = new System.Drawing.Point(118, 11);
 			this.companyNameLabel.Name = "companyNameLabel";
-			this.companyNameLabel.Size = new System.Drawing.Size(135, 25);
+			this.companyNameLabel.Size = new System.Drawing.Size(312, 25);
 			this.companyNameLabel.TabIndex = 0;
-			this.companyNameLabel.Text = "Компанія А";
+			this.companyNameLabel.Text = "Спочатку оберіть компанію";
 			this.companyNameLabel.Click += new System.EventHandler(this.label2_Click);
 			// 
 			// splitContainer6
@@ -298,7 +291,6 @@ namespace VideoSharingSystem
 			// flowLayoutPanel1
 			// 
 			this.flowLayoutPanel1.AutoScroll = true;
-			this.flowLayoutPanel1.Controls.Add(this.panel1);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -307,98 +299,13 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel1.TabIndex = 0;
 			this.flowLayoutPanel1.WrapContents = false;
 			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.pictureBox1);
-			this.panel1.Controls.Add(this.label8);
-			this.panel1.Controls.Add(this.label7);
-			this.panel1.Controls.Add(this.label6);
-			this.panel1.Location = new System.Drawing.Point(3, 3);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(479, 79);
-			this.panel1.TabIndex = 0;
-			this.panel1.Visible = false;
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-			this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(60, 60);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox1.TabIndex = 3;
-			this.pictureBox1.TabStop = false;
-			this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label8.Location = new System.Drawing.Point(76, 52);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(41, 13);
-			this.label8.TabIndex = 2;
-			this.label8.Text = "label8";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(76, 31);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(35, 13);
-			this.label7.TabIndex = 1;
-			this.label7.Text = "label7";
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label6.ForeColor = System.Drawing.SystemColors.HotTrack;
-			this.label6.Location = new System.Drawing.Point(75, 9);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(52, 18);
-			this.label6.TabIndex = 0;
-			this.label6.Text = "label6";
-			// 
 			// flowLayoutPanel2
 			// 
-			this.flowLayoutPanel2.Controls.Add(this.panel2);
 			this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
 			this.flowLayoutPanel2.Size = new System.Drawing.Size(255, 360);
 			this.flowLayoutPanel2.TabIndex = 0;
-			// 
-			// panel2
-			// 
-			this.panel2.Controls.Add(this.pictureBox2);
-			this.panel2.Controls.Add(this.label11);
-			this.panel2.Location = new System.Drawing.Point(3, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(276, 44);
-			this.panel2.TabIndex = 0;
-			this.panel2.Visible = false;
-			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
-			this.pictureBox2.Location = new System.Drawing.Point(3, 3);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(35, 35);
-			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox2.TabIndex = 4;
-			this.pictureBox2.TabStop = false;
-			// 
-			// label11
-			// 
-			this.label11.AutoSize = true;
-			this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label11.ForeColor = System.Drawing.SystemColors.HotTrack;
-			this.label11.Location = new System.Drawing.Point(44, 9);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(61, 18);
-			this.label11.TabIndex = 1;
-			this.label11.Text = "label11";
 			// 
 			// button6
 			// 
@@ -414,11 +321,11 @@ namespace VideoSharingSystem
 			// 
 			// tabControl1
 			// 
+			this.tabControl1.Controls.Add(this.tabPage5);
 			this.tabControl1.Controls.Add(tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Controls.Add(this.tabPage4);
 			this.tabControl1.Controls.Add(this.tabPage2);
-			this.tabControl1.Controls.Add(this.tabPage5);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -428,6 +335,93 @@ namespace VideoSharingSystem
 			this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
 			this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
 			// 
+			// tabPage5
+			// 
+			this.tabPage5.Controls.Add(this.recomendationUpdateButton);
+			this.tabPage5.Controls.Add(this.label21);
+			this.tabPage5.Controls.Add(this.label20);
+			this.tabPage5.Controls.Add(this.splitContainer7);
+			this.tabPage5.Location = new System.Drawing.Point(4, 22);
+			this.tabPage5.Name = "tabPage5";
+			this.tabPage5.Size = new System.Drawing.Size(792, 506);
+			this.tabPage5.TabIndex = 4;
+			this.tabPage5.Text = "Рекомендації";
+			this.tabPage5.UseVisualStyleBackColor = true;
+			// 
+			// recomendationUpdateButton
+			// 
+			this.recomendationUpdateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.recomendationUpdateButton.Location = new System.Drawing.Point(716, 3);
+			this.recomendationUpdateButton.Name = "recomendationUpdateButton";
+			this.recomendationUpdateButton.Size = new System.Drawing.Size(75, 23);
+			this.recomendationUpdateButton.TabIndex = 8;
+			this.recomendationUpdateButton.Text = "Оновити";
+			this.recomendationUpdateButton.UseVisualStyleBackColor = true;
+			this.recomendationUpdateButton.Click += new System.EventHandler(this.recomendationUpdateButton_Click);
+			// 
+			// label21
+			// 
+			this.label21.AutoSize = true;
+			this.label21.Location = new System.Drawing.Point(394, 9);
+			this.label21.Name = "label21";
+			this.label21.Size = new System.Drawing.Size(36, 13);
+			this.label21.TabIndex = 7;
+			this.label21.Text = "Аудіо:";
+			// 
+			// label20
+			// 
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(3, 9);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(37, 13);
+			this.label20.TabIndex = 6;
+			this.label20.Text = "Відео:";
+			// 
+			// splitContainer7
+			// 
+			this.splitContainer7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.splitContainer7.Location = new System.Drawing.Point(0, 25);
+			this.splitContainer7.Name = "splitContainer7";
+			// 
+			// splitContainer7.Panel1
+			// 
+			this.splitContainer7.Panel1.Controls.Add(this.recomendationVideoLayoutPanel);
+			// 
+			// splitContainer7.Panel2
+			// 
+			this.splitContainer7.Panel2.Controls.Add(this.recomendationAudioLayoutPanel);
+			this.splitContainer7.Size = new System.Drawing.Size(791, 481);
+			this.splitContainer7.SplitterDistance = 393;
+			this.splitContainer7.TabIndex = 5;
+			this.splitContainer7.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer7_SplitterMoved);
+			this.splitContainer7.SizeChanged += new System.EventHandler(this.splitContainer7_SizeChanged);
+			// 
+			// recomendationVideoLayoutPanel
+			// 
+			this.recomendationVideoLayoutPanel.AutoScroll = true;
+			this.recomendationVideoLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.recomendationVideoLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.recomendationVideoLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.recomendationVideoLayoutPanel.Location = new System.Drawing.Point(0, 0);
+			this.recomendationVideoLayoutPanel.Name = "recomendationVideoLayoutPanel";
+			this.recomendationVideoLayoutPanel.Size = new System.Drawing.Size(393, 481);
+			this.recomendationVideoLayoutPanel.TabIndex = 3;
+			this.recomendationVideoLayoutPanel.WrapContents = false;
+			// 
+			// recomendationAudioLayoutPanel
+			// 
+			this.recomendationAudioLayoutPanel.AutoScroll = true;
+			this.recomendationAudioLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.recomendationAudioLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.recomendationAudioLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.recomendationAudioLayoutPanel.Location = new System.Drawing.Point(0, 0);
+			this.recomendationAudioLayoutPanel.Name = "recomendationAudioLayoutPanel";
+			this.recomendationAudioLayoutPanel.Size = new System.Drawing.Size(394, 481);
+			this.recomendationAudioLayoutPanel.TabIndex = 4;
+			this.recomendationAudioLayoutPanel.WrapContents = false;
+			// 
 			// tabPage3
 			// 
 			this.tabPage3.Controls.Add(this.splitContainer1);
@@ -435,7 +429,7 @@ namespace VideoSharingSystem
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Size = new System.Drawing.Size(792, 506);
 			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "Перегляд медія";
+			this.tabPage3.Text = "Перегляд медіа";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
 			// splitContainer1
@@ -634,7 +628,6 @@ namespace VideoSharingSystem
 			// flowLayoutPanel3
 			// 
 			this.flowLayoutPanel3.AutoScroll = true;
-			this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
 			this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 0);
@@ -642,37 +635,6 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel3.Size = new System.Drawing.Size(260, 362);
 			this.flowLayoutPanel3.TabIndex = 0;
 			this.flowLayoutPanel3.WrapContents = false;
-			// 
-			// flowLayoutPanel4
-			// 
-			this.flowLayoutPanel4.AutoSize = true;
-			this.flowLayoutPanel4.Controls.Add(this.label4);
-			this.flowLayoutPanel4.Controls.Add(this.label5);
-			this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 3);
-			this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-			this.flowLayoutPanel4.Size = new System.Drawing.Size(58, 31);
-			this.flowLayoutPanel4.TabIndex = 0;
-			this.flowLayoutPanel4.Visible = false;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label4.Location = new System.Drawing.Point(3, 0);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(52, 18);
-			this.label4.TabIndex = 0;
-			this.label4.Text = "label4";
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(3, 18);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(35, 13);
-			this.label5.TabIndex = 1;
-			this.label5.Text = "label5";
 			// 
 			// splitContainer4
 			// 
@@ -750,7 +712,7 @@ namespace VideoSharingSystem
 			this.label19.Name = "label19";
 			this.label19.Size = new System.Drawing.Size(65, 13);
 			this.label19.TabIndex = 12;
-			this.label19.Text = "Теги медія:";
+			this.label19.Text = "Теги медіа:";
 			this.label19.TextAlign = System.Drawing.ContentAlignment.BottomRight;
 			// 
 			// TagsCheckedListBox
@@ -942,7 +904,7 @@ namespace VideoSharingSystem
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(39, 13);
 			this.label10.TabIndex = 1;
-			this.label10.Text = "Медія:";
+			this.label10.Text = "Медіа:";
 			// 
 			// label15
 			// 
@@ -967,30 +929,6 @@ namespace VideoSharingSystem
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
-			// tabPage5
-			// 
-			this.tabPage5.Controls.Add(this.recomendationVideoLayoutPanel);
-			this.tabPage5.Location = new System.Drawing.Point(4, 22);
-			this.tabPage5.Name = "tabPage5";
-			this.tabPage5.Size = new System.Drawing.Size(792, 506);
-			this.tabPage5.TabIndex = 4;
-			this.tabPage5.Text = "Рекомендації";
-			this.tabPage5.UseVisualStyleBackColor = true;
-			// 
-			// recomendationVideoLayoutPanel
-			// 
-			this.recomendationVideoLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.recomendationVideoLayoutPanel.AutoScroll = true;
-			this.recomendationVideoLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.recomendationVideoLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			this.recomendationVideoLayoutPanel.Location = new System.Drawing.Point(3, 3);
-			this.recomendationVideoLayoutPanel.Name = "recomendationVideoLayoutPanel";
-			this.recomendationVideoLayoutPanel.Size = new System.Drawing.Size(368, 500);
-			this.recomendationVideoLayoutPanel.TabIndex = 3;
-			this.recomendationVideoLayoutPanel.WrapContents = false;
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1014,15 +952,13 @@ namespace VideoSharingSystem
 			this.splitContainer6.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
 			this.splitContainer6.ResumeLayout(false);
-			this.flowLayoutPanel1.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-			this.flowLayoutPanel2.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.tabControl1.ResumeLayout(false);
+			this.tabPage5.ResumeLayout(false);
+			this.tabPage5.PerformLayout();
+			this.splitContainer7.Panel1.ResumeLayout(false);
+			this.splitContainer7.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
+			this.splitContainer7.ResumeLayout(false);
 			this.tabPage3.ResumeLayout(false);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel1.PerformLayout();
@@ -1038,10 +974,6 @@ namespace VideoSharingSystem
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
-			this.flowLayoutPanel3.ResumeLayout(false);
-			this.flowLayoutPanel3.PerformLayout();
-			this.flowLayoutPanel4.ResumeLayout(false);
-			this.flowLayoutPanel4.PerformLayout();
 			this.splitContainer4.Panel1.ResumeLayout(false);
 			this.splitContainer4.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -1054,7 +986,6 @@ namespace VideoSharingSystem
 			this.flowLayoutPanel6.ResumeLayout(false);
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
-			this.tabPage5.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1086,17 +1017,8 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label cs_label;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Button button7;
 		private System.Windows.Forms.FlowLayoutPanel findFlowLayoutPanel;
@@ -1108,9 +1030,7 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Button companyEditButton;
 		private System.Windows.Forms.Button button10;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
-		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.PictureBox companyLogoPictureBox;
-		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.Button button6;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
@@ -1130,6 +1050,11 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.CheckedListBox TagsCheckedListBox;
 		private System.Windows.Forms.TabPage tabPage5;
 		private System.Windows.Forms.FlowLayoutPanel recomendationVideoLayoutPanel;
+		private System.Windows.Forms.FlowLayoutPanel recomendationAudioLayoutPanel;
+		private System.Windows.Forms.Button recomendationUpdateButton;
+		private System.Windows.Forms.Label label21;
+		private System.Windows.Forms.Label label20;
+		private System.Windows.Forms.SplitContainer splitContainer7;
 	}
 }
 

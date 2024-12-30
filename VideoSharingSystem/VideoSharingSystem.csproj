@@ -133,7 +133,6 @@
     <Compile Include="AddVideo.Designer.cs">
       <DependentUpon>AddVideo.cs</DependentUpon>
     </Compile>
-    <Compile Include="BDStream.cs" />
     <Compile Include="CommentElement.cs" />
     <Compile Include="CommentReport.cs">
       <SubType>Form</SubType>
