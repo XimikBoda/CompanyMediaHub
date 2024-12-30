@@ -141,6 +141,7 @@
     <Compile Include="CommentReport.Designer.cs">
       <DependentUpon>CommentReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompanyElement.cs" />
     <Compile Include="EditCompany.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,6 +196,7 @@
     </Compile>
     <Compile Include="SubscriberElement.cs" />
     <Compile Include="TagElement.cs" />
+    <Compile Include="UserElement.cs" />
     <Compile Include="VideoElement.cs" />
     <EmbeddedResource Include="AddCompany.resx">
       <DependentUpon>AddCompany.cs</DependentUpon>

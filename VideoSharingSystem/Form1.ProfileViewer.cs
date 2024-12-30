@@ -26,6 +26,8 @@ namespace VideoSharingSystem
 			public string name { get; set; }
 			public string description { get; set; }
 			public DateTime upload_time { get; set; }
+			public int company_id { get; set; }
+			public string company_name { get; set; }
 		}
 		public class VideosInfo
 		{
@@ -62,7 +64,7 @@ namespace VideoSharingSystem
 		public int currentCompanyId = -1;
 		bool cs_label_company = false;
 
-		public async Task InitcompanyViewer(int id)
+		public async Task InitCompanyViewer(int id)
 		{
 			if (currentCompanyId == id) {
 				tabControl1.SelectedIndex = 0;
@@ -79,11 +81,11 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/company/{currentCompanyId}";
+				string url = $"{url_host}/company/{currentCompanyId}";
 
 				try
 				{
-					HttpResponseMessage response = await client.GetAsync(loginUrl);
+					HttpResponseMessage response = await client.GetAsync(url);
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -143,11 +145,11 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/company/{currentCompanyId}/videos";
+				string url = $"{url_host}/company/{currentCompanyId}/videos";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = client.GetAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -205,11 +207,11 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/profile/subscriptions";
+				string url = $"{url_host}/profile/subscriptions";
 
 				try
 				{
-					HttpResponseMessage response = await client.GetAsync(loginUrl);
+					HttpResponseMessage response = await client.GetAsync(url);
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -275,13 +277,13 @@ namespace VideoSharingSystem
 				else
 					act = "subscribe";
 
-				string loginUrl = $"{url_host}/company/{currentCompanyId}/{act}";
+				string url = $"{url_host}/company/{currentCompanyId}/{act}";
 
 				try
 				{
 					subscribeButton.Enabled = false;
 
-					HttpResponseMessage response = await client.PostAsync(loginUrl, null);
+					HttpResponseMessage response = await client.PostAsync(url, null);
 
 					if (response.IsSuccessStatusCode)
 					{

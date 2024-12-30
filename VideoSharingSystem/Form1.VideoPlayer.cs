@@ -15,6 +15,7 @@ using System.Security.Policy;
 using System.Net;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
+using System.Reflection.Emit;
 
 namespace VideoSharingSystem
 {
@@ -34,6 +35,7 @@ namespace VideoSharingSystem
 			public int total_views { get; set; }
 			public int unique_viewers { get; set; }
 			public int company_id { get; set; }
+			public string company_name { get; set; }
 		}
 
 		public class CommentInfo
@@ -69,6 +71,7 @@ namespace VideoSharingSystem
 
 		public int currentVideoId = -1;
 		int currentVideoUserId = -1;
+		int currentVideoCompanyId = -1;
 		int myRateId = 0;
 
 		List<CommentElement> commentElements;
@@ -88,40 +91,45 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 				
-				string loginUrl = $"{url_host}/video/{id}/get";
+				string url = $"{url_host}/video/{id}/get";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = client.GetAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
 						string responseBody = response.Content.ReadAsStringAsync().Result;
 
-						var linkResult = JsonSerializer.Deserialize<VideoInfoGet>(responseBody);
+						var videoInfo = JsonSerializer.Deserialize<VideoInfoGet>(responseBody);
 
-						axWindowsMediaPlayer1.URL = linkResult.temporary_link;
-						label1.Text = linkResult.name.Trim();
-						richTextBox1.Text = linkResult.description.Trim();
+						axWindowsMediaPlayer1.URL = videoInfo.temporary_link;
+						label1.Text = videoInfo.name.Trim();
+						richTextBox1.Text = videoInfo.description.Trim();
 
 						{
 							foreach (var el in tagElements)
 								el.Deatach();
 							tagElements.Clear();
 
-							foreach (var item in linkResult.tags)
+							foreach (var item in videoInfo.tags)
 								tagElements.Add(new TagElement(flowLayoutPanel7, this, item.name));
 						}
 
-						button10.Visible = is_admin || profileInfo.comp_owner.Exists(x => x.company_id == linkResult.company_id);
+						button10.Visible = is_admin || profileInfo.comp_owner.Exists(x => x.company_id == videoInfo.company_id);
 
 						splitContainer1.Enabled = true;
 
-						myRateId = linkResult.user_rating;
-						label13.Text = $"Кількість переглядів: {linkResult.total_views} ({linkResult.unique_viewers} унікальних)";
-						label14.Text = $"Рейтинг:  {linkResult.likes - linkResult.dislikes} (+{linkResult.likes}/-{linkResult.dislikes})";
+						currentVideoCompanyId = videoInfo.company_id;
+
+						myRateId = videoInfo.user_rating;
+						label12.Text = videoInfo.company_name;
+						label13.Text = $"Кількість переглядів: {videoInfo.total_views} ({videoInfo.unique_viewers} унікальних)";
+						label14.Text = $"Рейтинг:  {videoInfo.likes - videoInfo.dislikes} (+{videoInfo.likes}/-{videoInfo.dislikes})";
+						label12.Visible = true;
 						label13.Visible = true;
 						label14.Visible = true;
+
 
 						UpdateLikeButtons();
 
@@ -235,11 +243,11 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/{currentVideoId}/comments";
+				string url = $"{url_host}/video/{currentVideoId}/comments";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = client.GetAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -278,14 +286,14 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/comments/{id}";
+				string url = $"{url_host}/comments/{id}";
 				//var loginData = new { message = comment };
 				//string json = JsonSerializer.Serialize(loginData);
 				//var content = new StringContent(json, Encoding.UTF8, "application/json");
 
 				try
 				{
-					HttpResponseMessage response = client.DeleteAsync(loginUrl).Result;
+					HttpResponseMessage response = client.DeleteAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -324,14 +332,14 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/{currentVideoId}/comments";
+				string url = $"{url_host}/video/{currentVideoId}/comments";
 				var loginData = new { message = comment };
 				string json = JsonSerializer.Serialize(loginData);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
 				try
 				{
-					HttpResponseMessage response = client.PostAsync(loginUrl, content).Result;
+					HttpResponseMessage response = client.PostAsync(url, content).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -374,7 +382,7 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/{currentVideoId}/rating";
+				string url = $"{url_host}/video/{currentVideoId}/rating";
 				var loginData = new { rating = IdRatingType };
 				string json = JsonSerializer.Serialize(loginData);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -384,7 +392,7 @@ namespace VideoSharingSystem
 
 				try
 				{
-					HttpResponseMessage response = await client.PostAsync(loginUrl, content);
+					HttpResponseMessage response = await client.PostAsync(url, content);
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -448,6 +456,11 @@ namespace VideoSharingSystem
 		private void button2_Click(object sender, EventArgs e)
 		{
 			AddRatings(-1);
+		}
+
+		private void label12_Click(object sender, EventArgs e)
+		{
+			InitCompanyViewer(currentVideoCompanyId);
 		}
 
 		~Form1()

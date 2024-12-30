@@ -77,10 +77,18 @@ namespace VideoSharingSystem
 			this.richTextBox2 = new System.Windows.Forms.RichTextBox();
 			this.button4 = new System.Windows.Forms.Button();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.panel5 = new System.Windows.Forms.Panel();
+			this.label19 = new System.Windows.Forms.Label();
+			this.TagsCheckedListBox = new System.Windows.Forms.CheckedListBox();
+			this.findUserCheckBox = new System.Windows.Forms.CheckBox();
+			this.findCompanyCheckBox = new System.Windows.Forms.CheckBox();
+			this.findAudioCheckBox = new System.Windows.Forms.CheckBox();
+			this.label18 = new System.Windows.Forms.Label();
+			this.findVideoCheckBox = new System.Windows.Forms.CheckBox();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.button7 = new System.Windows.Forms.Button();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+			this.findFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel4 = new System.Windows.Forms.Panel();
@@ -90,6 +98,8 @@ namespace VideoSharingSystem
 			this.label10 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
 			this.button5 = new System.Windows.Forms.Button();
+			this.tabPage5 = new System.Windows.Forms.TabPage();
+			this.recomendationVideoLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			tabPage1 = new System.Windows.Forms.TabPage();
 			tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -129,10 +139,12 @@ namespace VideoSharingSystem
 			this.splitContainer4.Panel2.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.tabPage4.SuspendLayout();
+			this.panel5.SuspendLayout();
 			this.panel3.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.flowLayoutPanel6.SuspendLayout();
 			this.panel4.SuspendLayout();
+			this.tabPage5.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabPage1
@@ -406,6 +418,7 @@ namespace VideoSharingSystem
 			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Controls.Add(this.tabPage4);
 			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Controls.Add(this.tabPage5);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -703,8 +716,9 @@ namespace VideoSharingSystem
 			// 
 			// tabPage4
 			// 
+			this.tabPage4.Controls.Add(this.panel5);
 			this.tabPage4.Controls.Add(this.panel3);
-			this.tabPage4.Controls.Add(this.flowLayoutPanel5);
+			this.tabPage4.Controls.Add(this.findFlowLayoutPanel);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Size = new System.Drawing.Size(792, 506);
@@ -712,21 +726,117 @@ namespace VideoSharingSystem
 			this.tabPage4.Text = "Пошук";
 			this.tabPage4.UseVisualStyleBackColor = true;
 			// 
+			// panel5
+			// 
+			this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel5.Controls.Add(this.label19);
+			this.panel5.Controls.Add(this.TagsCheckedListBox);
+			this.panel5.Controls.Add(this.findUserCheckBox);
+			this.panel5.Controls.Add(this.findCompanyCheckBox);
+			this.panel5.Controls.Add(this.findAudioCheckBox);
+			this.panel5.Controls.Add(this.label18);
+			this.panel5.Controls.Add(this.findVideoCheckBox);
+			this.panel5.Location = new System.Drawing.Point(621, 70);
+			this.panel5.Name = "panel5";
+			this.panel5.Size = new System.Drawing.Size(163, 428);
+			this.panel5.TabIndex = 5;
+			// 
+			// label19
+			// 
+			this.label19.AutoSize = true;
+			this.label19.Location = new System.Drawing.Point(4, 113);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(65, 13);
+			this.label19.TabIndex = 12;
+			this.label19.Text = "Теги медія:";
+			this.label19.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+			// 
+			// TagsCheckedListBox
+			// 
+			this.TagsCheckedListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.TagsCheckedListBox.CheckOnClick = true;
+			this.TagsCheckedListBox.FormattingEnabled = true;
+			this.TagsCheckedListBox.Location = new System.Drawing.Point(7, 134);
+			this.TagsCheckedListBox.Name = "TagsCheckedListBox";
+			this.TagsCheckedListBox.Size = new System.Drawing.Size(151, 289);
+			this.TagsCheckedListBox.TabIndex = 11;
+			// 
+			// findUserCheckBox
+			// 
+			this.findUserCheckBox.AutoSize = true;
+			this.findUserCheckBox.Checked = true;
+			this.findUserCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.findUserCheckBox.Location = new System.Drawing.Point(19, 92);
+			this.findUserCheckBox.Name = "findUserCheckBox";
+			this.findUserCheckBox.Size = new System.Drawing.Size(86, 17);
+			this.findUserCheckBox.TabIndex = 8;
+			this.findUserCheckBox.Text = "Користувачі";
+			this.findUserCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// findCompanyCheckBox
+			// 
+			this.findCompanyCheckBox.AutoSize = true;
+			this.findCompanyCheckBox.Checked = true;
+			this.findCompanyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.findCompanyCheckBox.Location = new System.Drawing.Point(19, 69);
+			this.findCompanyCheckBox.Name = "findCompanyCheckBox";
+			this.findCompanyCheckBox.Size = new System.Drawing.Size(70, 17);
+			this.findCompanyCheckBox.TabIndex = 7;
+			this.findCompanyCheckBox.Text = "Компанії";
+			this.findCompanyCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// findAudioCheckBox
+			// 
+			this.findAudioCheckBox.AutoSize = true;
+			this.findAudioCheckBox.Checked = true;
+			this.findAudioCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.findAudioCheckBox.Location = new System.Drawing.Point(19, 46);
+			this.findAudioCheckBox.Name = "findAudioCheckBox";
+			this.findAudioCheckBox.Size = new System.Drawing.Size(52, 17);
+			this.findAudioCheckBox.TabIndex = 6;
+			this.findAudioCheckBox.Text = "Аудіо";
+			this.findAudioCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(4, 7);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(121, 13);
+			this.label18.TabIndex = 5;
+			this.label18.Text = "Розширені параметри:";
+			// 
+			// findVideoCheckBox
+			// 
+			this.findVideoCheckBox.AutoSize = true;
+			this.findVideoCheckBox.Checked = true;
+			this.findVideoCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.findVideoCheckBox.Location = new System.Drawing.Point(19, 23);
+			this.findVideoCheckBox.Name = "findVideoCheckBox";
+			this.findVideoCheckBox.Size = new System.Drawing.Size(53, 17);
+			this.findVideoCheckBox.TabIndex = 4;
+			this.findVideoCheckBox.Text = "Відео";
+			this.findVideoCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// panel3
 			// 
 			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel3.Controls.Add(this.button7);
 			this.panel3.Controls.Add(this.comboBox1);
-			this.panel3.Location = new System.Drawing.Point(104, 22);
+			this.panel3.Location = new System.Drawing.Point(8, 27);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(590, 22);
+			this.panel3.Size = new System.Drawing.Size(776, 22);
 			this.panel3.TabIndex = 3;
 			// 
 			// button7
 			// 
 			this.button7.Dock = System.Windows.Forms.DockStyle.Right;
-			this.button7.Location = new System.Drawing.Point(517, 0);
+			this.button7.Location = new System.Drawing.Point(703, 0);
 			this.button7.Name = "button7";
 			this.button7.Size = new System.Drawing.Size(73, 22);
 			this.button7.TabIndex = 1;
@@ -742,23 +852,24 @@ namespace VideoSharingSystem
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Location = new System.Drawing.Point(0, 1);
 			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(519, 21);
+			this.comboBox1.Size = new System.Drawing.Size(705, 21);
 			this.comboBox1.TabIndex = 4;
 			this.comboBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FindTextBoxEnter);
 			// 
-			// flowLayoutPanel5
+			// findFlowLayoutPanel
 			// 
-			this.flowLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.findFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.flowLayoutPanel5.AutoScroll = true;
-			this.flowLayoutPanel5.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			this.flowLayoutPanel5.Location = new System.Drawing.Point(104, 69);
-			this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-			this.flowLayoutPanel5.Size = new System.Drawing.Size(590, 371);
-			this.flowLayoutPanel5.TabIndex = 2;
-			this.flowLayoutPanel5.WrapContents = false;
-			this.flowLayoutPanel5.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel5_Paint);
+			this.findFlowLayoutPanel.AutoScroll = true;
+			this.findFlowLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.findFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.findFlowLayoutPanel.Location = new System.Drawing.Point(8, 70);
+			this.findFlowLayoutPanel.Name = "findFlowLayoutPanel";
+			this.findFlowLayoutPanel.Size = new System.Drawing.Size(607, 428);
+			this.findFlowLayoutPanel.TabIndex = 2;
+			this.findFlowLayoutPanel.WrapContents = false;
+			this.findFlowLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel5_Paint);
 			// 
 			// tabPage2
 			// 
@@ -856,6 +967,30 @@ namespace VideoSharingSystem
 			this.button5.UseVisualStyleBackColor = true;
 			this.button5.Click += new System.EventHandler(this.button5_Click);
 			// 
+			// tabPage5
+			// 
+			this.tabPage5.Controls.Add(this.recomendationVideoLayoutPanel);
+			this.tabPage5.Location = new System.Drawing.Point(4, 22);
+			this.tabPage5.Name = "tabPage5";
+			this.tabPage5.Size = new System.Drawing.Size(792, 506);
+			this.tabPage5.TabIndex = 4;
+			this.tabPage5.Text = "Рекомендації";
+			this.tabPage5.UseVisualStyleBackColor = true;
+			// 
+			// recomendationVideoLayoutPanel
+			// 
+			this.recomendationVideoLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.recomendationVideoLayoutPanel.AutoScroll = true;
+			this.recomendationVideoLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.recomendationVideoLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.recomendationVideoLayoutPanel.Location = new System.Drawing.Point(3, 3);
+			this.recomendationVideoLayoutPanel.Name = "recomendationVideoLayoutPanel";
+			this.recomendationVideoLayoutPanel.Size = new System.Drawing.Size(368, 500);
+			this.recomendationVideoLayoutPanel.TabIndex = 3;
+			this.recomendationVideoLayoutPanel.WrapContents = false;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -912,11 +1047,14 @@ namespace VideoSharingSystem
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
 			this.splitContainer4.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
+			this.panel5.ResumeLayout(false);
+			this.panel5.PerformLayout();
 			this.panel3.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
 			this.flowLayoutPanel6.ResumeLayout(false);
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
+			this.tabPage5.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -961,7 +1099,7 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Button button7;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+		private System.Windows.Forms.FlowLayoutPanel findFlowLayoutPanel;
 		private System.Windows.Forms.Button uploadButton;
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.Label label13;
@@ -982,6 +1120,16 @@ namespace VideoSharingSystem
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.Label label16;
+		private System.Windows.Forms.Panel panel5;
+		private System.Windows.Forms.CheckBox findUserCheckBox;
+		private System.Windows.Forms.CheckBox findCompanyCheckBox;
+		private System.Windows.Forms.CheckBox findAudioCheckBox;
+		private System.Windows.Forms.Label label18;
+		private System.Windows.Forms.CheckBox findVideoCheckBox;
+		private System.Windows.Forms.Label label19;
+		private System.Windows.Forms.CheckedListBox TagsCheckedListBox;
+		private System.Windows.Forms.TabPage tabPage5;
+		private System.Windows.Forms.FlowLayoutPanel recomendationVideoLayoutPanel;
 	}
 }
 

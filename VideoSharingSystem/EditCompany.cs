@@ -62,11 +62,11 @@ namespace VideoSharingSystem
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
 
-				string loginUrl = $"{mainForm.url_host}/company/{currentCompanyId}/moderators";
+				string url = $"{mainForm.url_host}/company/{currentCompanyId}/moderators";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = client.GetAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -102,11 +102,11 @@ namespace VideoSharingSystem
 				client.DefaultRequestHeaders.Authorization = mainForm.bearer_token;
 				client.DefaultRequestHeaders.Add("X-idCompany", currentCompanyId.ToString());
 
-				string loginUrl = $"{mainForm.url_host}/company/{currentCompanyId}/owners";
+				string url = $"{mainForm.url_host}/company/{currentCompanyId}/owners";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = client.GetAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{

@@ -68,6 +68,8 @@ namespace VideoSharingSystem
 
 		public Tags tags = new Tags();
 
+		List<VideoElement> recomedationVideoElements = new();
+
 
 		List<ReportElement> reportElements = new();
 
@@ -85,9 +87,6 @@ namespace VideoSharingSystem
 			videoElements = new();
 			subscriberElement = new();
 
-			findVideoElements = new();
-			findUserElement = new();
-
 			InitializeComponent();
 
 			button6.Visible = is_admin;
@@ -102,7 +101,54 @@ namespace VideoSharingSystem
 			InitHistory();
 			GetTags();
 
-			InitcompanyViewer(1);
+			foreach (var item in tags.tags)
+				TagsCheckedListBox.Items.Add(item);
+
+			GetRecomedation();
+
+			InitCompanyViewer(1);
+		}
+
+		void GetRecomedation()
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Authorization = bearer_token;
+
+				string url = $"{url_host}/video/recommendations";
+
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(url).Result;
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = response.Content.ReadAsStringAsync().Result;
+
+						var recomendations = JsonSerializer.Deserialize<List<VideoInfo>>(responseBody);
+
+						foreach (var el in recomedationVideoElements)
+							el.Deatach();
+						recomedationVideoElements.Clear();
+
+						foreach (var item in recomendations)
+							recomedationVideoElements.Add(new VideoElement(recomendationVideoLayoutPanel, this,
+								item.id, item.name, item.description, item.upload_time.ToString(),
+								item.company_id, item.company_name
+							)
+						);
+					}
+					else
+					{ 
+						MessageBox.Show("Ошибка при виконанні запита: " + response.StatusCode);
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					MessageBox.Show(ex.Message);
+				}
+			}
 		}
 
 		private void GetProfileInfo()
@@ -142,11 +188,11 @@ namespace VideoSharingSystem
 			{
 				client.DefaultRequestHeaders.Authorization = bearer_token;
 
-				string loginUrl = $"{url_host}/video/tags";
+				string url = $"{url_host}/video/tags";
 
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(loginUrl).Result;
+					HttpResponseMessage response = client.GetAsync(url).Result;
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -202,20 +248,6 @@ namespace VideoSharingSystem
 			UpdateSomeElementPositionOnProfile();
 		}
 
-		private void button7_Click(object sender, EventArgs e)
-		{
-			Find(comboBox1.Text);
-		}
-
-		private void FindTextBoxEnter(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.Enter)
-			{
-				Find(comboBox1.Text);
-				e.Handled = true;
-			}
-		}
-
 		private void flowLayoutPanel5_Paint(object sender, PaintEventArgs e)
 		{
 
@@ -242,14 +274,7 @@ namespace VideoSharingSystem
 			f.ShowDialog(this);
 			int ccurrentCompanyId = currentCompanyId;
 			currentCompanyId = -1;
-			InitcompanyViewer(ccurrentCompanyId);
-		}
-
-
-
-		private void label12_Click(object sender, EventArgs e)
-		{
-			InitcompanyViewer(currentVideoUserId);
+			InitCompanyViewer(ccurrentCompanyId);
 		}
 
 		private void button9_Click(object sender, EventArgs e)
@@ -257,7 +282,7 @@ namespace VideoSharingSystem
 			new EditCompany(this, currentCompanyId).ShowDialog(this);
 			int companyId = currentCompanyId;
 			currentCompanyId = -1;
-			InitcompanyViewer(companyId);
+			InitCompanyViewer(companyId);
 		}
 
 		private void button6_Click(object sender, EventArgs e)
