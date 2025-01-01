@@ -103,7 +103,7 @@ namespace VideoSharingSystem
 
 						var videoInfo = JsonSerializer.Deserialize<VideoInfoGet>(responseBody);
 
-						axWindowsMediaPlayer1.URL = videoInfo.temporary_link;
+						axWindowsMediaPlayer1.URL = url_host + videoInfo.temporary_link;
 						label1.Text = videoInfo.name.Trim();
 						richTextBox1.Text = videoInfo.description.Trim();
 

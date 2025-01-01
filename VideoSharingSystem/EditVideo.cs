@@ -50,7 +50,7 @@ namespace VideoSharingSystem
 
 						oldVideoInfo = JsonSerializer.Deserialize<VideoInfoGet>(responseBody);
 
-						axWindowsMediaPlayer1.URL = oldVideoInfo.temporary_link;
+						axWindowsMediaPlayer1.URL = mainForm.url_host + oldVideoInfo.temporary_link;
 						nameTextBox.Text = oldVideoInfo.name.Trim();
 						descriptionRichTextBox.Text = oldVideoInfo.description.Trim();
 

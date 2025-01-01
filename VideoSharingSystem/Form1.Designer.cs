@@ -177,7 +177,6 @@ namespace VideoSharingSystem
 			// 
 			// companyLogoPictureBox
 			// 
-			this.companyLogoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("companyLogoPictureBox.Image")));
 			this.companyLogoPictureBox.Location = new System.Drawing.Point(12, 11);
 			this.companyLogoPictureBox.Name = "companyLogoPictureBox";
 			this.companyLogoPictureBox.Size = new System.Drawing.Size(100, 100);

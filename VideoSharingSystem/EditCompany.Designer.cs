@@ -259,7 +259,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EditCompany";
-			this.Text = "Редагівання компанії";
+			this.Text = "Редагування компанії";
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
