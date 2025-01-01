@@ -67,6 +67,8 @@ namespace VideoSharingSystem
 					client.DefaultRequestHeaders.Authorization = _mainForm.bearer_token;
 					client.DefaultRequestHeaders.Add("X-idCompany", idCompany.ToString());
 
+					client.Timeout = TimeSpan.FromMinutes(10);
+
 					List<int> tags = new List<int>();
 					foreach (object itemChecked in TagsCheckedListBox.CheckedItems)
 					{
