@@ -375,8 +375,8 @@ namespace VideoSharingSystem
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine(ex.Message);
-					MessageBox.Show(ex.Message);
+					//Console.WriteLine(ex.Message);
+					//MessageBox.Show(ex.Message);
 				}
 			}
 		}
@@ -412,8 +412,8 @@ namespace VideoSharingSystem
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine(ex.Message);
-					MessageBox.Show(ex.Message);
+					//Console.WriteLine(ex.Message);
+					//MessageBox.Show(ex.Message);
 				}
 			}
 		}

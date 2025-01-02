@@ -319,7 +319,7 @@ namespace VideoSharingSystem
 		}
 		public async void AddRatings(int IdRatingType)
 		{
-			if (currentCompanyId == -1 || currentVideoId == -1)
+			if (currentVideoId == -1)
 				return;
 			if (myRateId == IdRatingType)
 				IdRatingType = 0;
